@@ -5,11 +5,13 @@ What `src/mirror/` and the commands add to, or specify beyond, the specification
 ## `.pega/config.json`
 
 ```json
-{ "mcp": { "source": "plugin" }, "application": "Test", "rulesets": ["Test"], "write": { "byClass": [{ "prefix": "MONORG-Test-", "ruleset": "Test:01-01-01" }], "default": null }, "branch": null, "lastSync": "2026-10-10T15:30:00.000Z" }
+{ "mcp": { "source": "plugin" }, "application": "Test", "applications": ["Test"], "rulesets": [], "write": { "byClass": [{ "prefix": "MONORG-Test-", "ruleset": "Test:01-01-01" }], "default": null }, "branch": null, "lastSync": "2026-10-10T15:30:00.000Z" }
 ```
 
 - `mcp.source: plugin`: the MCP command is read again from the Pega plugin's `.mcp.json` at each launch. A path fixed in the config would break when the plugin is updated. The plugin folder is the environment variable `PEGA_CTX_PLUGIN` (machine-specific, so not in the shared config), otherwise Claude Code's plugin cache.
-- `rulesets`: followed by `sync`. `init --ruleset A,B`, otherwise the rulesets of the current application (`stack()`). Empty: everything `list()` returns.
+- `applications`: the applications `sync` follows. `init` writes the stack's applications except those Pega ships (no owning organization, or classified `PegaPlatform`: Constellation, PegaRULES); `--all` takes them too. `sync` follows the rulesets of each one, read in `stack.json` (its application rule's list, branch rulesets aside). The current application is listed as is; another one through its alias (`list-available-applications`), since a listing only returns the rules of its application's context: one the operator cannot open, or outside the stack, is reported by `sync` and stays out. A rule is read in the context of the application its ruleset belongs to. In `stack.md`, an application of the stack that is not followed says `(not mirrored)`.
+- `rulesets`: rulesets followed on top of the applications' (`init --ruleset A,B` writes them and no `applications`: only those rulesets, the behaviour before `applications`). `sync --ruleset R`: that one only. Both empty and no `applications`: everything `list()` returns.
+- When one rule (same type, class, name) has versions in several applications, the digest is the one Pega finds first: the highest application of the stack, then the highest version.
 - `branch`: optional, the default branch of `create` and `update`.
 - `types`: optional, rule classes followed on top of the known types (`["Rule-Declare-Expressions"]`); their short name is built from the class (`Expressions`). `docs/mcp-tools.md` § Pega types and classes.
 - `write`: where new rules go, by class. `byClass` is an ordered list of `{ prefix, ruleset }`, the first matching prefix wins; `default` (may stay `null`) applies to a class that nothing else covers. A prefix ending with `-` covers every class that starts with it (`MyOrg-App-`); otherwise it covers the class itself and its children by name. Extra keys in an entry (`rules`, `classes`) are ignored. Decision: `docs/decisions/0006-write-ruleset-per-class.md`.

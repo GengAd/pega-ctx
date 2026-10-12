@@ -88,8 +88,10 @@ function fakeServer(responses) {
 }
 
 // Application rules as get-rule returns them (2026-10-12), trimmed to the fields the climb reads.
-const APP_RULE = (rulesets, dependsOn = []) => [
+const APP_RULE = (rulesets, dependsOn = [], organization = '') => [
   'pxObjClass: Rule-Application',
+  `pyOwningOrganization: "${organization}"`,
+  `pyLayerClassification: ${organization ? 'Standard' : 'PegaPlatform'}`,
   `pyRuleSetList[${rulesets.length}]: ${rulesets.map((r) => `"${r}"`).join(',')}`,
   `pyDependsOnList[${dependsOn.length}]:`,
   ...dependsOn.flatMap(([name, version]) => ['  - pxObjClass: Embed-DependsOnApp', `    pyAppName: ${name}`, `    pyAppVersion: "${version}"`]),
@@ -99,8 +101,8 @@ test('stack() reads get-application, then climbs the application rules until one
   const { pega, calls } = fakeServer({
     'get-application': APPLICATION,
     'get-rule': ({ key }) => {
-      if (key === 'RULE-APPLICATION CLAIMS 01.01.01') return APP_RULE(['Claims_Branch_B1:01-01-01', 'Claims:01-01', 'MyOrg:01-01'], [['Shared', '02.01'], ['Constellation', '01.01']]);
-      if (key === 'RULE-APPLICATION SHARED 02.01') return APP_RULE(['Shared:02-01'], [['Constellation', '01.01']]);
+      if (key === 'RULE-APPLICATION CLAIMS 01.01.01') return APP_RULE(['Claims_Branch_B1:01-01-01', 'Claims:01-01', 'MyOrg:01-01'], [['Shared', '02.01'], ['Constellation', '01.01']], 'MyOrg');
+      if (key === 'RULE-APPLICATION SHARED 02.01') return APP_RULE(['Shared:02-01'], [['Constellation', '01.01']], 'MyOrg');
       if (key === 'RULE-APPLICATION CONSTELLATION 01.01') return APP_RULE(['Constellation:01-01'], [['PegaRULES', '8']]);
       throw new Error(`Error fetching rule: 500 Internal Server Error: "{\\"errorDetails\\":[{\\"message\\":\\"pzErrorRuleNotFound\\t${key}\\"}]}"`);
     },
@@ -112,14 +114,32 @@ test('stack() reads get-application, then climbs the application rules until one
     builtOn: [{ application: 'Constellation', version: '01.01' }],
     constellation: true,
     layers: [
-      { application: 'Claims', version: '01.01.01', rulesets: ['Claims_Branch_B1:01-01-01', 'Claims:01-01', 'MyOrg:01-01'], builtOn: [{ application: 'Shared', version: '02.01' }, { application: 'Constellation', version: '01.01' }] },
-      { application: 'Shared', version: '02.01', rulesets: ['Shared:02-01'], builtOn: [{ application: 'Constellation', version: '01.01' }] },
-      { application: 'Constellation', version: '01.01', rulesets: ['Constellation:01-01'], builtOn: [{ application: 'PegaRULES', version: '8' }] },
+      { application: 'Claims', version: '01.01.01', rulesets: ['Claims_Branch_B1:01-01-01', 'Claims:01-01', 'MyOrg:01-01'], builtOn: [{ application: 'Shared', version: '02.01' }, { application: 'Constellation', version: '01.01' }], organization: 'MyOrg', classification: 'Standard' },
+      { application: 'Shared', version: '02.01', rulesets: ['Shared:02-01'], builtOn: [{ application: 'Constellation', version: '01.01' }], organization: 'MyOrg', classification: 'Standard' },
+      { application: 'Constellation', version: '01.01', rulesets: ['Constellation:01-01'], builtOn: [{ application: 'PegaRULES', version: '8' }], organization: '', classification: 'PegaPlatform' },
       { application: 'PegaRULES', version: '8', rulesets: [], builtOn: [], error: 'no rule RULE-APPLICATION PEGARULES 8' },
     ],
   });
   // Constellation, built on twice, is read once.
   assert.equal(calls.filter((c) => c.name === 'get-rule').length, 4);
+});
+
+test('applications() lists the operator\'s applications and their alias; alias() opens and closes a context', async () => {
+  const { pega, calls } = fakeServer({
+    'list-available-applications': `availableApplications[2]{applicationLabel,applicationName,applicationVersion,accessGroup,accessGroupLabel,applicationAlias,switchable}:
+  Claims,Claims,"01.01.01","Claims:Authors",Authors,claims,true
+  Pega Platform,PegaRULES,"8","PRPC:Administrators","PRPC:Administrators",(no alias — not switchable),false
+totalCount: 2`,
+    'set-application-alias': 'status: alias_set',
+    'clear-application-alias': 'status: alias_cleared',
+  });
+  assert.deepEqual(await pega.applications(), [
+    { application: 'Claims', version: '01.01.01', alias: 'claims' },
+    { application: 'PegaRULES', version: '8', alias: null },
+  ]);
+  await pega.alias('claims');
+  await pega.alias(null);
+  assert.deepEqual(calls.slice(1).map((c) => [c.name, c.args]), [['set-application-alias', { alias: 'claims' }], ['clear-application-alias', {}]]);
 });
 
 test('list() goes through D_pxListRules, returns id, key and update date', async () => {

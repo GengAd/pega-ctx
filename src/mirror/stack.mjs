@@ -10,8 +10,9 @@ const MANUAL_HELP = 'none. For each built-on application pega-ctx cannot read, a
 const LONG = 12;
 
 // s: the result of stack(); index: the mirror's index (empty right after init); write: the config's table;
-// previous: the stack.md being replaced, whose manual section is kept.
-export function renderStack(s, { index = [], write, previous = '' } = {}) {
+// previous: the stack.md being replaced, whose manual section is kept; followed: the applications of the
+// config (undefined when the config names rulesets only).
+export function renderStack(s, { index = [], write, previous = '', followed } = {}) {
   const manual = manualSection(previous);
   const owners = rulesetOwners(s, previous);
   const unread = (s.layers ?? []).filter((l) => l.error);
@@ -32,7 +33,7 @@ export function renderStack(s, { index = [], write, previous = '' } = {}) {
     '## Built on',
     ...(s.builtOn.length ? s.builtOn.map((b) => `- ${b.application} ${b.version}`) : ['none']),
     '',
-    ...(s.layers ? resolutionOrder(s.layers) : ['First level only: get-application cannot read applications outside the operator. Complete by hand beyond.', '']),
+    ...(s.layers ? resolutionOrder(s.layers, followed) : ['First level only: get-application cannot read applications outside the operator. Complete by hand beyond.', '']),
     MANUAL,
     ...manual.lines,
     '',
@@ -44,12 +45,12 @@ export function renderStack(s, { index = [], write, previous = '' } = {}) {
   ].join('\n');
 }
 
-function resolutionOrder(layers) {
+function resolutionOrder(layers, followed) {
   const rulesets = (l) => (l.rulesets.length > LONG ? `${l.rulesets.length} rulesets, ${l.rulesets.slice(0, 3).join(', ')} … ${l.rulesets.at(-1)}` : l.rulesets.join(', ') || 'none');
   return [
     '## Resolution order',
     'Pega searches the rulesets in this order, application by application (each application rule\'s ruleset list, branches first).',
-    ...layers.map((l, i) => `${i + 1}. ${l.application} ${l.version}: ${l.error ? `not read (${l.error}): add its rulesets under "${MANUAL}"` : rulesets(l)}`),
+    ...layers.map((l, i) => `${i + 1}. ${l.application} ${l.version}${followed && !l.error && !followed.includes(l.application) ? ' (not mirrored)' : ''}: ${l.error ? `not read (${l.error}): add its rulesets under "${MANUAL}"` : rulesets(l)}`),
     '',
   ];
 }

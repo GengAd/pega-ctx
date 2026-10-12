@@ -80,7 +80,7 @@ A single dependency, `@modelcontextprotocol/sdk`. To update later, run the same 
 From the root of the project's repository (the folder VS Code or Claude Code is opened in):
 
 ```bash
-pega-ctx init                # creates .pega/config.json and .pega/stack.md (--ruleset A,B to follow only some rulesets)
+pega-ctx init                # creates .pega/config.json and .pega/stack.md; follows the stack's applications except those Pega ships (--all: every one, --ruleset A,B: only those rulesets)
 pega-ctx sync                # first mirror: lists, reads and projects every rule (a few minutes)
 pega-ctx install --copilot   # writes the instructions into .github/copilot-instructions.md
 ```
@@ -120,7 +120,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 
 | Command | What it does |
 |---|---|
-| `init [--ruleset A,B] [--ignore-raw]` | creates `.pega/config.json` and `stack.md` |
+| `init [--all] [--ruleset A,B] [--ignore-raw]` | creates `.pega/config.json` and `stack.md`; `applications`: the stack except what Pega ships |
 | `sync [--full] [--since <date>] [--ruleset R]` | reads again what changed in Pega, recomputes index, graph and digests |
 | `search <words> [--type T] [--class C] [--app A]` | grep on the index, name and description; each line tagged `[App]` |
 | `rule <id> [--cited-by] [--raw]` | the digest of a rule (`Type:Class:Name`, or its name if unique) |

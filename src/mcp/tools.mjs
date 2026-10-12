@@ -64,6 +64,9 @@ export async function stack(call) {
       return;
     }
     layer.rulesets = (rule.pyRuleSetList ?? []).filter((r) => typeof r === 'string' && r);
+    // Empty for the applications Pega ships (Constellation, PegaRULES), which PegaRULES also classifies PegaPlatform.
+    layer.organization = rule.pyOwningOrganization ?? '';
+    layer.classification = rule.pyLayerClassification ?? '';
     layer.builtOn = (rule.pyDependsOnList ?? []).filter((d) => d?.pyAppName).map((d) => ({ application: d.pyAppName, version: String(d.pyAppVersion ?? '') }));
     for (const b of layer.builtOn) await climb(b.application, b.version);
   };
@@ -76,6 +79,27 @@ export async function stack(call) {
     constellation: app.IsConstellationApp === 'true',
     layers,
   };
+}
+
+// An application shipped by Pega, not the project's: no owning organization, or classified PegaPlatform.
+export function shippedByPega(layer) {
+  return !layer.error && (!layer.organization || layer.classification === 'PegaPlatform');
+}
+
+// applications() → list-available-applications: the operator's applications, with the alias that opens
+// another application's context (null when it is not switchable).
+export async function applications(call) {
+  const r = decodeToon(await call('list-available-applications', {}));
+  return (r.availableApplications ?? []).map((a) => ({
+    application: a.applicationName,
+    version: String(a.applicationVersion),
+    alias: a.switchable === true || a.switchable === 'true' ? a.applicationAlias : null,
+  }));
+}
+
+// alias(name) → set-application-alias: the next calls run in that application's context; alias(null) goes back.
+export async function alias(call, name) {
+  await call(name ? 'set-application-alias' : 'clear-application-alias', name ? { alias: name } : {});
 }
 
 function firstLine(text = '') {

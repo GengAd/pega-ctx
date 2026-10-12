@@ -153,7 +153,7 @@ All from the root of the user's project, where `.pega/` lives. `--json` everywhe
 
 ### `pega-ctx init`
 
-Creates `.pega/config.json`: MCP command read from `.mcp.json`, rulesets to follow asked to the user or read from `stack()`. Writes `stack.md`. Adds `.pega/raw/` to `.gitignore` on request.
+Creates `.pega/config.json`: MCP command read from `.mcp.json`, applications to follow read from `stack()`, those Pega ships aside (`--all` keeps them, `--ruleset A,B` follows rulesets instead). Writes `stack.md`. Adds `.pega/raw/` to `.gitignore` on request.
 
 ### `pega-ctx sync [--since <date>] [--full] [--ruleset <name>]`
 

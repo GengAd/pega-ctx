@@ -83,6 +83,8 @@ export async function open({ command, args, env = {}, cwd = process.cwd() } = co
 export function pegaInterface(call, close = async () => {}) {
   return {
     stack: () => tools.stack(call),
+    applications: () => tools.applications(call),
+    alias: (name) => tools.alias(call, name),
     list: (filter) => tools.list(call, filter),
     read: (key) => tools.read(call, key),
     create: (request) => tools.create(call, request),

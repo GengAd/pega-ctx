@@ -24,7 +24,9 @@
      "application": "Constellation",
      "version": "01.01"
     }
-   ]
+   ],
+   "organization": "MONORG",
+   "classification": "Standard"
   },
   {
    "application": "Constellation",
@@ -37,7 +39,9 @@
      "application": "PegaRULES",
      "version": "8"
     }
-   ]
+   ],
+   "organization": "",
+   "classification": "Standard"
   },
   {
    "application": "PegaRULES",
@@ -46,7 +50,9 @@
     "Pega-ProcessCommander:08-26",
     "Pega-RULES:08-26"
    ],
-   "builtOn": []
+   "builtOn": [],
+   "organization": "",
+   "classification": "PegaPlatform"
   }
  ]
 }
