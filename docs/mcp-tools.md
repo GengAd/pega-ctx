@@ -57,7 +57,7 @@ Values that Pega stores as strings arrive quoted (`"false"`, `"01-01-01"`, `"0"`
 - **Real rules the schemas refuse** (fixture templates checked by `tests/lint.test.mjs`, 2026-10-11): 17 of 20 pass once `"10"`/`"true"` are typed. The other three hold what Pega stores and the MCP's schema rejects: a DataPage whose report definition source lacks `pyLoadReportDefinition`, `pyReportDefinitionClass`, `pyPassCurrentParamPageForActivity`; a ReportDefinition with `pyReportDBType` `AlternateNonReplica` (enum: Standard, Alternate, "") and a base64 `pyContent.ValidationMap` (schema: `""`). Copying them through `create-rule` would be refused.
 - **pz\* fields that are content**: some types keep real content in `pz*` fields (Notification `pzRecipients`, AI agent `pzActionTools`, report columns `pzIndexCount`, flow `pzRuleParameters`). A `pz*` property the schema declares **with a type** is content and is kept; DataTransform's schema lists its persistence fields untyped (`{}`) to allow them, and the instance keys (`pzInsKey`, `pzOriginalInstanceKey`) stay persistence (`declaredPz`, `src/projection/persistence.mjs`).
 - **Examples** (`rules-<class>/examples/*.md`, read from the plugin by `src/mcp/examples.mjs`): front matter `name` / `description`, one ```json block (a rule without `pxObjClass` nor `pyRuleName`), then notes. Top-level files are complete templates, sub-folders are parts. All 37 skills have top-level examples except `rules-rule-ruleset-version`; all have a `stub` except `rules-rule-ruleset-name` and `rules-rule-ruleset-version`. `create --from example[:name]` starts from one.
-- **Stubs refused by their own schema** (2026-10-11, `tests/lint.test.mjs`): prepared by `create --from example`, 32 stubs pass, four do not. AITool: the stub breaks one of its `x-pega-condition` (category `Rule-Obj-Activity` needs `pyAskConfirmation` and `pyIntentActionPage.pyClassName`). ConnectGenerativeAI: `pyGenAIDef`, `pyGenAIConfig`, `pyDescription` required, absent from the stub. TestUnitCase: `pyRuleUnderTest.pyDetails` empty, the stub says to fill it from the sub-examples. UITheme: the schema requires `pyRuleName` to be the constant `Rule-UI-Theme` (most likely a copy of `pxObjClass`) while the stub names its theme `MyAppTheme`, and requires `pyClassName` without declaring it. Whether the server itself refuses them is to see on the real server (Trello card 15).
+- **Stubs refused by their own schema** (2026-10-11, `tests/lint.test.mjs`): prepared by `create --from example`, 32 stubs pass, four do not. AITool: the stub breaks one of its `x-pega-condition` (category `Rule-Obj-Activity` needs `pyAskConfirmation` and `pyIntentActionPage.pyClassName`). ConnectGenerativeAI: `pyGenAIDef`, `pyGenAIConfig`, `pyDescription` required, absent from the stub. TestUnitCase: `pyRuleUnderTest.pyDetails` empty, the stub says to fill it from the sub-examples. UITheme: the schema requires `pyRuleName` to be the constant `Rule-UI-Theme` (most likely a copy of `pxObjClass`) while the stub names its theme `MyAppTheme`, and requires `pyClassName` without declaring it. Seen on the real server on 2026-10-12 (§ Real trial): it refuses three of the four (ConnectGenerativeAI, TestUnitCase, UITheme) and accepts AITool.
 - `withTypesFixed` stays as a fallback: the lint types what the schema names before sending, the retry catches what it could not reach (a field under `anyOf` or `if`).
 - The skill `rules-rule-declare-decision-table` exists (with a hyphen): DecisionTable is writable, key `pyPurpose`. There is no skill and no schema for `Rule-HTML-Section`.
 - `pyRuleSet` / `pyRuleSetVersion` are removed from the content: the branch sets them, the ruleset name goes in the `ruleSet` parameter.
@@ -70,6 +70,47 @@ Values that Pega stores as strings arrive quoted (`"false"`, `"01-01-01"`, `"0"`
 - **Server schema**: it refuses before Pega a field that the raw TOON keeps as a string while it expects a number or a boolean (`/pyInitialCaseUrgency: string trouvé, integer attendu`; the server answers in the operator's locale). `create` and `update` convert the paths named in the message and send again once (`withTypesFixed`, `src/mcp/tools.mjs`). The client keeps the full error text in `error.text`.
 - **View**: the server recomputes `pxViewMetadata` from `pyContent`; a view is described on its three surfaces (`pyContent`, `pxViewMetadata`, `pxContextMetadata`, skill `rules-rule-ui-view`). `create View --fields` builds them from the mirror's properties.
 - End-to-end trial on 2026-10-11: class, three properties, view, flow action, flow and case type created by `pega-ctx create` in a branch, `update` on a property, then `create-case`: the assignment shows the three fields.
+
+### Real trial, type by type (2026-10-12, Trello card 15)
+
+For each writable type: `create --from example --draft`, lint, `create-rule` in a test branch, `update-rule` of `pyDescription`, `get-rule` by the returned `pyRuleInsKey`. Class `<work class>` of the test application, names `PegaCtxTrial<Type>`, one fresh branch. Drafts come from `pega-ctx create --draft` (`launch()` on a scratch root); the sends go through the client directly, to keep the raw responses (and so skip the lint: it does not stop them).
+
+**Passes create and update (20)**: Property, AdminSystemSettings, AIAgent, AITool, ClassMetadata, ConnectREST, CorrespondenceType, EditValidate, Notification, Activity, AttachmentCategory, Correspondence, FieldValue, Flow, DataTransform, ReportDefinition, ServiceLevel, Validate, When, View. Class passes `create` from a sibling class (update not tried). AITool passes although its stub breaks its own `x-pega-condition` in the lint: the lint is stricter than the server there.
+
+**Refused by the server's schema, before Pega** (the four stubs the lint already refused, so the server does refuse them too):
+
+| Type | Message |
+|---|---|
+| ConnectGenerativeAI | `pyGenAIDef`, `pyGenAIConfig`, `pyDescription` required |
+| TestUnitCase | `/pyRuleUnderTest/pyDetails`: `pyRuleUnderTestType`, `…InsName`, `…Name`, `…ObjClass` required |
+| UITheme | `/pyRuleName` must be the constant `Rule-UI-Theme` |
+| RuleSetBranch | `/pyBranchID` at most 16 characters (the trial name was longer: an artefact of the trial, not of the stub) |
+
+**Refused by Pega** (the stub holds placeholders that no real application has; fix the content, not the tool):
+
+| Type | Message (shortened) |
+|---|---|
+| AsyncJobScheduler | `pyAccessGroup` `MyOrg-MyApp:Administrators` not valid; `pyActivityName` `RunScheduledJob` does not exist |
+| AsyncQueueProcessor | `pyActivityName` / `pyBaseClass` placeholders (`<CLASS-OF-PYACTIVITYNAME>`) |
+| DecisionDataSet | keys `.CustomerID`, `.RegionCode`… are not properties of the class |
+| DataPage | `pyPageName` must start with `D_` or `Declare_` (the lint does not know) |
+| FlowAction | `pyViewReference` `MyRuleNameHere` does not exist |
+| Class | `pyClassGroupIndicator` required: the stub lacks it. Created from a sibling class (`--from Class:…`), it passes |
+| CaseType | `pyStages(1).pyProcesses(1)`: the flow `CreateForm_Default` of the new class does not exist yet |
+| TestApplicationBusinessAction, TestApplicationCase | `Branch ruleset not candidate` (same message as a missing class; cause not found) |
+
+**Create passes, update refused**: DecisionTable (the server validates the whole merged rule: `/pyColumns/0` requires `pyProperty`, which the stub's column lacks, so the stub creates a rule that cannot be patched), ServiceMCP (500 `Implementation resulted in an exception`, no detail).
+
+**Not tried**: RuleSetName and RuleSetVersion (system-wide, no way to take them back from the MCP; RuleSetVersion has no example at all).
+
+Other findings:
+
+- **Name refused by `pega-ctx` before the server**: a type whose key has several fields is named by them joined with a space (`AdminSystemSettings` `pyOwner pyPurpose`, `FieldValue` `pyFieldName pyFieldValue`); `CaseType` is always `pyDefault`; `Class` and `ClassMetadata` carry their class as name.
+- **A new branch is not visible to `list()`/`search-rules`** (same as the "invisible branch" note above), but `get-rule` by the returned key reads it and `update-rule` accepts it: `create` should keep `rule.responseData.pyRuleInsKey` for `update`/`live` until the listing sees it.
+- Every write returns the warning "the completed branch summary was not updated".
+- A class-less rule (`EditValidate`) broke `sync` (folder layout and comparison key), fixed in `src/mirror/files.mjs` and `src/commands/sync.mjs`.
+- Not checked: whether `update-rule` and `copy-rule` accept the same type list as `create-rule`.
+- The trial rules stay in the test branch: no MCP tool deletes a rule or a branch.
 
 ### Pega types and classes (`TYPES`)
 
