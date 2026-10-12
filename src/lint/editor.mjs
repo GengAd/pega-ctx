@@ -6,7 +6,7 @@
 // - an update draft holds a patch: its copy requires no field at the top level.
 // The files are derived: rewritten with each draft, they can be ignored by git.
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { join, relative, dirname, basename } from 'node:path';
+import { join, relative, dirname, basename, sep } from 'node:path';
 
 const DRAFT_2020 = 'https://json-schema.org/draft/2020-12/schema';
 
@@ -35,5 +35,6 @@ export function editorSchema(m, { operation, schema, file, draftFile }) {
     required: ['pega-ctx', 'content'],
     properties: { $schema: { type: 'string' }, 'pega-ctx': { type: 'object' }, content: { $ref: rule } },
   }, null, 2)}\n`);
-  return relative(dirname(draftFile), join(folder, wrapper));
+  // A URI reference: forward slashes on Windows too, or the editor does not find the schema.
+  return relative(dirname(draftFile), join(folder, wrapper)).split(sep).join('/');
 }
