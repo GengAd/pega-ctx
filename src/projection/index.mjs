@@ -7,6 +7,7 @@ import { probableReferences } from './generic.mjs';
 import * as adminsystemsettings from './adminsystemsettings.mjs';
 import * as aiagent from './aiagent.mjs';
 import * as aitool from './aitool.mjs';
+import * as asyncjobscheduler from './asyncjobscheduler.mjs';
 import * as asyncqueueprocessor from './asyncqueueprocessor.mjs';
 import * as attachmentcategory from './attachmentcategory.mjs';
 import * as classmetadata from './classmetadata.mjs';
@@ -39,6 +40,7 @@ export const PROJECTIONS = {
   AdminSystemSettings: adminsystemsettings,
   AIAgent: aiagent,
   AITool: aitool,
+  AsyncJobScheduler: asyncjobscheduler,
   AsyncQueueProcessor: asyncqueueprocessor,
   AttachmentCategory: attachmentcategory,
   ClassMetadata: classmetadata,

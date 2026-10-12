@@ -17,6 +17,6 @@ Pega searches the rulesets in this order, application by application (each appli
 none. For each built-on application pega-ctx cannot read, a line `- Application Version: Ruleset:Version, …`; sync keeps this section as it is.
 
 ## Rulesets seen in the mirror
-- Test:01-01-01, Test: 33 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo
+- Test:01-01-01, Test: 34 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo
 - Cvent:01-01-05, not in the application's stack: 2 rules, classes OrgEv-Int-CventAtt-Data
 - Gameboard:01-01-17, not in the application's stack: 2 rules, classes AutreOrg-Gameboard-Data-Player, AutreOrg-Gameboard-Work-Game

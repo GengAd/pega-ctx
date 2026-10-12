@@ -164,10 +164,11 @@ test('AITool: the activity it runs; ConnectREST: the property filled by the resp
   assert.match(digests['ConnectREST:MONORG-Test-Work:PegaCtxFxConnect'].markdown, /### GET\n- request headers Accept=application\/json\n- response data Response Message→\.pyResponseData/);
 });
 
-test('ClassMetadata: its primary fields of the application and its list data page; QueueProcessor: its activity; ServiceMCP: its tools', () => {
+test('ClassMetadata: its primary fields of the application and its list data page; QueueProcessor and JobScheduler: their activity; ServiceMCP: its tools', () => {
   assert.deepEqual(to(`ClassMetadata:${P}:${P}`), [`Property:${P}:Title`, `Property:${P}:Age`, `DataPage:${P}:D_PeopleList`]);
   assert.deepEqual(to(`ClassMetadata:${W}:${W}`), [`Property:${W}:HouseholdMembers`]);
   assert.deepEqual(to(`AsyncQueueProcessor:${W}:PegaCtxFxQueueProc`), [`Activity:${W}:SaveHouseholdPeople`]);
+  assert.deepEqual(to(`AsyncJobScheduler:${W}:PegaCtxFxJobSched2`), [`Activity:${W}:SaveHouseholdPeople`]);
   assert.match(digests['ServiceMCP:MONORG-Test-Work:PegaCtxFxAgentMCP'].markdown, /enabled: no\n[^]*## Tools\n- pxGetCaseTypes \(Activity\)\n[^]*- pxInvokeKnowledgeAgent \(Data page\)/);
 });
 

@@ -188,7 +188,7 @@ test('stack: stack.md with the rulesets seen, --for adds the inheritance and whe
   const { root, pc } = await fixtureMirror();
   const stack = (await pc('stack')).output;
   assert.match(stack, /^# Stack\n/);
-  assert.match(stack, /\n## Rulesets seen in the mirror\n- Test:01-01-01, Test: 33 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo\n/);
+  assert.match(stack, /\n## Rulesets seen in the mirror\n- Test:01-01-01, Test: 34 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo\n/);
   assert.match(stack, /\n## Resolution order\n.*\n1\. Test 01\.01\.01: Test:01-01, MONORG:01-01\n2\. Constellation 01\.01: Constellation:01-01\n3\. PegaRULES 8: /);
   assert.match(stack, /\n- Cvent:01-01-05, not in the application's stack: 2 rules, classes OrgEv-Int-CventAtt-Data\n/);
   // The manual section is the user's: sync keeps it, and its rulesets get their application.

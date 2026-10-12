@@ -31,6 +31,12 @@
    "confidence": "sure"
   },
   {
+   "from": "AsyncJobScheduler:MONORG-Test-Work-GetInfo:PegaCtxFxJobSched2",
+   "to": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "via": "scheduled activity",
+   "confidence": "sure"
+  },
+  {
    "from": "AsyncQueueProcessor:MONORG-Test-Work-GetInfo:PegaCtxFxQueueProc",
    "to": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
    "via": "queue activity",

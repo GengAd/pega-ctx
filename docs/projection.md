@@ -2,7 +2,7 @@
 
 For each type: fields kept, fields dropped, and why. The names come from `tests/fixture/raw/` (see `/fixture`).
 
-Per type: what the digest keeps, then the raw list of top-level fields as a full `get-rule` returns them. Any field not cited under "Kept" is dropped. Each projection has at least one fixture rule (checked by `tests/projection.test.mjs`). The 14 types below, then the 16 of the last section, have a projection; every other type of `TYPES` (`docs/mcp-tools.md` § Pega types and classes), and any rule class outside it, gets the header, the line `body: type without projection` and the generic references, until a real rule of that type enters the fixture (types still without one: the ruleset types, Declare-*, and the writable types whose server stub Pega refuses: AsyncJobScheduler, TestUnitCase, TestApplicationCase, TestApplicationBusinessAction, UITheme).
+Per type: what the digest keeps, then the raw list of top-level fields as a full `get-rule` returns them. Any field not cited under "Kept" is dropped. Each projection has at least one fixture rule (checked by `tests/projection.test.mjs`). The 14 types below, then the 17 of the last section, have a projection; every other type of `TYPES` (`docs/mcp-tools.md` § Pega types and classes), and any rule class outside it, gets the header, the line `body: type without projection` and the generic references, until a real rule of that type enters the fixture (types still without one: the ruleset types, Declare-*, and the writable types whose server stub Pega refuses: TestUnitCase, TestApplicationCase, TestApplicationBusinessAction, UITheme).
 
 ## Cross-cutting rules
 
@@ -137,7 +137,7 @@ Raw fields: `pxAPIMethodReferences` `pxCurrentTab` `pxMoveFromSystem` `pxNamedPa
 
 ## Types added by Trello card 17
 
-Sixteen projections, each with a fixture rule created on 2026-10-12 from one of the server's own examples (`example:stub`, a richer example, or the stub with the application's names in place of its placeholders, for the last six) in a test branch and read back (`docs/mcp-tools.md` § Real trial). The stubs hold the server's placeholder values, so a field is "read on the fixture" only when its name appears there; a field whose row shape is not on a fixture rule is not rendered (never guessed). They share the common fields above.
+Seventeen projections, each with a fixture rule created on 2026-10-12 from one of the server's own examples (`example:stub`, a richer example, or the stub with the application's names in place of its placeholders, for the last seven) in a test branch and read back (`docs/mcp-tools.md` § Real trial). The stubs hold the server's placeholder values, so a field is "read on the fixture" only when its name appears there; a field whose row shape is not on a fixture rule is not rendered (never guessed). They share the common fields above.
 
 ### AIAgent
 
@@ -266,3 +266,11 @@ Fixture: `MONORG-Test-Work:PegaCtxFxGenAI` (server stub, with the three fields i
 Kept: `pyGenAIConfig.pyModelConfiguration` (`pyModelName`, `pyProvider`); `pyGenAIDef` (`pyUseCase`, `pyUserPrompt`, `pySystemPrompt`: names of field values, `customized` when `pyCustomizeSystemPrompt` is true); `pyExpectedResponseEntity` and `pyResponseFields[].pyFieldName` (reference `Property` for a field of the application, via `response field`). Dropped: `pyPromptName` and `pySystemPromptName` (copies of the two prompts), `pyModelParameters` (one empty row on the fixture), `pyModelDeprecationInfo`, `pyDisplayMode`, `pyVersionNumber`.
 
 Raw fields: `pxAPIMethodReferences` `pxNamedPageReferences` `pxObjClass` `pxUpdateOperator` `pxWarnings` `pyBaseRule` `pyClassName` `pyCustomizeSystemPrompt` `pyDescription` `pyDisplayMode` `pyExpectedResponseEntity` `pyGenAIConfig` `pyGenAIDef` `pyLabel` `pyPromptName` `pyResponseFields` `pyRuleAvailable` `pyRuleName` `pyRuleSet` `pyRuleSetVersion` `pyServiceName` `pySystemPromptName` `pyValueChanged` `pyVersionNumber` `pzChecksum` `pzIndexCount` `pzInsKey` `pzRuleSetVersionMajor` `pzRuleSetVersionMinor` `pzRuleSetVersionPatch`
+
+### AsyncJobScheduler
+
+Fixture: `MONORG-Test-Work-GetInfo:PegaCtxFxJobSched2` (server stub, `pyBaseClass` and `pyActivityName` set to an activity of the application, `pyAccessGroup` to the operator's access group). The raw rule has no `pyRuleAvailable`: the header says `unknown`.
+
+Kept: `pyActivityName` in `pyBaseClass` (reference `Activity`, via `scheduled activity`); `pyRecurringFrequency` with `pyRecurrencePattern` (`pyDailyInterval` when not 1, `pyStartTime`, `pyUseTimeZone`); `pyApplicableTo` and `pyNodeTypesText`; `pyAccessGroup` when `pyAccessGroupContext` is false. Dropped: `pyNodeTypes` (the same as `pyNodeTypesText`), `pyAlertsConfiguration` (empty on the fixture), `pyWorkClass`, `pyIsResolvable`.
+
+Raw fields: `pxAPIMethodReferences` `pxNamedPageReferences` `pxObjClass` `pxUpdateOperator` `pxWarnings` `pyAccessGroup` `pyAccessGroupContext` `pyActivityName` `pyAlertsConfiguration` `pyApplicableTo` `pyBaseClass` `pyBaseRule` `pyClassName` `pyIsResolvable` `pyLabel` `pyNodeTypes` `pyNodeTypesText` `pyPurpose` `pyRecurrencePattern` `pyRecurringFrequency` `pyRuleName` `pyRuleSet` `pyRuleSetVersion` `pyValueChanged` `pyWorkClass` `pzChecksum` `pzIndexCount` `pzInsKey` `pzRuleSetVersionMajor` `pzRuleSetVersionMinor` `pzRuleSetVersionPatch`

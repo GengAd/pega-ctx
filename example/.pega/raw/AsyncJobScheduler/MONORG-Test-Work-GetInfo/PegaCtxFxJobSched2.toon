@@ -1,0 +1,39 @@
+pxObjClass: Rule-Async-JobScheduler
+pxUpdateOperator: dev.un
+pyAccessGroup: "Test:Authors"
+pyAccessGroupContext: "false"
+pyActivityName: SaveHouseholdPeople
+pyApplicableTo: Cluster
+pyBaseClass: MONORG-Test-Work-GetInfo
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyIsResolvable: "false"
+pyLabel: PegaCtxFxJobSched2
+pyNodeTypesText: BackgroundProcessing
+pyPurpose: PegaCtxFxJobSched2
+pyRecurringFrequency: Daily
+pyRuleName: PegaCtxFxJobSched2
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pyWorkClass: MONORG-Test-Work-GetInfo
+pzChecksum: "-1348406173"
+pzIndexCount: "2"
+pzInsKey: RULE-ASYNC-JOBSCHEDULER PEGACTXFXJOBSCHED2 #20261012T214614.011 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyAlertsConfiguration[0]:
+pyNodeTypes:
+  BackgroundProcessing:
+    pxObjClass: Embed-Rule-FutureQueue-nodeInfo
+    pxSubscript: BackgroundProcessing
+    pyNodeType: BackgroundProcessing
+pyRecurrencePattern:
+  pxObjClass: Embed-Data-Event-Schedule-Pattern
+  pyDailyInterval: "1"
+  pyStartTime: "00:00:00.000Z"
+  pyUseTimeZone: GMT
