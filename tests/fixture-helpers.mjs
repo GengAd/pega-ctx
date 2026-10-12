@@ -7,10 +7,12 @@ export const RAW = join(FIXTURE, 'raw');
 export const DIGEST = join(FIXTURE, 'digest');
 
 export const raws = readdirSync(RAW).flatMap((type) =>
-  readdirSync(join(RAW, type)).flatMap((cls) =>
-    readdirSync(join(RAW, type, cls)).map((f) => {
+  readdirSync(join(RAW, type)).flatMap((folder) =>
+    readdirSync(join(RAW, type, folder)).map((f) => {
       const name = f.replace(/\.toon$/, '');
-      return { id: `${type}:${cls}:${name}`, type, class: cls, name, file: join(RAW, type, cls, f) };
+      // A rule with no class (EditValidate) sits in the folder `_`.
+      const cls = folder === '_' ? '' : folder;
+      return { id: `${type}:${cls}:${name}`, type, class: cls, folder, name, file: join(RAW, type, folder, f) };
     }),
   ),
 );

@@ -1,0 +1,29 @@
+pxObjClass: Rule-Admin-System-Settings
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work
+pyLabel: PegaCtxFx Setting
+pyOwner: PegaCtxFx
+pyPurpose: Setting
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFx Setting
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pyWorkClass: MONORG-Test-Work
+pzChecksum: "-1303321532"
+pzInsKey: RULE-ADMIN-SYSTEM-SETTINGS PEGACTXFX SETTING #20261012T091125.773 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyProductionLevel[5]{pxObjClass,pyDescription,pySetting}:
+  Embed-System-Settings,1 - Sandbox,""
+  Embed-System-Settings,2 - Development,"https://payroll-dev.example.com"
+  Embed-System-Settings,3 - Quality assurance,""
+  Embed-System-Settings,4 - Staging,""
+  Embed-System-Settings,5 - Production,""
+pySettingMetaData:
+  pxObjClass: Embed-SettingMetaData

@@ -18,7 +18,7 @@ const to = (id, confidence = 'sure') => digests[id].references.filter((r) => r.c
 
 for (const r of raws) {
   test(`${r.id}: expected digest`, () => {
-    const file = join(DIGEST, r.type, r.class, `${r.name}.md`);
+    const file = join(DIGEST, r.type, r.folder, `${r.name}.md`);
     const d = digests[r.id];
     if (process.env.UPDATE_DIGESTS) {
       mkdirSync(dirname(file), { recursive: true });
@@ -157,4 +157,15 @@ test('body and references too long: cut, with the command to see the rest', () =
   assert.ok(lines.length <= MAX_LINES);
   assert.ok(lines.some((l) => /^… \d+ more lines: pega-ctx rule DataTransform:A-B:Long --raw$/.test(l)));
   assert.ok(lines.includes('… 120 more: pega-ctx around DataTransform:A-B:Long --depth 1'));
+});
+
+test('AITool: the activity it runs; ConnectREST: the property filled by the response', () => {
+  assert.deepEqual(to('AITool:MONORG-Test-Work:PegaCtxFxAITool'), ['Activity:MONORG-Test-Work:MyActivity']);
+  assert.match(digests['ConnectREST:MONORG-Test-Work:PegaCtxFxConnect'].markdown, /### GET\n- request headers Accept=application\/json\n- response data Response Message→\.pyResponseData/);
+});
+
+test('a rule with no class (EditValidate): empty class, its folder is _, the code is kept', () => {
+  const d = digests['EditValidate::PegaCtxFxEditValidate'];
+  assert.equal(d.class, '');
+  assert.match(d.markdown, /```java\nif \(!"true"\.equalsIgnoreCase\(theValue\)\)/);
 });

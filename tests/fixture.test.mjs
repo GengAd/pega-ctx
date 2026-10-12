@@ -13,7 +13,7 @@ for (const r of raws) {
   test(`${r.id}: decoded and stored at its identifier`, () => {
     const o = decodeToon(read(r));
     assert.equal(o.pxObjClass, TYPES[r.type]);
-    assert.equal(o.pyClassName, r.class);
+    assert.equal(o.pyClassName ?? '', r.class);
     assert.equal(o.pyRuleName, r.name);
   });
 

@@ -1,0 +1,39 @@
+pxObjClass: Rule-AI-Agent
+pxUpdateOperator: dev.un
+pyAgentVersion: 1.0.0
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work
+pyDescription: PegaCtxFxAIAgent
+pyDisplayMode: basic
+pyEnableExternalAccess: "false"
+pyLabel: PegaCtxFxAIAgent
+pyPurpose: PegaCtxFxAIAgent
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxAIAgent
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pzChecksum: "1133968941"
+pzInsKey: RULE-AI-AGENT MONORG-TEST-WORK PEGACTXFXAIAGENT #20261012T091127.601 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyGenAIConfig:
+  pxObjClass: Embed-GenAI-Config
+  pyModelConfiguration:
+    pxObjClass: Embed-GenAI-Model
+    pyModelId: pega-default-smart
+    pyModelName: Pega-Default-Smart(Claude-Sonnet-45)
+    pyProvider: bedrock
+    pyModelDeprecationInfo:
+      pxObjClass: Embed-GenAI-Model-Deprecation
+pyGenAIDef:
+  pxObjClass: Embed-GenAI-Definition
+  pySystemPrompt: You are a helpful AI assistant.
+pzActionTools[0]:
+pzAgentTools[0]:
+pzCaseTypeTools[0]:
+pzExternalAgents[0]:
+pzKnowledgeTools[0]:
+pzMCPClients[0]:

@@ -1,0 +1,23 @@
+pxObjClass: Rule-CorrType
+pxUpdateOperator: dev.un
+pyAddressClass: Data-Address-Email
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work
+pyCorrClass: Data-Corr-Email
+pyCorrType: PegaCtxFxCorrType
+pyLabel: PegaCtxFxCorrType
+pyMethodStatus: ""
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxCorrType
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pyWorkClass: MONORG-Test-Work
+pzChecksum: "1247294227"
+pzInsKey: RULE-CORRTYPE PEGACTXFXCORRTYPE #20261012T091132.314 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:

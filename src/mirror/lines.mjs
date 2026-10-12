@@ -6,10 +6,11 @@ export const versionDescending = (a, b) => String(b.version ?? '').localeCompare
 export function indexLine(type, versions, o) {
   const top = versions[0] ?? {};
   const rulesets = versions.filter((v) => v.ruleset).map((v) => `${v.ruleset}:${v.version}`);
+  const cls = o.pyClassName ?? ''; // a rule with no class (EditValidate) has an empty class
   return {
-    id: `${type}:${o.pyClassName}:${o.pyRuleName}`,
+    id: `${type}:${cls}:${o.pyRuleName}`,
     type,
-    class: o.pyClassName,
+    class: cls,
     name: o.pyRuleName,
     // A class is not versioned: empty pyRuleSetVersion, the ruleset alone.
     rulesets: rulesets.length ? rulesets : [o.pyRuleSetVersion ? `${o.pyRuleSet}:${o.pyRuleSetVersion}` : o.pyRuleSet],

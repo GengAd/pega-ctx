@@ -1,0 +1,23 @@
+pxObjClass: Rule-Edit-Validate
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyJavaClassName: Rule_Edit_Validate_PegaCtxFxEditValidate_Validate_20261012T091133_770_GMT
+pyJavaCode: "if (!\"true\".equalsIgnoreCase(theValue)) {\n\ttheProperty.addMessage(\"This field must be true.\");\n\treturn false;\n}\nreturn true;"
+pyJavaStream: ""
+pyLabel: PegaCtxFxEditValidate
+pyMethodStatus: ""
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxEditValidate
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValidateName: PegaCtxFxEditValidate
+pyValueChanged: "false"
+pyWorkClass: MONORG-Test-Work
+pzChecksum: "1072906999"
+pzInsKey: RULE-EDIT-VALIDATE PEGACTXFXEDITVALIDATE #20261012T091133.770 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:

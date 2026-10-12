@@ -1,0 +1,35 @@
+pxObjClass: Rule-AI-Tool
+pxUpdateOperator: dev.un
+pyAskConfirmation: "false"
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work
+pyDisplayMode: basic
+pyIntentDescription: This tool performs a simple action based on user input.
+pyLabel: PegaCtxFxAITool
+pyPurpose: PegaCtxFxAITool
+pyRetentionPolicy: ALWAYS_RETAIN
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxAITool
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pySortDateCircumWithinRSMajor: "true"
+pyValueChanged: "false"
+pzChecksum: "-973166215"
+pzInsKey: RULE-AI-TOOL MONORG-TEST-WORK PEGACTXFXAITOOL #20261012T091129.117 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyGenAIDef:
+  pxObjClass: Embed-GenAI-Definition
+  pyExamples[1]{pxObjClass,pyExample}:
+    Embed-GenAI-Assistant-Example,Perform a simple action
+pyIntentActionPage:
+  pxObjClass: Embed-AI-Tool-Action
+  pyBuddyType: Internal
+  pyCategory: Rule-Obj-Activity
+  pyClassName: MONORG-Test-Work
+  pyRuleName: MyActivity
+  pyParameters[0]:

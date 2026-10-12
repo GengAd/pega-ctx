@@ -25,7 +25,7 @@ export function rulesetsSeen(index) {
       const s = seen.get(name) ?? { name, version: '', rules: 0, classes: new Set() };
       s.version = higher(s.version, versionOf(rs));
       s.rules += 1;
-      s.classes.add(r.class);
+      if (r.class) s.classes.add(r.class); // a rule with no class (EditValidate) has none to list
       seen.set(name, s);
     }
   }

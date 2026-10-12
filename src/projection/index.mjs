@@ -4,6 +4,16 @@
 import { decodeToon } from '../mcp/toon.mjs';
 import { typeOfRaw, ruleId, filled } from './common.mjs';
 import { probableReferences } from './generic.mjs';
+import * as adminsystemsettings from './adminsystemsettings.mjs';
+import * as aiagent from './aiagent.mjs';
+import * as aitool from './aitool.mjs';
+import * as connectrest from './connectrest.mjs';
+import * as correspondence from './correspondence.mjs';
+import * as correspondencetype from './correspondencetype.mjs';
+import * as editvalidate from './editvalidate.mjs';
+import * as fieldvalue from './fieldvalue.mjs';
+import * as notification from './notification.mjs';
+import * as servicelevel from './servicelevel.mjs';
 import * as activity from './activity.mjs';
 import * as casetype from './casetype.mjs';
 import * as cls from './class.mjs';
@@ -20,6 +30,16 @@ import * as view from './view.mjs';
 import * as when from './when.mjs';
 
 export const PROJECTIONS = {
+  AdminSystemSettings: adminsystemsettings,
+  AIAgent: aiagent,
+  AITool: aitool,
+  ConnectREST: connectrest,
+  Correspondence: correspondence,
+  CorrespondenceType: correspondencetype,
+  EditValidate: editvalidate,
+  FieldValue: fieldvalue,
+  Notification: notification,
+  ServiceLevel: servicelevel,
   Activity: activity,
   CaseType: casetype,
   Class: cls,
@@ -50,7 +70,7 @@ export function project(toon, { line = {}, index = [], otherVersions = [], resol
   const o = typeof toon === 'string' ? decodeToon(toon) : toon;
   const type = typeOfRaw(o) ?? line.type;
   if (!type) throw new Error(`not a Pega rule (pxObjClass: ${o.pxObjClass ?? 'missing'}): the raw content is damaged, run pega-ctx live on it`);
-  const ruleClass = o.pyClassName;
+  const ruleClass = o.pyClassName ?? ''; // a rule with no class (EditValidate) has none
   const name = o.pyRuleName ?? line.name;
   const id = ruleId(type, ruleClass, name);
 

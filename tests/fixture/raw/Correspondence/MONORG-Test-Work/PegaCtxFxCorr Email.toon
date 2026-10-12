@@ -1,0 +1,47 @@
+pxObjClass: Rule-Obj-Corr
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work
+pyCompact: "false"
+pyCorrType: Email
+pyEmailViewMode: basic
+pyFormPrintMethod: ""
+pyFormSizeHoriz: "60"
+pyFormSizeVert: "80"
+pyHTMLPrompt: ""
+pyJavaClassName: Rule_Obj_Corr_MONORG_Test_Work_PegaCtxFxCorr_Email_Stream_20261012T091136_567_GMT
+pyJavaStream: ""
+pyLabel: PegaCtxFxCorr
+pyMethodStatus: ""
+pyNextAction: Send
+pyPromptValidate: ""
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxCorr Email
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyShowDescription: "false"
+pyShowSectionPreview: "false"
+pySourceOnlyMode: "false"
+pySourceStream: ""
+pyStreamName: PegaCtxFxCorr
+pyTopLevelCorr: "false"
+pyUserEdit: NoEdit
+pyValueChanged: "false"
+pyVerifyCorr: "false"
+pyWordTemplate: ""
+pyXMLSignature: <methodSignature><pyStepsPageAliases></pyStepsPageAliases></methodSignature>
+pzChecksum: "701198046"
+pzCorrTypeClass: Data-Corr-Email
+pzErrorMessage: ""
+pzHasModeLiteral: "false"
+pzIndexCount: "1"
+pzInsKey: RULE-OBJ-CORR MONORG-TEST-WORK PEGACTXFXCORR!EMAIL #20261012T091136.567 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyPagesAndClasses[0]:

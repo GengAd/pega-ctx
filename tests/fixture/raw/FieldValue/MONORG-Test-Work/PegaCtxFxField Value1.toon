@@ -1,0 +1,27 @@
+pxObjClass: Rule-Obj-FieldValue
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work
+pyDisplayMode: basic
+pyFieldName: PegaCtxFxField
+pyFieldValue: Value1
+pyLabel: PegaCtxFxField Value1
+pyLocalizedValue: This is the displayed text content
+pyMethodStatus: ""
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxField Value1
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pySortDateCircumWithinRSMajor: "true"
+pyValueChanged: "false"
+pzChecksum: "1817488046"
+pzInsKey: RULE-OBJ-FIELDVALUE MONORG-TEST-WORK PEGACTXFXFIELD!VALUE1 #20261012T091138.115 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pzUCShortInsId: VALUE1
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:

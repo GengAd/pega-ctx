@@ -25,6 +25,12 @@
    "confidence": "probable"
   },
   {
+   "from": "AITool:MONORG-Test-Work:PegaCtxFxAITool",
+   "to": "Activity:MONORG-Test-Work:MyActivity",
+   "via": "tool action",
+   "confidence": "sure"
+  },
+  {
    "from": "CaseType:MONORG-Test-Work-GetInfo:pyDefault",
    "to": "Flow:MONORG-Test-Work-GetInfo:GetInfoStart",
    "via": "process",
