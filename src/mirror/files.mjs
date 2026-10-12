@@ -79,20 +79,25 @@ export function mirror(root = process.cwd()) {
     // Drafts of create / update (src/mirror/draft.mjs), one JSON file per rule.
     draftFile: (id) => fileOf(p.drafts, id, '.json'),
     writeRuleDraft: (id, text) => write(fileOf(p.drafts, id, '.json'), text),
-    removeRuleDraft: (id) => rmSync(fileOf(p.drafts, id, '.json'), { force: true }),
+    // Its digest to read, next to it: what the draft will write, without the fields of the template.
+    writeRuleDraftDigest: (id, md) => write(fileOf(p.drafts, id, '.md'), md),
+    removeRuleDraft: (id) => {
+      rmSync(fileOf(p.drafts, id, '.json'), { force: true });
+      rmSync(fileOf(p.drafts, id, '.md'), { force: true });
+    },
 
     // Identifiers present in raw/ or digest/, from the folder tree.
     ids(layer) {
       const folder = p[layer];
       if (!existsSync(folder)) return [];
-      const ids = [];
+      const ids = new Set();
       for (const type of readdirSync(folder)) {
         if (!statSync(join(folder, type)).isDirectory()) continue;
         for (const cls of readdirSync(join(folder, type))) {
-          for (const f of readdirSync(join(folder, type, cls))) ids.push(`${type}:${cls === NO_CLASS ? '' : cls}:${f.replace(/\.(toon|md|json)$/, '')}`);
+          for (const f of readdirSync(join(folder, type, cls))) ids.add(`${type}:${cls === NO_CLASS ? '' : cls}:${f.replace(/\.(toon|md|json)$/, '')}`);
         }
       }
-      return ids;
+      return [...ids];
     },
   };
 }

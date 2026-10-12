@@ -59,7 +59,7 @@ export async function run({ positionals, options, root, connect, schemas }) {
       if (options['dry-run']) return render(options, { id: before.id, patch, digest, findings }, `${note}dry-run: nothing is written to Pega\n\n${digest.trimEnd()}\n\n${findingsText(findings)}`);
       const draft = { operation: 'update', id: before.id, type, ruleClass: TYPES[type], key: before.key, basedOn: fingerprint(m.readRaw(before.id)), reason, ...(typeof options.branch === 'string' ? { branch } : {}) };
       if (manual) Object.assign(draft, manualHeader(draft));
-      const file = writeDraft(m, schemas, draft, patch);
+      const file = writeDraft(m, schemas, draft, patch, digest);
       const written = manual ? manualNote(relative(root, file), type) : draftNote(root, file, before.id);
       return render(options, { draft: file, header: draft, content: patch, digest, findings }, `${note}${written}\n\n${digest.trimEnd()}\n\n${draftFindingsText(file, findings)}`);
     }

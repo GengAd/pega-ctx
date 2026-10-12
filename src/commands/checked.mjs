@@ -28,12 +28,14 @@ export function lintOf(schemas, { operation, type, content, base }) {
   return lint({ operation, ruleClass: TYPES[type], content, base, schema, missing });
 }
 
-// Writes the draft, with the editor's schema next to it when there is one; returns its file.
-export function writeDraft(m, schemas, header, content) {
+// Writes the draft, with the editor's schema next to it when there is one, and its digest as a
+// .md file (what the draft writes, to read instead of the template's fields); returns its file.
+export function writeDraft(m, schemas, header, content, digest) {
   const draftFile = m.draftFile(header.id);
   const { schema, file } = loaded(schemas, header.type);
   const schemaPath = schema ? editorSchema(m, { operation: header.operation, schema, file, draftFile }) : undefined;
   m.writeRuleDraft(header.id, draftText(header, content, { schema: schemaPath }));
+  if (digest) m.writeRuleDraftDigest(header.id, `<!-- as written; after your corrections to the .json: pega-ctx send ${header.id} --dry-run -->\n${digest.trimEnd()}\n`);
   return draftFile;
 }
 

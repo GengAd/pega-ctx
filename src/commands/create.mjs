@@ -53,7 +53,7 @@ export function checkFields(o, file, what, { strict = true, keep } = {}) {
 
 // What a draft says next to its path: where it is, how to send it.
 export function draftNote(root, file, id) {
-  return `draft written: ${relative(root, file)}\nread it, correct it if needed, then: pega-ctx send ${id} --branch <ID>`;
+  return `draft written: ${relative(root, file)} (to read: ${relative(root, file).replace(/\.json$/, '.md')})\nread the .md, correct the .json if needed, then: pega-ctx send ${id} --branch <ID>`;
 }
 
 // create-rule, then live on the new rule. Shared by create and send.
@@ -166,7 +166,7 @@ export async function run({ positionals, options, root, connect, schemas, exampl
     }
     const draft = { operation: 'create', id, type, ruleClass: TYPES[type], ruleset, write: `${write.ruleset} (${write.source})`, from, reason, ...(typeof options.branch === 'string' ? { branch } : {}) };
     if (manual) Object.assign(draft, manualHeader({ ...draft, cls, name, changed: changedPaths(withoutPersistence(template, true, keep), content) }));
-    const file = writeDraft(m, schemas, draft, content);
+    const file = writeDraft(m, schemas, draft, content, digest);
     const note = manual ? manualNote(relative(root, file), type) : draftNote(root, file, id);
     return render(options, { draft: file, header: draft, content, digest, findings }, `${note}\nruleset: ${write.ruleset} (${write.source})\n\n${digest.trimEnd()}\n\n${draftFindingsText(file, findings)}${exampleNotes}`);
   }

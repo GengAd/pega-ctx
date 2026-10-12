@@ -42,9 +42,11 @@ test('create --draft: the file in .pega/drafts/, nothing sent; check lists it; s
   assert.equal(r.code, 0, r.output);
   const id = `View:${W}:Confirmation`;
   const file = m.draftFile(id);
-  assert.match(r.output, new RegExp(`^draft written: \\.pega/drafts/View/${W}/Confirmation\\.json\\nread it, correct it if needed, then: pega-ctx send ${id} --branch <ID>\\nruleset: Test:01-01-01 `));
+  assert.match(r.output, new RegExp(`^draft written: \\.pega/drafts/View/${W}/Confirmation\\.json \\(to read: \\.pega/drafts/View/${W}/Confirmation\\.md\\)\\nread the \\.md, correct the \\.json if needed, then: pega-ctx send ${id} --branch <ID>\\nruleset: Test:01-01-01 `));
   assert.match(r.output, /\n# View Confirmation\n/);
   assert.deepEqual(pega.calls, [], 'nothing sent to Pega');
+  const digestFile = file.replace(/\.json$/, '.md');
+  assert.match(readFileSync(digestFile, 'utf8'), /^<!-- .*send .* --dry-run.* -->\n# View Confirmation\n/, 'the digest to read, next to the draft');
   const draft = JSON.parse(readFileSync(file, 'utf8'));
   assert.equal(draft['pega-ctx'].operation, 'create');
   assert.equal(draft['pega-ctx'].from, VIEW);
@@ -73,6 +75,7 @@ test('create --draft: the file in .pega/drafts/, nothing sent; check lists it; s
   assert.equal(request.ruleset, 'Test');
   assert.match(request.description, /^pega-ctx create Confirmation from CollectHouseholdSize$/);
   assert.ok(!existsSync(file), 'the draft is deleted once sent');
+  assert.ok(!existsSync(digestFile), 'and its digest');
   assert.match((await pc(`send ${id} --branch US42`)).output, /^no draft View:/);
 });
 
