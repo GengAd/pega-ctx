@@ -1,0 +1,45 @@
+pxObjClass: Rule-Connect-GenerativeAI
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work
+pyCustomizeSystemPrompt: "false"
+pyDescription: PegaCtxFxGenAI
+pyDisplayMode: clone
+pyExpectedResponseEntity: Custom
+pyLabel: PegaCtxFxGenAI
+pyPromptName: pyGenerativeAIPromptTemplate
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxGenAI
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyServiceName: PegaCtxFxGenAI
+pySystemPromptName: pzDefaultSystemPrompt
+pyValueChanged: "false"
+pyVersionNumber: v2
+pzChecksum: "1608505202"
+pzIndexCount: "2"
+pzInsKey: RULE-CONNECT-GENERATIVEAI MONORG-TEST-WORK PEGACTXFXGENAI #20261012T213832.116 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyGenAIConfig:
+  pxObjClass: Embed-GenAI-Config
+  pyModelConfiguration:
+    pxObjClass: Embed-GenAI-Model
+    pyModelId: pega-default-smart
+    pyModelName: Pega-Default-Smart(Claude-Sonnet-45)
+    pyProvider: bedrock
+    pyModelDeprecationInfo:
+      pxObjClass: Embed-GenAI-Model-Deprecation
+    pyModelParameters[1]{pxObjClass}:
+      Embed-GenAI-Model-Parameters
+pyGenAIDef:
+  pxObjClass: Embed-GenAI-Definition
+  pySystemPrompt: pzDefaultSystemPrompt
+  pyUseCase: custom
+  pyUserPrompt: pyGenerativeAIPromptTemplate
+pyResponseFields[1]{pxObjClass,pyFieldName}:
+  Embed-Fields,.pyResponseData

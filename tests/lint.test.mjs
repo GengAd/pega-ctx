@@ -196,6 +196,7 @@ test('real schemas: each fixture template, prepared by create and its types fitt
   const known = {
     DataPage: ['/pyDataSourceList/0: ReportDefinition source requires pyLoadReportDefinition, pyReportDefinitionClass, and pyPassCurrentParamPageForActivity'],
     ReportDefinition: ['/pyContent/ValidationMap', '/pyContent/pySource/pyReportDBType', '/pyUI/pyReportingDbDropdown'],
+    ConnectGenerativeAI: ['/pyGenAIConfig/pyModelConfiguration/pyModelParameters/0: missing field pyName', '/pyGenAIConfig/pyModelConfiguration/pyModelParameters/0: missing field pyType', '/pyGenAIConfig/pyModelConfiguration/pyModelParameters/0: missing field pyValue'],
   };
   for (const r of raws.filter((x) => writable(x.type))) {
     const { schema } = real(r.type);

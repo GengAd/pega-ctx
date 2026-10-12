@@ -10,6 +10,7 @@ import * as aitool from './aitool.mjs';
 import * as asyncqueueprocessor from './asyncqueueprocessor.mjs';
 import * as attachmentcategory from './attachmentcategory.mjs';
 import * as classmetadata from './classmetadata.mjs';
+import * as connectgenerativeai from './connectgenerativeai.mjs';
 import * as connectrest from './connectrest.mjs';
 import * as decisiondataset from './decisiondataset.mjs';
 import * as correspondence from './correspondence.mjs';
@@ -41,6 +42,7 @@ export const PROJECTIONS = {
   AsyncQueueProcessor: asyncqueueprocessor,
   AttachmentCategory: attachmentcategory,
   ClassMetadata: classmetadata,
+  ConnectGenerativeAI: connectgenerativeai,
   ConnectREST: connectrest,
   DecisionDataSet: decisiondataset,
   Correspondence: correspondence,
