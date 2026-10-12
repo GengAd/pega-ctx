@@ -1,6 +1,7 @@
 # CaseType pyDefault
 class: MONORG-Test-Work-GetInfo
 rulesets: Test:01-01-01
+application: unknown (ruleset outside the stack read)
 description: GetInfo
 updated: unknown date, by dev.un
 available: yes

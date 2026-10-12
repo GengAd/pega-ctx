@@ -1,6 +1,7 @@
 # AsyncQueueProcessor PegaCtxFxQueueProc
 class: MONORG-Test-Work-GetInfo
 rulesets: Test:01-01-01
+application: unknown (ruleset outside the stack read)
 description: PegaCtxFxQueueProc
 updated: 2026-10-12 by dev.un
 available: unknown

@@ -6,6 +6,7 @@ import { project } from '../projection/index.mjs';
 import { indexLine, versionDescending } from './lines.mjs';
 import { resolver, build } from './graph.mjs';
 import { citedBy } from './rebuild.mjs';
+import { rulesetOwners, withApplication } from './stack.mjs';
 
 // Returns { id, key, digest, state: 'same' | 'different' | 'new' } or throws if Pega does not know it.
 export async function refresh(m, pega, { type, class: cls, name }) {
@@ -16,7 +17,7 @@ export async function refresh(m, pega, { type, class: cls, name }) {
   if (!versions.length) throw new Error(`${type}:${cls}:${name} not found in Pega: check the name with pega-ctx search, or the branch if it was just created`);
   const toon = await pega.read(versions[0].key);
   const o = decodeToon(toon);
-  const line = indexLine(type, versions, o);
+  const line = withApplication(indexLine(type, versions, o), rulesetOwners(m.readStackData(), m.readStack()));
 
   const index = m.readIndex().filter((l) => l.id !== line.id);
   const resolve = resolver([...index, line]);

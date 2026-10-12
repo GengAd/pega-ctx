@@ -82,12 +82,13 @@ Greppable by `type`, `class`, `name`, `description`. That is the reason for JSON
 
 ### A digest
 
-Markdown, a hundred lines at most. At the top, always the same six lines:
+Markdown, a hundred lines at most. At the top, always the same seven lines:
 
 ```
 # Section Entry
 class: MyOrg-Claims-Work-Claim
 rulesets: Claims:02-03-01 (also: Claims:02-02-05)
+application: Claims
 description: Initial entry form
 updated: 2026-10-08 by jdoe
 available: yes
@@ -144,7 +145,7 @@ General rule: keep what a developer would look at in Dev Studio to understand th
 
 **Generic detection by name.** On top of the structured fields, any string of the raw rule equal to the `Name` of an index rule, on the same class or a parent class, yields a `probable` edge. It catches what a type's projection does not know yet. `probable` edges are shown with a `?` in the digests.
 
-A type without projection is not an error: the digest is then the six header lines, the description, and `## References` from generic detection only, with the line `body: type without projection, see docs/projection.md`.
+A type without projection is not an error: the digest is then the seven header lines, the description, and `## References` from generic detection only, with the line `body: type without projection, see docs/projection.md`.
 
 ## The commands
 

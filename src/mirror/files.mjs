@@ -1,4 +1,4 @@
-// Reading and writing .pega/: config.json, stack.md, index.jsonl, graph.json, write.draft.json, digest/, raw/, drafts/.
+// Reading and writing .pega/: config.json, stack.md, stack.json, index.jsonl, graph.json, write.draft.json, digest/, raw/, drafts/.
 // An identifier Type:Class:Name is stored as <Type>/<Class>/<Name>.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -11,6 +11,7 @@ export function paths(root = process.cwd()) {
     base,
     config: join(base, 'config.json'),
     stack: join(base, 'stack.md'),
+    stackData: join(base, 'stack.json'),
     index: join(base, 'index.jsonl'),
     graph: join(base, 'graph.json'),
     writeDraft: join(base, 'write.draft.json'),
@@ -58,6 +59,9 @@ export function mirror(root = process.cwd()) {
 
     readStack: () => readIfExists(p.stack),
     writeStack: (text) => write(p.stack, text),
+    // The result of stack() at the last sync: the applications and their rulesets (src/mirror/stack.mjs).
+    readStackData: () => JSON.parse(readIfExists(p.stackData) ?? 'null'),
+    writeStackData: (stack) => write(p.stackData, `${JSON.stringify(stack, null, 1)}\n`),
 
     readIndex() {
       const text = readIfExists(p.index);

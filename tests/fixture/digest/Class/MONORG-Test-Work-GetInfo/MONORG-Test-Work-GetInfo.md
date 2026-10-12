@@ -1,6 +1,7 @@
 # Class MONORG-Test-Work-GetInfo
 class: MONORG-Test-Work-GetInfo
 rulesets: Test
+application: unknown (ruleset outside the stack read)
 description: GetInfo
 updated: unknown date, by dev.un
 available: yes

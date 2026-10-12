@@ -123,15 +123,57 @@ test('sync without a mirror: says to run init', async () => {
   assert.match(r.output, /pega-ctx init/);
 });
 
-test('search: every word, case-insensitive, --type, line id — description — rulesets', async () => {
+test('search: every word, case-insensitive, --type, --app, line [App] id — description — rulesets', async () => {
   const { pc } = await fixtureMirror();
   const r = await pc('search FOYER composition');
   assert.deepEqual(r.output.split('\n'), [
-    `FlowAction:${W}:CollectHouseholdSize — Composition du foyer — Test:01-01-01`,
-    `View:${W}:CollectHouseholdSize — Composition du foyer — Test:01-01-01`,
+    `[Test] FlowAction:${W}:CollectHouseholdSize — Composition du foyer — Test:01-01-01`,
+    `[Test] View:${W}:CollectHouseholdSize — Composition du foyer — Test:01-01-01`,
   ]);
-  assert.deepEqual((await pc('search foyer --type View')).output.split('\n').map((l) => l.split(' — ')[0].split(':')[0]), ['View', 'View']);
+  assert.deepEqual((await pc('search foyer --type View')).output.split('\n').map((l) => l.split(' — ')[0].split(' ')[1].split(':')[0]), ['View', 'View']);
   assert.match((await pc('search nowhere')).output, /^no rule for "nowhere"/);
+  // A ruleset outside the stack read: no tag, and --app leaves it out.
+  assert.match((await pc('search IgnoredRegistrationType')).output, /^DecisionTable:/m);
+  assert.equal((await pc('search IgnoredRegistrationType --app test')).output.split('\n')[0], 'no rule for "IgnoredRegistrationType": try other words, or pega-ctx sync');
+  assert.equal((await pc('search foyer --app Test')).output.split('\n').every((l) => l.startsWith('[Test] ')), true);
+});
+
+test('rule --on: the rules of a name the class reaches, closest class then the stack, without choosing', async () => {
+  const { root, pc } = await fixtureMirror();
+  const m = mirror(root);
+  const P = 'MONORG-Test-Data-People';
+  const rows = [
+    { id: `View:${W}:pyEdit`, type: 'View', class: W, name: 'pyEdit', rulesets: ['Test:01-01-01'], application: 'Test' },
+    { id: 'View:@baseclass:pyEdit', type: 'View', class: '@baseclass', name: 'pyEdit', rulesets: ['Pega-ProcessCommander:08-26'], application: 'PegaRULES' },
+    { id: 'View:MONORG-Test-Work:pyEdit', type: 'View', class: 'MONORG-Test-Work', name: 'pyEdit', rulesets: ['Constellation:01-01'], application: 'Constellation' },
+    { id: `View:${P}:pyEdit`, type: 'View', class: P, name: 'pyEdit', rulesets: ['Test:01-01-01'], application: 'Test' },
+  ];
+  m.writeIndex(rows);
+  const r = await pc(`rule pyEdit --on ${W}`);
+  assert.deepEqual(r.output.split('\n').slice(2), [
+    `1. [Test] View:${W}:pyEdit — Test:01-01-01`,
+    '2. [Constellation] View:MONORG-Test-Work:pyEdit — Constellation:01-01',
+    '3. [PegaRULES] View:@baseclass:pyEdit — Pega-ProcessCommander:08-26',
+  ]);
+  assert.match((await pc(`rule Flow:pyEdit --on ${W}`)).output, /\nnone: no rule Flow:pyEdit on /);
+  assert.equal((await pc(`rule View:${W}:pyEdit --on ${W}`)).code, 1);
+});
+
+test('overrides: what the current application masks in a lower layer, same class or parent class', async () => {
+  const { root, pc } = await fixtureMirror();
+  const m = mirror(root);
+  m.writeIndex([
+    { id: `View:${W}:pyEdit`, type: 'View', class: W, name: 'pyEdit', rulesets: ['Test:01-01-01'], application: 'Test' },
+    { id: 'View:@baseclass:pyEdit', type: 'View', class: '@baseclass', name: 'pyEdit', rulesets: ['Pega-ProcessCommander:08-26'], application: 'PegaRULES' },
+    { id: 'When:Work-:pyIsNew', type: 'When', class: 'Work-', name: 'pyIsNew', rulesets: ['Test:01-01-01', 'Constellation:01-01'], application: 'Test' },
+    { id: `Flow:${W}:pyEdit`, type: 'Flow', class: W, name: 'pyEdit', rulesets: ['Test:01-01-01'], application: 'Test' },
+  ]);
+  assert.deepEqual((await pc('overrides')).output.split('\n').slice(2), [
+    `- View:${W}:pyEdit masks [PegaRULES] View:@baseclass:pyEdit`,
+    '- When:Work-:pyIsNew masks its own version in [Constellation] Constellation:01-01',
+  ]);
+  m.writeIndex([]);
+  assert.match((await pc('overrides')).output, /\nnone in the mirror$/);
 });
 
 test('rule: digest by identifier or by bare name, --raw, --cited-by, ambiguous name', async () => {
@@ -197,7 +239,9 @@ test('stack: stack.md with the rulesets seen, --for adds the inheritance and whe
   assert.equal((await pc('sync')).code, 0);
   const kept = (await pc('stack')).output;
   assert.match(kept, /\n## Built on \(manual\)\n- Gameboard 01\.01\.01: Gameboard:01-01, Cvent:01-01\n\n## Rulesets seen/);
-  assert.match(kept, /\n- Cvent:01-01-05, Gameboard \(manual\): 2 rules/);
+  assert.match(kept, /\n- Cvent:01-01-05, Gameboard: 2 rules/);
+  // The index takes the application from the manual section too.
+  assert.equal(mirror(root).readIndex().find((r) => r.name === 'IgnoredRegistrationType').application, 'Gameboard');
   // A class with rules in the mirror: its siblings say where to write.
   assert.match((await pc(`stack --for ${W}`)).output, new RegExp(`\nwrite to: Test:01-01-01 \\(sibling rules of ${W}\\)$`));
   // A new class without a table: unknown, ask.

@@ -24,13 +24,20 @@ What `src/mirror/` and the commands add to, or specify beyond, the specification
 
 ## Index line
 
-The specification's one, plus `by` (operator of the last update, for the digest header). `updated` is absent for a CaseType: `list()` does not give it.
+The specification's one, plus `by` (operator of the last update, for the digest header) and `application`: the application of the highest version's ruleset (a branch ruleset counts as its base), from `.pega/stack.json` then the manual section of `stack.md`; absent when the ruleset is outside the stack read (a rule read through an alias). `updated` is absent for a CaseType: `list()` does not give it.
 
 ```json
-{"id":"Flow:MONORG-Test-Work-GetInfo:GetInfoStart","type":"Flow","class":"MONORG-Test-Work-GetInfo","name":"GetInfoStart","rulesets":["Test:01-01-01"],"description":"Créer GetInfo et saisir le répondant","updated":"2026-10-08T14:49:31.244Z","by":"dev.un","refs":["FlowAction:MONORG-Test-Work-GetInfo:CollectRequester"]}
+{"id":"Flow:MONORG-Test-Work-GetInfo:GetInfoStart","type":"Flow","class":"MONORG-Test-Work-GetInfo","name":"GetInfoStart","rulesets":["Test:01-01-01"],"description":"Créer GetInfo et saisir le répondant","updated":"2026-10-08T14:49:31.244Z","by":"dev.un","application":"Test","refs":["FlowAction:MONORG-Test-Work-GetInfo:CollectRequester"]}
 ```
 
 `refs`: the targets of all the rule's edges, sure and probable, after resolution. Descriptions are the application's own labels, here in French.
+
+## `.pega/stack.json`
+
+The result of `stack()` at the last `init` or `sync` (the applications, their rulesets in resolution order, their built-on applications), written before the index is rebuilt. With the manual section of `stack.md`, it gives each index line its `application`, `search` its `[App]` tag and `--app`, `rule --on` and `overrides` the order of the layers (`src/mirror/stack.mjs`).
+
+- `rule <[Type:]Name> --on <Class>`: the rules of that name on the class and its parent classes by name, closest class first, then the stack's order; Pega decides among them (decision 4). Inheritance by name only: a parent through directed inheritance (`Work-` for `MyOrg-App-Work-Claim`) is not seen.
+- `overrides`: the rules of the current application that mask a rule of a lower layer: another version of the same index line whose ruleset belongs to a lower application (same class), or a rule of the same type and name on a parent class whose application is lower.
 
 ## Graph
 

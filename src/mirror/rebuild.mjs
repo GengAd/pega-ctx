@@ -2,10 +2,12 @@
 // (it is fast, and avoids a partial state). `## Cited by` is added here, from the graph.
 import { project, PROJECTIONS, MAX_REFERENCES, MAX_LINES } from '../projection/index.mjs';
 import { resolver, build, incoming } from './graph.mjs';
+import { rulesetOwners, withApplication } from './stack.mjs';
 
 // lines: [{ id, type, class, name, rulesets, description, updated, by }], without refs.
 export function rebuild(m, lines) {
-  const index = [...lines].sort((a, b) => a.id.localeCompare(b.id));
+  const owners = rulesetOwners(m.readStackData(), m.readStack());
+  const index = [...lines].map((l) => withApplication(l, owners)).sort((a, b) => a.id.localeCompare(b.id));
   const resolve = resolver(index);
   const projected = [];
   const missing = [];

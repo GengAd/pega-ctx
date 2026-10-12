@@ -13,13 +13,7 @@ const LONG = 12;
 // previous: the stack.md being replaced, whose manual section is kept.
 export function renderStack(s, { index = [], write, previous = '' } = {}) {
   const manual = manualSection(previous);
-  const owners = new Map();
-  const own = (rulesets, application) => {
-    for (const r of rulesets) if (!owners.has(baseRuleset(r))) owners.set(baseRuleset(r), application);
-  };
-  own(s.rulesets, s.application);
-  for (const l of s.layers ?? []) own(l.rulesets, l.application);
-  for (const m of manual.entries) own(m.rulesets, `${m.application} (manual)`);
+  const owners = rulesetOwners(s, previous);
   const unread = (s.layers ?? []).filter((l) => l.error);
   const outside = !s.layers
     ? 'a built-on application (the server does not say which)'
@@ -58,6 +52,32 @@ function resolutionOrder(layers) {
     ...layers.map((l, i) => `${i + 1}. ${l.application} ${l.version}: ${l.error ? `not read (${l.error}): add its rulesets under "${MANUAL}"` : rulesets(l)}`),
     '',
   ];
+}
+
+// Base ruleset → application: the current application's, then each layer the climb read, then the
+// manual section of stack.md. s: stack() as saved in .pega/stack.json (null before the first sync).
+export function rulesetOwners(s, stackText = '') {
+  const owners = new Map();
+  const own = (rulesets, application) => {
+    for (const r of rulesets ?? []) if (!owners.has(baseRuleset(r))) owners.set(baseRuleset(r), application);
+  };
+  if (s) own(s.rulesets, s.application);
+  for (const l of s?.layers ?? []) own(l.rulesets, l.application);
+  for (const m of manualSection(stackText).entries) own(m.rulesets, m.application);
+  return owners;
+}
+
+// Applications from the highest priority to the lowest: the climb's order, then the manual section's.
+export function applicationOrder(s, stackText = '') {
+  const order = [...new Set([s?.application, ...(s?.layers ?? []).map((l) => l.application), ...manualSection(stackText).entries.map((e) => e.application)].filter(Boolean))];
+  return order;
+}
+
+// The index line with the application of its ruleset (the highest version's), when the stack knows it.
+export function withApplication(line, owners) {
+  const { application, ...rest } = line;
+  const owner = owners.get(baseRuleset(line.rulesets?.[0]));
+  return owner ? { ...rest, application: owner } : rest;
 }
 
 // The section the user fills, kept from the previous stack.md: its lines, and the entries read from them.

@@ -1,6 +1,7 @@
 # View EnterHouseholdMembers
 class: MONORG-Test-Work-GetInfo
 rulesets: Test:01-01-01
+application: Test
 description: Saisie des autres membres
 updated: 2026-10-08 by dev.un
 available: yes

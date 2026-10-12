@@ -1,6 +1,7 @@
 # Section IndividualScores
 class: AutreOrg-Gameboard-Data-Player
 rulesets: Gameboard:01-01-17
+application: unknown (ruleset outside the stack read)
 description: Individual scores
 updated: 2026-01-15 by dev.deux
 available: yes

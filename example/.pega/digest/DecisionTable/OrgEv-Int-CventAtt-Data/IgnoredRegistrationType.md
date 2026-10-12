@@ -1,6 +1,7 @@
 # DecisionTable IgnoredRegistrationType
 class: OrgEv-Int-CventAtt-Data
 rulesets: Cvent:01-01-05
+application: unknown (ruleset outside the stack read)
 description: Ignored registration type
 updated: 2025-12-19 by dev.quatre
 available: yes

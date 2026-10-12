@@ -1,6 +1,7 @@
 # View HouseholdMembersPicker
 class: MONORG-Test-Data-People
 rulesets: Test:01-01-01
+application: Test
 description: Membres du foyer
 updated: 2026-10-08 by dev.un
 available: yes

@@ -6,7 +6,7 @@ Per type: what the digest keeps, then the raw list of top-level fields as a full
 
 ## Cross-cutting rules
 
-- **Header**: six lines, always. `updated` comes from the `list()` row (`updated`, `by`); a CaseType has no date in `list()`, the digest writes `unknown date`. `rulesets`: the raw rule's own, the other versions as `(also: …)` when the mirror knows them.
+- **Header**: seven lines, always. `application` comes from the index line (`docs/mirror.md`), `unknown (ruleset outside the stack read)` without one. `updated` comes from the `list()` row (`updated`, `by`); a CaseType has no date in `list()`, the digest writes `unknown date`. `rulesets`: the raw rule's own, the other versions as `(also: …)` when the mirror knows them.
 - **`## Cited by`** is not produced by the projection: it depends on the graph, the mirror adds it when writing `digest/` (step 4). The expected digests of `tests/fixture/digest/` therefore do not have it.
 - **Class of the references**: the class of the context (the rule, the page iterated by a data transform, the `targetObjectClass` of a view list, the `ruleClass` of an included view). pega-ctx does not resolve inheritance: the graph matches a reference to an index rule by name and parent class.
 - **Standard properties** (`px`, `py`, `pz` prefix): never a reference, they are not in the application and would fill `check` with false misses.

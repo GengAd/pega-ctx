@@ -1,6 +1,7 @@
 # FieldValue PegaCtxFxField Value1
 class: MONORG-Test-Work
 rulesets: Test:01-01-01
+application: Test
 description: PegaCtxFxField Value1
 updated: 2026-10-12 by dev.un
 available: yes

@@ -28,11 +28,11 @@ for (const r of raws) {
     assert.equal(d.markdown, readFileSync(file, 'utf8'));
   });
 
-  test(`${r.id}: six-line header, a hundred lines at most, no dropped field`, () => {
+  test(`${r.id}: seven-line header, a hundred lines at most, no dropped field`, () => {
     const { markdown, id } = digests[r.id];
     const lines = markdown.trimEnd().split('\n');
     assert.equal(lines[0], `# ${r.type} ${r.name}`);
-    assert.deepEqual(lines.slice(1, 6).map((l) => l.split(': ')[0]), ['class', 'rulesets', 'description', 'updated', 'available']);
+    assert.deepEqual(lines.slice(1, 7).map((l) => l.split(': ')[0]), ['class', 'rulesets', 'application', 'description', 'updated', 'available']);
     assert.ok(lines.length <= MAX_LINES, `${lines.length} lines`);
     assert.ok(lines.includes('## References'));
     assert.equal(id, r.id);

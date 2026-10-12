@@ -1,0 +1,52 @@
+{
+ "application": "Test",
+ "version": "01.01.01",
+ "rulesets": [
+  "Test"
+ ],
+ "builtOn": [
+  {
+   "application": "Constellation",
+   "version": "01.01"
+  }
+ ],
+ "constellation": true,
+ "layers": [
+  {
+   "application": "Test",
+   "version": "01.01.01",
+   "rulesets": [
+    "Test:01-01",
+    "MONORG:01-01"
+   ],
+   "builtOn": [
+    {
+     "application": "Constellation",
+     "version": "01.01"
+    }
+   ]
+  },
+  {
+   "application": "Constellation",
+   "version": "01.01",
+   "rulesets": [
+    "Constellation:01-01"
+   ],
+   "builtOn": [
+    {
+     "application": "PegaRULES",
+     "version": "8"
+    }
+   ]
+  },
+  {
+   "application": "PegaRULES",
+   "version": "8",
+   "rulesets": [
+    "Pega-ProcessCommander:08-26",
+    "Pega-RULES:08-26"
+   ],
+   "builtOn": []
+  }
+ ]
+}

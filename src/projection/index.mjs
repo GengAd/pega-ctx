@@ -1,5 +1,5 @@
 // digest(raw) → { type, id, class, name, markdown, references }.
-// Six-line header, type-specific body, `## References`. `## Cited by` depends on the graph:
+// Seven-line header, type-specific body, `## References`. `## Cited by` depends on the graph:
 // the mirror adds it when writing the digest (src/mirror/).
 import { decodeToon } from '../mcp/toon.mjs';
 import { typeOfRaw, ruleId, filled } from './common.mjs';
@@ -103,6 +103,7 @@ export function project(toon, { line = {}, index = [], otherVersions = [], resol
     `# ${type} ${name}`,
     `class: ${ruleClass}`,
     `rulesets: ${own}${others.length ? ` (also: ${others.join(', ')})` : ''}`,
+    `application: ${line.application ?? 'unknown (ruleset outside the stack read)'}`,
     `description: ${o.pyLabel ?? line.description ?? ''}`,
     `updated: ${filled(line.updated) ? line.updated.slice(0, 10) : 'unknown date,'} by ${line.by ?? o.pxUpdateOperator ?? 'unknown'}`,
     `available: ${AVAILABLE[o.pyRuleAvailable] ?? o.pyRuleAvailable ?? 'unknown'}`,

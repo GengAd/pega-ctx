@@ -1,6 +1,7 @@
 # Property HouseholdMembers
 class: MONORG-Test-Work-GetInfo
 rulesets: Test:01-01-01
+application: Test
 description: Autres membres du foyer
 updated: 2026-10-08 by dev.un
 available: yes

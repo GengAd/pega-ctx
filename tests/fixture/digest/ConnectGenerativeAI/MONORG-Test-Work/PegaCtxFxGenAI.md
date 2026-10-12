@@ -1,6 +1,7 @@
 # ConnectGenerativeAI PegaCtxFxGenAI
 class: MONORG-Test-Work
 rulesets: Test:01-01-01
+application: unknown (ruleset outside the stack read)
 description: PegaCtxFxGenAI
 updated: 2026-10-12 by dev.un
 available: yes

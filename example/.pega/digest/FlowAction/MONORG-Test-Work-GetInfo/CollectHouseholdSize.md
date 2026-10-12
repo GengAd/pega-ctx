@@ -1,6 +1,7 @@
 # FlowAction CollectHouseholdSize
 class: MONORG-Test-Work-GetInfo
 rulesets: Test:01-01-01
+application: Test
 description: Composition du foyer
 updated: 2026-10-08 by dev.un
 available: yes

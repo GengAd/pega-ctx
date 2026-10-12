@@ -101,6 +101,8 @@ export async function run({ options, root, connect }) {
     }
   }
 
+  // stack.json first: the index lines take their application from it.
+  if (stack) m.writeStackData(stack);
   const { index, withoutProjection, missing } = rebuild(m, [...lines.values()]);
   for (const id of missing) errors.push(`${id}: raw rule missing from raw/, run again with --full`);
   // stack.md lists the rulesets seen in the index; the write table draft is recomputed from it.

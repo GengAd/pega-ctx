@@ -122,8 +122,10 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 |---|---|
 | `init [--ruleset A,B] [--ignore-raw]` | creates `.pega/config.json` and `stack.md` |
 | `sync [--full] [--since <date>] [--ruleset R]` | reads again what changed in Pega, recomputes index, graph and digests |
-| `search <words> [--type T] [--class C]` | grep on the index, name and description |
+| `search <words> [--type T] [--class C] [--app A]` | grep on the index, name and description; each line tagged `[App]` |
 | `rule <id> [--cited-by] [--raw]` | the digest of a rule (`Type:Class:Name`, or its name if unique) |
+| `rule <[Type:]Name> --on <Class>` | the rules of that name the class reaches, in the order Pega looks: closest class, then the stack |
+| `overrides` | the rules of the current application that mask a rule of a lower layer |
 | `around <id> [--depth 2] [--types Flow,View] [--stage S]` | the subgraph, digests from the closest to the farthest; 40 rules at most |
 | `stack [--for <Class>]` | applications and rulesets seen; known inheritance of a class and where its new rules are written |
 | `live <id>` | the rule read in Pega right now, and how it differs from the mirror |
