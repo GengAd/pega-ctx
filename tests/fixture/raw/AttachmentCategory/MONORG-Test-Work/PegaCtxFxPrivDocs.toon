@@ -1,0 +1,27 @@
+pxObjClass: Rule-Obj-AttachmentCategory
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyCategoryName: PegaCtxFxPrivDocs
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work
+pyEnableAttachmentLevelSecurity: "true"
+pyLabel: PegaCtxFxPrivDocs
+pyMethodStatus: ""
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxPrivDocs
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pzChecksum: "-1855439154"
+pzIndexCount: "4"
+pzInsKey: RULE-OBJ-ATTACHMENTCATEGORY MONORG-TEST-WORK PEGACTXFXPRIVDOCS #20261012T213138.142 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyActionPrivilegeList[1]{pxObjClass,pyAllowCreate,pyPrivilegeName}:
+  Embed-Rule-AttachmentSecurity-Privilege,"true",ActionAddAttachments
+pyActionWhensList[0]:

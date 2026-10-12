@@ -107,7 +107,7 @@ export function templateOf({ from, type, index, m, examples }) {
     const e = examples.read(type, name);
     return { template: e.content, from: `example:${name}`, fromName: `example ${name}`, notes: e.notes };
   }
-  const model = findRule(index, from);
+  const model = findRule(index, from, { type });
   if (model.type !== type) return { refused: `--from ${model.id} is a ${model.type}, not a ${type}: pick a sibling rule of the same type, or a server example (pega-ctx examples ${type})` };
   const raw = m.readRaw(model.id);
   if (raw === undefined) return { refused: `raw rule missing for ${model.id}: pega-ctx live ${model.id}` };

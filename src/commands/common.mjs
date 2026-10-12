@@ -1,7 +1,8 @@
 // Shared by the commands: find a rule, render text or JSON.
 
 // Exact `Type:Class:Name`; otherwise `Name` or `Type:Name` if only one rule has that name.
-export function findRule(index, request) {
+// type: the type the caller expects; it settles a name two types share (a Class and its ClassMetadata).
+export function findRule(index, request, { type: expected } = {}) {
   if (!request) throw new Error('missing identifier: give Type:Class:Name (pega-ctx search <words> to find it)');
   const exact = index.find((r) => r.id === request);
   if (exact) return exact;
@@ -12,7 +13,8 @@ export function findRule(index, request) {
     throw new Error(`unknown rule: ${request}. Look it up with pega-ctx search ${name}, or run pega-ctx sync (a rule created outside pega-ctx is only in the mirror afterwards)`);
   }
   const type = parts.length === 2 ? parts[0] : undefined;
-  const candidates = index.filter((r) => r.name === name && (!type || r.type === type));
+  let candidates = index.filter((r) => r.name === name && (!type || r.type === type));
+  if (candidates.length > 1 && expected && candidates.filter((r) => r.type === expected).length === 1) candidates = candidates.filter((r) => r.type === expected);
   if (candidates.length === 1) return candidates[0];
   if (candidates.length > 1) throw new Error(`several rules named ${name}: give the identifier among ${candidates.map((r) => r.id).join(', ')}`);
   throw new Error(`unknown rule: ${request}. Look it up with pega-ctx search ${name}, or run pega-ctx sync`);

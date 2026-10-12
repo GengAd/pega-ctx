@@ -7,6 +7,8 @@ import { probableReferences } from './generic.mjs';
 import * as adminsystemsettings from './adminsystemsettings.mjs';
 import * as aiagent from './aiagent.mjs';
 import * as aitool from './aitool.mjs';
+import * as attachmentcategory from './attachmentcategory.mjs';
+import * as classmetadata from './classmetadata.mjs';
 import * as connectrest from './connectrest.mjs';
 import * as correspondence from './correspondence.mjs';
 import * as correspondencetype from './correspondencetype.mjs';
@@ -14,6 +16,7 @@ import * as editvalidate from './editvalidate.mjs';
 import * as fieldvalue from './fieldvalue.mjs';
 import * as notification from './notification.mjs';
 import * as servicelevel from './servicelevel.mjs';
+import * as servicemcp from './servicemcp.mjs';
 import * as activity from './activity.mjs';
 import * as casetype from './casetype.mjs';
 import * as cls from './class.mjs';
@@ -33,6 +36,8 @@ export const PROJECTIONS = {
   AdminSystemSettings: adminsystemsettings,
   AIAgent: aiagent,
   AITool: aitool,
+  AttachmentCategory: attachmentcategory,
+  ClassMetadata: classmetadata,
   ConnectREST: connectrest,
   Correspondence: correspondence,
   CorrespondenceType: correspondencetype,
@@ -40,6 +45,7 @@ export const PROJECTIONS = {
   FieldValue: fieldvalue,
   Notification: notification,
   ServiceLevel: servicelevel,
+  ServiceMCP: servicemcp,
   Activity: activity,
   CaseType: casetype,
   Class: cls,

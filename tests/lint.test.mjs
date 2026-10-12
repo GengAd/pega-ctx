@@ -199,7 +199,7 @@ test('real schemas: each fixture template, prepared by create and its types fitt
   };
   for (const r of raws.filter((x) => writable(x.type))) {
     const { schema } = real(r.type);
-    const name = r.type === 'CaseType' ? 'pyDefault' : r.type === 'Class' ? r.class : `${r.name}Copy`;
+    const name = r.type === 'CaseType' ? 'pyDefault' : writable(r.type).key[0] === 'pyClassName' ? r.class : `${r.name}Copy`;
     const content = fitTypes(prepareCreation(decodeToon(read(r)), { type: r.type, class: r.class, name, keep: declaredPz(schema) }), schema);
     const errors = validate({ pxObjClass: TYPES[r.type], ...content }, schema).map((e) => `${e.pointer}: ${e.message}`);
     const expected = known[r.type] ?? [];

@@ -1,0 +1,22 @@
+pxObjClass: Rule-ClassMetadata
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyLabel: MONORG-Test-Work-GetInfo
+pyRuleAvailable: Yes
+pyRuleName: MONORG-Test-Work-GetInfo
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pzChecksum: "878899436"
+pzInsKey: RULE-CLASSMETADATA MONORG-TEST-WORK-GETINFO #20261012T213136.367 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyPrimaryFields[5]{pxObjClass,pyPropertyName}:
+  Pega-Fields,pyID
+  Pega-Fields,pyLabel
+  Pega-Fields,pxUrgencyWork
+  Pega-Fields,pyStatusWork
+  Pega-Fields,HouseholdMembers

@@ -13,7 +13,7 @@ import { raws, rowOf, index, read, DIGEST } from './fixture-helpers.mjs';
 
 const digests = Object.fromEntries(raws.map((r) => [r.id, project(read(r), { line: rowOf(r), index })]));
 // Families dropped on principle (docs/projection.md): keys, operators, warnings, generated code, key timestamps.
-const DROPPED = /(?<![.\w])(pzInsKey|pzOriginalInstanceKey|pzChecksum|pzIndex\w*|pzRuleSetVersion\w*|pxWarning\w*|pxCreate\w*|pxUpdate\w*|pyJava\w*|pyXMLSignature|pyTaskStatusXml|pySourceStream)\b|#\d{8}T\d{6}/;
+const DROPPED = /(?<![.\w])(pzInsKey|pzOriginalInstanceKey|pzChecksum|pzIndex\w*|pzRuleSetVersion\w*|pxWarning\w*|pxCreate(?:DateTime|Operator|OpName|SystemID)|pxUpdate\w*|pyJava\w*|pyXMLSignature|pyTaskStatusXml|pySourceStream)\b|#\d{8}T\d{6}/;
 const to = (id, confidence = 'sure') => digests[id].references.filter((r) => r.confidence === confidence).map((r) => r.to);
 
 for (const r of raws) {
@@ -162,6 +162,12 @@ test('body and references too long: cut, with the command to see the rest', () =
 test('AITool: the activity it runs; ConnectREST: the property filled by the response', () => {
   assert.deepEqual(to('AITool:MONORG-Test-Work:PegaCtxFxAITool'), ['Activity:MONORG-Test-Work:MyActivity']);
   assert.match(digests['ConnectREST:MONORG-Test-Work:PegaCtxFxConnect'].markdown, /### GET\n- request headers Accept=application\/json\n- response data Response Message→\.pyResponseData/);
+});
+
+test('ClassMetadata: its primary fields of the application and its list data page; ServiceMCP: its tools', () => {
+  assert.deepEqual(to(`ClassMetadata:${P}:${P}`), [`Property:${P}:Title`, `Property:${P}:Age`, `DataPage:${P}:D_PeopleList`]);
+  assert.deepEqual(to(`ClassMetadata:${W}:${W}`), [`Property:${W}:HouseholdMembers`]);
+  assert.match(digests['ServiceMCP:MONORG-Test-Work:PegaCtxFxAgentMCP'].markdown, /enabled: no\n[^]*## Tools\n- pxGetCaseTypes \(Activity\)\n[^]*- pxInvokeKnowledgeAgent \(Data page\)/);
 });
 
 test('a rule with no class (EditValidate): empty class, its folder is _, the code is kept', () => {

@@ -1,0 +1,28 @@
+pxObjClass: Rule-Service-MCP
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work
+pyDescription: PegaCtxFxAgentMCP
+pyIsMCPServiceEnabled: "false"
+pyLabel: PegaCtxFxAgentMCP
+pyMCPVersion: "01-01-01"
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxAgentMCP
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyServiceName: PegaCtxFxAgentMCP
+pyUsage: Used by /mcp service endpoint for AI agent integration.
+pyValueChanged: "false"
+pzChecksum: "-1661400669"
+pzInsKey: RULE-SERVICE-MCP MONORG-TEST-WORK PEGACTXFXAGENTMCP #20261012T213147.441 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pzCaseTypeTools[0]:
+pzMCPTools[5]{pxObjClass,pyCategory,pyPurpose}:
+  Rule-AI-Tool,Rule-Obj-Activity,pxGetCaseTypes
+  Rule-AI-Tool,Rule-Obj-Activity,pxCreateCaseWithAssignmentDetails
+  Rule-AI-Tool,Rule-Obj-Activity,pxPerformAssignment
+  Rule-AI-Tool,Data page,pxListKnowledgeAgents
+  Rule-AI-Tool,Data page,pxInvokeKnowledgeAgent

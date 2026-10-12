@@ -110,6 +110,7 @@ Other findings:
 - Every write returns the warning "the completed branch summary was not updated".
 - A class-less rule (`EditValidate`) broke `sync` (folder layout and comparison key), fixed in `src/mirror/files.mjs` and `src/commands/sync.mjs`.
 - Not checked: whether `update-rule` and `copy-rule` accept the same type list as `create-rule`.
+- Richer examples (2026-10-12, card 17): `ClassMetadata` `with-primary-fields` and `data-class`, `AttachmentCategory` `work-privilege`, `ServiceMCP` `with-custom-tools` pass `create`. `ServiceMCP` `with-casetype-tools` is refused by Pega: its `pzCaseTypeTools[].pyPurpose` (`pxCreateServiceRequest`) must name an existing `Rule-AI-Tool`. The rows of `pzMCPTools` come back with `pxObjClass` `Rule-AI-Tool`. A `ClassMetadata` created on a class that already has one in the base ruleset passes in the branch.
 - The trial rules stay in the test branch: no MCP tool deletes a rule or a branch.
 
 ### Pega types and classes (`TYPES`)
@@ -162,7 +163,7 @@ Required parameters in bold. All parameters are strings unless stated.
 - `list-cases` — **`objClass`**, `pageNumber`, `pageSize`.
 - `get-case-details` — **`pzInsKey`**.
 - `get-case-assignments` — **`pzInsKey`**.
-- `create-case` — **`caseTypeID`** (the case type's class), `content`. Returns as TOON `caseID` (case key on the pool class: `OCHTID-TEST-WORK G-69001`), `nextAssignmentID` and `nextAssignment` (including `agentView.fields[]`: `name` `.FirstName`, `label`, `type`), then `content` (the case data). Seen on 2026-10-11 on GetInfo.
+- `create-case` — **`caseTypeID`** (the case type's class), `content`. Returns as TOON `caseID` (case key on the pool class: `MONORG-TEST-WORK G-69001`), `nextAssignmentID` and `nextAssignment` (including `agentView.fields[]`: `name` `.FirstName`, `label`, `type`), then `content` (the case data). Seen on 2026-10-11 on GetInfo.
 - `get-assignment` — **`assignmentID`**. Returns the same shape as `nextAssignment`, `agentView.fields[]` included.
 - `perform-action` — **`assignmentID`**, **`actionID`**, `content`, `pageInstructions`.
 - `trigger-optional-process` — **`caseID`**, **`processID`**.

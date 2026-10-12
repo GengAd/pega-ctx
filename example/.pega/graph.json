@@ -45,6 +45,30 @@
    "stage": "Foyer"
   },
   {
+   "from": "ClassMetadata:MONORG-Test-Data-People:MONORG-Test-Data-People",
+   "to": "Property:MONORG-Test-Data-People:Title",
+   "via": "primary field",
+   "confidence": "sure"
+  },
+  {
+   "from": "ClassMetadata:MONORG-Test-Data-People:MONORG-Test-Data-People",
+   "to": "Property:MONORG-Test-Data-People:Age",
+   "via": "primary field",
+   "confidence": "sure"
+  },
+  {
+   "from": "ClassMetadata:MONORG-Test-Data-People:MONORG-Test-Data-People",
+   "to": "DataPage:MONORG-Test-Data-People:D_PeopleList",
+   "via": "list data page",
+   "confidence": "sure"
+  },
+  {
+   "from": "ClassMetadata:MONORG-Test-Work-GetInfo:MONORG-Test-Work-GetInfo",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdMembers",
+   "via": "primary field",
+   "confidence": "sure"
+  },
+  {
    "from": "DataPage:MONORG-Test-Data-People:D_PeopleList",
    "to": "ReportDefinition:MONORG-Test-Data-People:DataTableEditorReport",
    "via": "source",

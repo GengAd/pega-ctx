@@ -16,4 +16,5 @@ structure list, scope thread, refresh never
 - ReportDefinition:MONORG-Test-Data-People:DataTableEditorReport (source)
 
 ## Cited by
+- ClassMetadata:MONORG-Test-Data-People:MONORG-Test-Data-People (list data page)
 - View:MONORG-Test-Data-People:HouseholdMembersPicker (list source)

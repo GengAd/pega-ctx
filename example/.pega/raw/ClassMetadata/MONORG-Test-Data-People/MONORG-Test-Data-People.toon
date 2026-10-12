@@ -1,0 +1,25 @@
+pxObjClass: Rule-ClassMetadata
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Data-People
+pyLabel: MONORG-Test-Data-People
+pyListDataPage: D_PeopleList
+pyRuleAvailable: Yes
+pyRuleName: MONORG-Test-Data-People
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pzChecksum: "537742360"
+pzInsKey: RULE-CLASSMETADATA MONORG-TEST-DATA-PEOPLE #20261012T213231.716 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyDataTypeLocalActions[1]{pxObjClass,pyActionLabel,pyActionName,pyActionType,pyClassName,pyImage}:
+  Embed-Pega-DataTypeAction-UpdateDetails,Edit,pyEdit,UpdateDetails,MONORG-Test-Data-People,pi pi-clipboard-content-icon actionDragDropIcon pi-cd-assignment
+pyListDataPageInfo:
+  pxObjClass: Rule-Declare-Pages
+  pyPageName: D_PeopleList
+pyPrimaryFields[2]{pxObjClass,pyPropertyName}:
+  Pega-Fields,Title
+  Pega-Fields,Age
