@@ -95,6 +95,19 @@ test('sync: rule changed in Pega read again, vanished rule removed from the mirr
   assert.equal(m.readDigest('ReportDefinition:MONORG-Test-Data-People:DataTableEditorReport'), undefined);
 });
 
+test('sync: a rule with no class (list() gives none) is kept by the next sync, not removed and re-added', async () => {
+  const { root, pega, pc } = await fixtureMirror();
+  const key = 'RULE-EDIT-VALIDATE CHECKCOUNT #20261008T144933.915 GMT';
+  pega.rows.push({ key, type: 'EditValidate', name: 'CheckCount', ruleset: 'Test', version: '01-01-01', updated: '2026-10-08T14:49:33.915Z', by: 'dev.un' });
+  pega.raws.set(key, 'pxObjClass: Rule-Edit-Validate\npyClassName: ""\npyRuleName: CheckCount\npyRuleSet: Test\npyRuleSetVersion: "01-01-01"\npzInsKey: RULE-EDIT-VALIDATE CHECKCOUNT #20261008T144933.915 GMT\n');
+  assert.match((await pc('sync')).output, /^1 added, 0 changed, 0 removed[^]*\n\+ EditValidate::CheckCount/);
+  const m = mirror(root);
+  assert.ok(m.readRaw('EditValidate::CheckCount'));
+  const again = await pc('sync');
+  assert.match(again.output, /^0 added, 0 changed, 0 removed/);
+  assert.ok(!again.output.includes('errors:'));
+});
+
 test('sync: a failing list() does not stop the others, its rules stay, the error is listed', async () => {
   const { root } = await fixtureMirror();
   const r = await launch(parse(['sync']), { root, connect: async () => fakePega({ failures: ['Validate'] }) });

@@ -12,7 +12,8 @@ import { render } from './common.mjs';
 
 export const help = 'pega-ctx sync [--since <date>] [--full] [--ruleset <name>]';
 
-const keyOf = (type, cls, name) => `${type}:${cls}:${String(name).toLowerCase()}`;
+// list() gives no class for a rule that has none (Rule-Edit-Validate); the index line says "".
+const keyOf = (type, cls, name) => `${type}:${cls ?? ''}:${String(name).toLowerCase()}`;
 
 export async function run({ options, root, connect }) {
   const m = mirror(root);

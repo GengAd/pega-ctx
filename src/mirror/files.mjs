@@ -26,9 +26,12 @@ export function splitId(id) {
   return { type, class: rest.join(':'), name };
 }
 
+// A rule with no class (Rule-Edit-Validate, Rule-RuleSet-Name…) has an empty class segment: its folder is `_`.
+const NO_CLASS = '_';
+
 function fileOf(folder, id, extension) {
   const { type, class: cls, name } = splitId(id);
-  return join(folder, type, cls, `${name}${extension}`);
+  return join(folder, type, cls || NO_CLASS, `${name}${extension}`);
 }
 
 function write(file, content) {
@@ -86,7 +89,7 @@ export function mirror(root = process.cwd()) {
       for (const type of readdirSync(folder)) {
         if (!statSync(join(folder, type)).isDirectory()) continue;
         for (const cls of readdirSync(join(folder, type))) {
-          for (const f of readdirSync(join(folder, type, cls))) ids.push(`${type}:${cls}:${f.replace(/\.(toon|md|json)$/, '')}`);
+          for (const f of readdirSync(join(folder, type, cls))) ids.push(`${type}:${cls === NO_CLASS ? '' : cls}:${f.replace(/\.(toon|md|json)$/, '')}`);
         }
       }
       return ids;
