@@ -11,4 +11,5 @@
 - The connection is configured in `~/.infinity-rules-mcp/config.json`, outside the repository — never in the project. That file takes precedence over the `/plugin` values.
 - The MCP server does not reload that file live: after a change, reload the plugin (`/reload-plugins`) or restart the session.
 - The server writes `.infinity-rules-mcp/` (OAuth tokens) and `logs/` in its launch folder: ignored by git, never read.
+- The trial rules of card 15 sit in branch `TYPES1` (`PegaCtxTrial*`, class `…-Work-PegaCtxTrial`): no MCP tool deletes a rule or a branch, and creating the same name again fails with "This instance already exists". A new branch is not seen by `list()`, but `get-rule` / `update-rule` work with the `pyRuleInsKey` that `create-rule` returns.
 - Trying pega-ctx on the real server: run `node` from the repository root (the OAuth session is there) and pass a scratchpad folder as `root` to `launch()` (`src/commands/index.mjs`). The real `.pega/` carries non-anonymized names: never in the repository.
