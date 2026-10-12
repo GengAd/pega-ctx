@@ -188,7 +188,7 @@ test('stack: stack.md with the rulesets seen, --for adds the inheritance and whe
   const { root, pc } = await fixtureMirror();
   const stack = (await pc('stack')).output;
   assert.match(stack, /^# Stack\n/);
-  assert.match(stack, /\n## Rulesets seen in the mirror\n- Test:01-01-01, Test: 30 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo\n/);
+  assert.match(stack, /\n## Rulesets seen in the mirror\n- Test:01-01-01, Test: 32 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo\n/);
   assert.match(stack, /\n- Cvent:01-01-05, a built-on application \(the server does not say which\): 2 rules, classes OrgEv-Int-CventAtt-Data\n/);
   // A class with rules in the mirror: its siblings say where to write.
   assert.match((await pc(`stack --for ${W}`)).output, new RegExp(`\nwrite to: Test:01-01-01 \\(sibling rules of ${W}\\)$`));

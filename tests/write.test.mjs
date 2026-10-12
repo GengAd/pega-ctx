@@ -25,7 +25,7 @@ test('a branch ruleset belongs to its base ruleset', () => {
 
 test('rulesets seen in the fixture: three, with their highest version and their classes', () => {
   assert.deepEqual(rulesetsSeen(index).map((s) => [s.name, s.version, s.rules]), [
-    ['Test', '01-01-01', 30],
+    ['Test', '01-01-01', 32],
     ['Cvent', '01-01-05', 2],
     ['Gameboard', '01-01-17', 2],
   ]);
@@ -45,7 +45,7 @@ test('draft: the most general prefix of two segments at least that covers one ru
   const draft = writeDraft(index);
   assert.deepEqual(draft.byClass.map((e) => [e.prefix, e.ruleset, e.rules]), [
     ['AutreOrg-Gameboard-', 'Gameboard:01-01-17', 2],
-    ['MONORG-Test-', 'Test:01-01-01', 29],
+    ['MONORG-Test-', 'Test:01-01-01', 31],
     ['OrgEv-Int-', 'Cvent:01-01-05', 2],
   ]);
   assert.equal(draft.default, null);

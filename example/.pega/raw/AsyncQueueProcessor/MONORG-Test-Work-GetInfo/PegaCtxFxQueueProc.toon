@@ -1,0 +1,34 @@
+pxObjClass: Rule-Async-QueueProcessor
+pxUpdateOperator: dev.un
+pyActivityName: SaveHouseholdPeople
+pyBaseClass: MONORG-Test-Work-GetInfo
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyIsAlertThresholdManuallyEnabled: "false"
+pyIsAutoTuneEnabled: "true"
+pyIsResolvable: "false"
+pyLabel: PegaCtxFxQueueProc
+pyLongRunningInterruptThreshold: "900000"
+pyLongRunningThreshold: "2000"
+pyMaxReadyToProcessStateMessages: "5000"
+pyNodeTypesText: BackgroundProcessing
+pyPurpose: PegaCtxFxQueueProc
+pyRuleName: PegaCtxFxQueueProc
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyValueChanged: "false"
+pyWorkClass: MONORG-Test-Work-GetInfo
+pzChecksum: "1841024397"
+pzIndexCount: "2"
+pzInsKey: RULE-ASYNC-QUEUEPROCESSOR PEGACTXFXQUEUEPROC #20261012T213602.086 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyNodeTypes:
+  BackgroundProcessing:
+    pxObjClass: Embed-Rule-FutureQueue-nodeInfo
+    pxSubscript: BackgroundProcessing
+    pyNodeType: BackgroundProcessing

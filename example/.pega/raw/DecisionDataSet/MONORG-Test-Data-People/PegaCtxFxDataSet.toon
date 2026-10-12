@@ -1,0 +1,36 @@
+pxObjClass: Rule-Decision-DataSet
+pxUpdateOperator: dev.un
+pyBaseRule: "false"
+pyCanTransfer: "true"
+pyCategory: Data-Admin-DataSet-DB
+pyClassName: MONORG-Test-Data-People
+pyJavaClassName: Rule_Decision_DataSet_MONORG_Test_Data_People_PegaCtxFxDataSet_Action_20261012T213633_843_GMT
+pyLabel: PegaCtxFxDataSet
+pyPurpose: PegaCtxFxDataSet
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxDataSet
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyType: Data-Admin-DataSet-DB
+pyTypeLabel: Database Table
+pyValueChanged: "false"
+pyXMLSignature: <methodSignature><pyStepsPageAliases></pyStepsPageAliases></methodSignature>
+pzChecksum: "123053433"
+pzIndexCount: "1"
+pzInsKey: RULE-DECISION-DATASET MONORG-TEST-DATA-PEOPLE PEGACTXFXDATASET #20261012T213633.843 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyConfiguration:
+  pxObjClass: Data-Admin-DataSet-DB
+  pyImplementation: "Pega-DecisionEngine:DBDataSet"
+  pyPartitionKey: .pyGUID
+  pySSLProtocolVersion: TLSv1.2
+  pyTableName: pr_data_customer
+  pyKeys[1]{pxObjClass,pyKey}:
+    Embed-DataSet-KeyValue,.pyGUID
+pyPagesAndClasses[1]{pxObjClass}:
+  Embed-PagesAndClasses

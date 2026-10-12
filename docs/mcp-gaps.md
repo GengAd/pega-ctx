@@ -15,7 +15,7 @@ Plugin `pega-infinity-authoring` 0.1.7, Infinity 26.1. What made the Pega MCP ha
 9. **A warning on every successful write.** `create-rule` and `update-rule` return "the completed branch summary was not updated" even when the write succeeds. pega-ctx shows it to the user as it is. *Ask*: a warning only when something is wrong.
 10. **Errors in the operator's locale.** Schema errors come in French for a French operator (`string trouvé, integer attendu`): a client has to match every language to act on them. pega-ctx matches French and English. *Ask*: structured errors (JSON Pointer, keyword, expected type) next to the sentence.
 11. **A branch can be invisible.** After a branch was deleted then recreated with the same name (MESA1, 2026-10-11), `create-rule` writes to it and `get-rule` reads it by key, but `D_pxListRules`, `list-rules` and `search-rules` return nothing from it, and a rule citing another rule of the branch fails. The branch is in `pyBranchList` of the application rule. No MCP tool adds a branch to an application or tells why it is not listed. *Ask*: a tool that lists the branches of the application and their state.
-12. **Still to check**: whether the server refuses the four stubs of entry 6 (Trello card 15, on the real server).
+12. **Checked on the real server** (Trello card 15, 2026-10-12): it refuses three of the four stubs of entry 6 (ConnectGenerativeAI, TestUnitCase, UITheme) and accepts AITool, whose stub breaks its own schema: the server's check is looser than the schema it ships.
 
 ## Reading rules
 
@@ -27,3 +27,7 @@ Plugin `pega-infinity-authoring` 0.1.7, Infinity 26.1. What made the Pega MCP ha
 18. **The stack stops at the first level.** `get-application` reads only the operator's applications: no climb through the built-on applications, and nothing says which ruleset is unlocked. pega-ctx writes what it sees in `stack.md` and asks the user for the write ruleset of each class (`write` table, `docs/decisions/0006-write-ruleset-per-class.md`). *Ask*: the whole stack with each ruleset's lock state.
 19. **Another application needs an alias.** `applicationNames` toward an application other than the current one gives an error 500; `set-application-alias` must come first, with an alias from `list-available-applications`. *Ask*: `applicationNames` working for any application the operator can open.
 20. **Everything comes back as TOON text.** No tool returns `structuredContent`; answers are TOON (a compact JSON-like text) ending with a timing line. pega-ctx carries its own TOON decoder (`src/mcp/toon.mjs`). *Ask*: `structuredContent` in JSON next to the text.
+
+## Data the writes need
+
+21. **No tool lists access groups.** A job scheduler (`Rule-Async-JobScheduler`) requires `pyAccessGroup`, and Pega checks it (`.pyAccessGroup: <App>:Administrators is not a valid entry`, 2026-10-12), but neither `get-application` nor any other tool names the application's access groups. pega-ctx cannot fill it: the model has to ask the user. *Ask*: the access groups in `get-application`, or a tool that lists them.

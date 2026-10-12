@@ -12,7 +12,7 @@
     {
       "prefix": "MONORG-Test-",
       "ruleset": "Test:01-01-01",
-      "rules": 29,
+      "rules": 31,
       "classes": [
         "MONORG-Test-Data-People",
         "MONORG-Test-Work",

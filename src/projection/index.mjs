@@ -7,9 +7,11 @@ import { probableReferences } from './generic.mjs';
 import * as adminsystemsettings from './adminsystemsettings.mjs';
 import * as aiagent from './aiagent.mjs';
 import * as aitool from './aitool.mjs';
+import * as asyncqueueprocessor from './asyncqueueprocessor.mjs';
 import * as attachmentcategory from './attachmentcategory.mjs';
 import * as classmetadata from './classmetadata.mjs';
 import * as connectrest from './connectrest.mjs';
+import * as decisiondataset from './decisiondataset.mjs';
 import * as correspondence from './correspondence.mjs';
 import * as correspondencetype from './correspondencetype.mjs';
 import * as editvalidate from './editvalidate.mjs';
@@ -36,9 +38,11 @@ export const PROJECTIONS = {
   AdminSystemSettings: adminsystemsettings,
   AIAgent: aiagent,
   AITool: aitool,
+  AsyncQueueProcessor: asyncqueueprocessor,
   AttachmentCategory: attachmentcategory,
   ClassMetadata: classmetadata,
   ConnectREST: connectrest,
+  DecisionDataSet: decisiondataset,
   Correspondence: correspondence,
   CorrespondenceType: correspondencetype,
   EditValidate: editvalidate,

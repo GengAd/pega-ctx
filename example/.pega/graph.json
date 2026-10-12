@@ -31,6 +31,12 @@
    "confidence": "sure"
   },
   {
+   "from": "AsyncQueueProcessor:MONORG-Test-Work-GetInfo:PegaCtxFxQueueProc",
+   "to": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "via": "queue activity",
+   "confidence": "sure"
+  },
+  {
    "from": "CaseType:MONORG-Test-Work-GetInfo:pyDefault",
    "to": "Flow:MONORG-Test-Work-GetInfo:GetInfoStart",
    "via": "process",
