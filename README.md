@@ -36,9 +36,35 @@ Measured on a real task (create a case type with two stages and three fields, mo
 
 - **Node 20 or later**: `node -v`.
 - **Java 17 or later**: `java -version` (the Pega MCP server is a Java program).
-- **Claude Code with the Pega plugin `pega-infinity-authoring`**, connected to your Pega server. In Claude Code, run `/pega-infinity-authoring:pega-setup` and follow it: it writes `~/.infinity-rules-mcp/config.json` (server URL, OAuth client, Infinity version). Check it works by asking Claude to list the applications.
+- **The Pega plugin `pega-infinity-authoring`** ([pegasystems/infinity-ai-plugins](https://github.com/pegasystems/infinity-ai-plugins)), connected to your Pega server. pega-ctx does not need the agent itself, only the plugin's folder: the server jar and its schemas. It launches that server on its own and keeps no secret.
 
-pega-ctx needs nothing more: it finds the plugin in `~/.claude/plugins/cache/Pega/pega-infinity-authoring/` and launches the same server. It keeps no secret.
+Then follow the part for your agent.
+
+**GitHub Copilot.** Get the plugin's folder one of two ways:
+
+- With Copilot CLI: `copilot plugin marketplace add https://github.com/pegasystems/infinity-ai-plugins.git`, then `copilot plugin install pega-infinity-authoring@Pega`. Run the `pega-setup` skill once in Copilot CLI to connect to Pega.
+- Without Copilot CLI (Copilot in VS Code only): `git clone https://github.com/pegasystems/infinity-ai-plugins.git` anywhere. The plugin's folder is `infinity-ai-plugins/plugins/pega/infinity-ai-plugins/copilot`. Write the connection yourself in `~/.infinity-rules-mcp/config.json` (`%USERPROFILE%\.infinity-rules-mcp\config.json` on Windows):
+
+  ```json
+  {
+    "pega_base_url": "https://your-pega-server.example.com",
+    "pega_oauth_client_id": "34233104330833666523",
+    "pega_infinity_version": "26-1"
+  }
+  ```
+
+  The root URL, without `/prweb`; Pega's standard OAuth client unless your server uses another one; the version folder that matches your server (`24-2`, `25-1`, `26-1`). The file is in plain text: never commit it.
+
+Then tell pega-ctx where that folder is: it is the one that holds `.mcp.json` and `resources/infinity-rules-mcp.jar`.
+
+```bash
+export PEGA_CTX_PLUGIN=/path/to/infinity-ai-plugins/plugins/pega/infinity-ai-plugins/copilot   # macOS / Linux, in ~/.zshrc or ~/.bashrc
+setx PEGA_CTX_PLUGIN "C:\path\to\infinity-ai-plugins\plugins\pega\infinity-ai-plugins\copilot"   # Windows, then open a new terminal
+```
+
+**Claude Code.** `claude plugin marketplace add https://github.com/pegasystems/infinity-ai-plugins.git`, `claude plugin install pega-infinity-authoring@Pega`, then `/pega-infinity-authoring:pega-setup` in Claude Code. Nothing to set: pega-ctx finds the plugin in `~/.claude/plugins/cache/Pega/pega-infinity-authoring/` by itself.
+
+If the server cannot start, `pega-ctx init` says what to check: `java -version`, `~/.infinity-rules-mcp/config.json`, or `PEGA_CTX_PLUGIN`.
 
 ### 2. Install pega-ctx
 
@@ -51,18 +77,20 @@ A single dependency, `@modelcontextprotocol/sdk`. To update later, run the same 
 
 ### 3. Set it up in your Pega project
 
-From the root of the project's repository (the folder Claude Code or Copilot is opened in):
+From the root of the project's repository (the folder VS Code or Claude Code is opened in):
 
 ```bash
-pega-ctx init        # creates .pega/config.json and .pega/stack.md (--ruleset A,B to follow only some rulesets)
-pega-ctx sync        # first mirror: lists, reads and projects every rule (a few minutes)
-pega-ctx install     # writes the instructions into CLAUDE.md and .github/copilot-instructions.md
+pega-ctx init                # creates .pega/config.json and .pega/stack.md (--ruleset A,B to follow only some rulesets)
+pega-ctx sync                # first mirror: lists, reads and projects every rule (a few minutes)
+pega-ctx install --copilot   # writes the instructions into .github/copilot-instructions.md
 ```
+
+`install --claude` writes them into `CLAUDE.md` instead; with no option, both.
 
 Then, once:
 
 1. **Say where new rules go.** `sync` wrote `.pega/write.draft.json`, guessed from the rulesets seen. Review it, and copy it into `.pega/config.json` as `write` (the server does not say which ruleset is unlocked). Set `branch` there too if you always work on the same branch.
-2. **Complete the instructions.** In `CLAUDE.md`, fill the brackets left by `install` (application name, project conventions). `install` can be run again safely: it only replaces its own block, between `<!-- pega-ctx:start -->` and `<!-- pega-ctx:end -->`.
+2. **Complete the instructions.** In `.github/copilot-instructions.md` (or `CLAUDE.md`), fill the brackets left by `install` (application name, project conventions). `install` can be run again safely: it only replaces its own block, between `<!-- pega-ctx:start -->` and `<!-- pega-ctx:end -->`.
 3. **Ignore the server's files in git.** The Pega MCP server writes its OAuth tokens and logs in the folder it is launched from: add `.infinity-rules-mcp/` and `logs/` to `.gitignore`. `.pega/` itself can be committed (`init --ignore-raw` keeps `.pega/raw/` out of git).
 
 `sync` follows every rule type the Pega MCP knows (the 37 it can write, and sections); add any other rule class to `types` in `.pega/config.json` (`["Rule-Declare-Expressions"]`).

@@ -8,10 +8,15 @@ import * as tools from './tools.mjs';
 
 const PLUGIN_CACHE = join(homedir(), '.claude/plugins/cache/Pega/pega-infinity-authoring');
 
-// Folder of the installed Pega plugin, highest version.
-export function pluginFolder(root = PLUGIN_CACHE) {
+// Folder of the Pega plugin: PEGA_CTX_PLUGIN (any variant, Claude Code, Copilot, Codex: the folder holding
+// .mcp.json and resources/), otherwise the highest version in Claude Code's plugin cache.
+export function pluginFolder(root = PLUGIN_CACHE, given = process.env.PEGA_CTX_PLUGIN) {
+  if (given) {
+    if (!existsSync(join(given, '.mcp.json'))) throw new Error(`no .mcp.json in PEGA_CTX_PLUGIN (${given}): give the Pega plugin folder that holds .mcp.json and resources/`);
+    return given;
+  }
   if (!existsSync(root)) {
-    throw new Error(`Pega plugin not found in ${root}: install pega-infinity-authoring or give the MCP command in .pega/config.json`);
+    throw new Error(`Pega plugin not found in ${root}: install pega-infinity-authoring in Claude Code, or set PEGA_CTX_PLUGIN to the plugin's folder (Copilot, Codex)`);
   }
   const versions = readdirSync(root).filter((v) => /^\d/.test(v));
   if (!versions.length) throw new Error(`no version of the Pega plugin in ${root}: reinstall the plugin`);
@@ -25,7 +30,7 @@ export function commandFromPlugin(folder = pluginFolder()) {
   const mcp = JSON.parse(readFileSync(join(folder, '.mcp.json'), 'utf8'));
   const [server] = Object.values(mcp.mcpServers ?? {});
   if (!server) throw new Error(`no server in ${folder}/.mcp.json: reinstall the Pega plugin`);
-  const replace = (s) => s.replaceAll('${CLAUDE_PLUGIN_ROOT}', folder);
+  const replace = (s) => s.replaceAll('${CLAUDE_PLUGIN_ROOT}', folder).replaceAll('${PLUGIN_ROOT}', folder);
   const env = {};
   for (const [key, value] of Object.entries(server.env ?? {})) {
     if (!value.includes('${user_config.')) env[key] = replace(value);

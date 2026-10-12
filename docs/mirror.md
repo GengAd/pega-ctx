@@ -8,7 +8,7 @@ What `src/mirror/` and the commands add to, or specify beyond, the specification
 { "mcp": { "source": "plugin" }, "application": "Test", "rulesets": ["Test"], "write": { "byClass": [{ "prefix": "MONORG-Test-", "ruleset": "Test:01-01-01" }], "default": null }, "branch": null, "lastSync": "2026-10-10T15:30:00.000Z" }
 ```
 
-- `mcp.source: plugin`: the MCP command is read again from the Pega plugin's `.mcp.json` at each launch. A path fixed in the config would break when the plugin is updated.
+- `mcp.source: plugin`: the MCP command is read again from the Pega plugin's `.mcp.json` at each launch. A path fixed in the config would break when the plugin is updated. The plugin folder is the environment variable `PEGA_CTX_PLUGIN` (machine-specific, so not in the shared config), otherwise Claude Code's plugin cache.
 - `rulesets`: followed by `sync`. `init --ruleset A,B`, otherwise the rulesets of the current application (`stack()`). Empty: everything `list()` returns.
 - `branch`: optional, the default branch of `create` and `update`.
 - `types`: optional, rule classes followed on top of the known types (`["Rule-Declare-Expressions"]`); their short name is built from the class (`Expressions`). `docs/mcp-tools.md` § Pega types and classes.

@@ -2,7 +2,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { decodeToon } from '../src/mcp/toon.mjs';
-import { pegaInterface } from '../src/mcp/client.mjs';
+import { pegaInterface, pluginFolder, commandFromPlugin } from '../src/mcp/client.mjs';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { TYPES } from '../src/mcp/tools.mjs';
 import * as tools from '../src/mcp/tools.mjs';
 
@@ -172,4 +175,22 @@ test('create: a field refused by the server schema (string instead of integer) i
   assert.equal(sent[1].pyInitialCaseUrgency, 10);
   assert.equal(sent[1].pyStages[0].pyIsInitializationStage, true);
   assert.equal(sent[0].pyInitialCaseUrgency, '10', 'the first send is as is');
+});
+
+test('PEGA_CTX_PLUGIN: a Copilot plugin folder, ${PLUGIN_ROOT} replaced, missing .mcp.json refused', () => {
+  const folder = mkdtempSync(join(tmpdir(), 'pega-plugin-'));
+  writeFileSync(join(folder, '.mcp.json'), JSON.stringify({
+    mcpServers: { 'pega-infinity-authoring': {
+      command: 'java',
+      args: ['-jar', '${PLUGIN_ROOT}/resources/infinity-rules-mcp.jar', '--spring.profiles.active=stdio'],
+      env: { PEGA_SKILLS_PATH: '${PLUGIN_ROOT}/resources', PEGA_CLIENT_MODE: 'copilot-plugin' },
+    } },
+  }));
+  assert.equal(pluginFolder('/nowhere', folder), folder);
+  const { command, args, env } = commandFromPlugin(folder);
+  assert.equal(command, 'java');
+  assert.equal(args[1], `${folder}/resources/infinity-rules-mcp.jar`);
+  assert.deepEqual(env, { PEGA_SKILLS_PATH: `${folder}/resources`, PEGA_CLIENT_MODE: 'copilot-plugin' });
+  assert.throws(() => pluginFolder('/nowhere', tmpdir() + '/no-such-plugin'), /no \.mcp\.json in PEGA_CTX_PLUGIN/);
+  assert.throws(() => pluginFolder('/nowhere', ''), /set PEGA_CTX_PLUGIN/);
 });
