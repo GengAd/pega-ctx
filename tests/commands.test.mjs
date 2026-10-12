@@ -189,7 +189,15 @@ test('stack: stack.md with the rulesets seen, --for adds the inheritance and whe
   const stack = (await pc('stack')).output;
   assert.match(stack, /^# Stack\n/);
   assert.match(stack, /\n## Rulesets seen in the mirror\n- Test:01-01-01, Test: 33 rules, classes MONORG-Test-Data-People, MONORG-Test-Work, MONORG-Test-Work-GetInfo\n/);
-  assert.match(stack, /\n- Cvent:01-01-05, a built-on application \(the server does not say which\): 2 rules, classes OrgEv-Int-CventAtt-Data\n/);
+  assert.match(stack, /\n## Resolution order\n.*\n1\. Test 01\.01\.01: Test:01-01, MONORG:01-01\n2\. Constellation 01\.01: Constellation:01-01\n3\. PegaRULES 8: /);
+  assert.match(stack, /\n- Cvent:01-01-05, not in the application's stack: 2 rules, classes OrgEv-Int-CventAtt-Data\n/);
+  // The manual section is the user's: sync keeps it, and its rulesets get their application.
+  const m0 = mirror(root);
+  m0.writeStack(stack.replace(/(## Built on \(manual\)\n).*\n/, '$1- Gameboard 01.01.01: Gameboard:01-01, Cvent:01-01\n'));
+  assert.equal((await pc('sync')).code, 0);
+  const kept = (await pc('stack')).output;
+  assert.match(kept, /\n## Built on \(manual\)\n- Gameboard 01\.01\.01: Gameboard:01-01, Cvent:01-01\n\n## Rulesets seen/);
+  assert.match(kept, /\n- Cvent:01-01-05, Gameboard \(manual\): 2 rules/);
   // A class with rules in the mirror: its siblings say where to write.
   assert.match((await pc(`stack --for ${W}`)).output, new RegExp(`\nwrite to: Test:01-01-01 \\(sibling rules of ${W}\\)$`));
   // A new class without a table: unknown, ask.

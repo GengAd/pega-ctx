@@ -42,17 +42,45 @@ export function classOfType(type) {
   return cls;
 }
 
-// stack() → get-application: current application, its rulesets, its direct built-on applications.
-// The server can only read the operator's applications: no recursive climb.
+// stack() → get-application: current application, its ruleset, its direct built-on applications;
+// then the climb: get-rule on each application rule (Rule-Application), which reads applications
+// get-application refuses (Constellation), depth first in the order of pyDependsOnList.
+// layers: [{ application, version, rulesets: ['Name:01-01', …] in resolution order, builtOn, error? }].
 export async function stack(call) {
   const app = decodeToon(await call('get-application', {}));
+  const layers = [];
+  const seen = new Set();
+  const climb = async (application, version) => {
+    const key = `RULE-APPLICATION ${application.toUpperCase()} ${version}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    const layer = { application, version, rulesets: [], builtOn: [] };
+    layers.push(layer);
+    let rule;
+    try {
+      rule = decodeToon(await call('get-rule', { key, detail: 'full' }));
+    } catch (e) {
+      layer.error = firstLine(e.text ?? e.message);
+      return;
+    }
+    layer.rulesets = (rule.pyRuleSetList ?? []).filter((r) => typeof r === 'string' && r);
+    layer.builtOn = (rule.pyDependsOnList ?? []).filter((d) => d?.pyAppName).map((d) => ({ application: d.pyAppName, version: String(d.pyAppVersion ?? '') }));
+    for (const b of layer.builtOn) await climb(b.application, b.version);
+  };
+  await climb(app.AppName, String(app.AppVersion));
   return {
     application: app.AppName,
     version: String(app.AppVersion),
     rulesets: [app.RuleSet].filter(Boolean),
     builtOn: (app.DependsOn ?? []).map((d) => ({ application: d.name, version: String(d.version) })),
     constellation: app.IsConstellationApp === 'true',
+    layers,
   };
+}
+
+function firstLine(text = '') {
+  const m = /pzErrorRuleNotFound(?:\\t|\t)([^"\\]+)/.exec(text);
+  return m ? `no rule ${m[1]}` : String(text).split('\n')[0].slice(0, 200);
 }
 
 // list({ type, class?, name?, application? }) → run-data-page D_pxListRules, one rule class per call.

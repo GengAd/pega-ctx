@@ -27,7 +27,7 @@ export async function run({ options, root, connect }) {
   // at the next plugin update.
   // write: where new rules go, by class prefix (first match wins); sync drafts it in .pega/write.draft.json.
   m.writeConfig({ mcp: { source: 'plugin' }, application: stack?.application, rulesets, write: { byClass: [], default: null }, branch: null, lastSync: null });
-  if (stack) m.writeStack(renderStack(stack));
+  if (stack) m.writeStack(renderStack(stack, { previous: m.readStack() ?? '' }));
 
   if (options['ignore-raw']) {
     const gitignore = join(root, '.gitignore');

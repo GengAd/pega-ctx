@@ -12,7 +12,15 @@ export function fakePega({ failures = [] } = {}) {
     calls,
     async stack() {
       calls.push(['stack']);
-      return { application: 'Test', version: '01.01.01', rulesets: ['Test'], builtOn: [{ application: 'Constellation', version: '01.01' }], constellation: true };
+      return {
+        application: 'Test', version: '01.01.01', rulesets: ['Test'], builtOn: [{ application: 'Constellation', version: '01.01' }], constellation: true,
+        // As the real climb returns it (application rules, 2026-10-12), PegaRULES shortened.
+        layers: [
+          { application: 'Test', version: '01.01.01', rulesets: ['Test:01-01', 'MONORG:01-01'], builtOn: [{ application: 'Constellation', version: '01.01' }] },
+          { application: 'Constellation', version: '01.01', rulesets: ['Constellation:01-01'], builtOn: [{ application: 'PegaRULES', version: '8' }] },
+          { application: 'PegaRULES', version: '8', rulesets: ['Pega-ProcessCommander:08-26', 'Pega-RULES:08-26'], builtOn: [] },
+        ],
+      };
     },
     async list({ type }) {
       calls.push(['list', type]);

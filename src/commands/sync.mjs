@@ -104,7 +104,7 @@ export async function run({ options, root, connect }) {
   const { index, withoutProjection, missing } = rebuild(m, [...lines.values()]);
   for (const id of missing) errors.push(`${id}: raw rule missing from raw/, run again with --full`);
   // stack.md lists the rulesets seen in the index; the write table draft is recomputed from it.
-  if (stack) m.writeStack(renderStack(stack, { index, write: config.write }));
+  if (stack) m.writeStack(renderStack(stack, { index, write: config.write, previous: m.readStack() ?? '' }));
   m.writeWriteDraft(writeDraft(index));
   m.writeConfig({ ...config, lastSync: new Date().toISOString() });
 

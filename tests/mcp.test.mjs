@@ -87,15 +87,39 @@ function fakeServer(responses) {
   return { pega: pegaInterface(call), calls };
 }
 
-test('stack() reads get-application', async () => {
-  const { pega } = fakeServer({ 'get-application': APPLICATION });
+// Application rules as get-rule returns them (2026-10-12), trimmed to the fields the climb reads.
+const APP_RULE = (rulesets, dependsOn = []) => [
+  'pxObjClass: Rule-Application',
+  `pyRuleSetList[${rulesets.length}]: ${rulesets.map((r) => `"${r}"`).join(',')}`,
+  `pyDependsOnList[${dependsOn.length}]:`,
+  ...dependsOn.flatMap(([name, version]) => ['  - pxObjClass: Embed-DependsOnApp', `    pyAppName: ${name}`, `    pyAppVersion: "${version}"`]),
+].join('\n');
+
+test('stack() reads get-application, then climbs the application rules until one cannot be read', async () => {
+  const { pega, calls } = fakeServer({
+    'get-application': APPLICATION,
+    'get-rule': ({ key }) => {
+      if (key === 'RULE-APPLICATION CLAIMS 01.01.01') return APP_RULE(['Claims_Branch_B1:01-01-01', 'Claims:01-01', 'MyOrg:01-01'], [['Shared', '02.01'], ['Constellation', '01.01']]);
+      if (key === 'RULE-APPLICATION SHARED 02.01') return APP_RULE(['Shared:02-01'], [['Constellation', '01.01']]);
+      if (key === 'RULE-APPLICATION CONSTELLATION 01.01') return APP_RULE(['Constellation:01-01'], [['PegaRULES', '8']]);
+      throw new Error(`Error fetching rule: 500 Internal Server Error: "{\\"errorDetails\\":[{\\"message\\":\\"pzErrorRuleNotFound\\t${key}\\"}]}"`);
+    },
+  });
   assert.deepEqual(await pega.stack(), {
     application: 'Claims',
     version: '01.01.01',
     rulesets: ['Claims'],
     builtOn: [{ application: 'Constellation', version: '01.01' }],
     constellation: true,
+    layers: [
+      { application: 'Claims', version: '01.01.01', rulesets: ['Claims_Branch_B1:01-01-01', 'Claims:01-01', 'MyOrg:01-01'], builtOn: [{ application: 'Shared', version: '02.01' }, { application: 'Constellation', version: '01.01' }] },
+      { application: 'Shared', version: '02.01', rulesets: ['Shared:02-01'], builtOn: [{ application: 'Constellation', version: '01.01' }] },
+      { application: 'Constellation', version: '01.01', rulesets: ['Constellation:01-01'], builtOn: [{ application: 'PegaRULES', version: '8' }] },
+      { application: 'PegaRULES', version: '8', rulesets: [], builtOn: [], error: 'no rule RULE-APPLICATION PEGARULES 8' },
+    ],
   });
+  // Constellation, built on twice, is read once.
+  assert.equal(calls.filter((c) => c.name === 'get-rule').length, 4);
 });
 
 test('list() goes through D_pxListRules, returns id, key and update date', async () => {
