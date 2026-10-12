@@ -1,0 +1,151 @@
+pxObjClass: Rule-Obj-CaseType
+pxUpdateOperator: dev.un
+pyAllowRemoteInstantiation: "false"
+pyAltStageIDMax: "0"
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyConstantTrackingEnabled: "false"
+pyDescription: "Saisie du répondant, du nombre d'autres membres du foyer et de leurs informations, puis création et liaison des fiches People."
+pyDoNotLockParent: "false"
+pyEnableSearch: "true"
+pyHideSaveButton: "false"
+pyIcon: pi pi-users
+pyInitialCaseUrgency: "10"
+pyIsConstellationCase: "true"
+pyIsRemote: "false"
+pyJavaClassName: Rule_Obj_CaseType_MONORG_Test_Work_GetInfo_pyDefault_Action_20261008T144931_371_GMT
+pyLabel: GetInfo
+pyLifeCycleTabs: Lifecycle
+pyLocaleReference: MONORG-TEST-WORK-GETINFO!CASE!GETINFO
+pyLockingMode: Default
+pyLPGeolocationEnabled: Disabled
+pyLPGeolocationStatus: "false"
+pyProcessesViewMode: Tile
+pyPurpose: pyDefault
+pyRuleAvailable: Yes
+pyRuleName: pyDefault
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyStageIDMax: "3"
+pyTemplateTrueFalse: "false"
+pyValueChanged: "false"
+pyWorkPartiesRule: pyCaseManagementDefault
+pyXMLSignature: <methodSignature><pyStepsPageAliases></pyStepsPageAliases></methodSignature>
+pzChecksum: "560196904"
+pzGeolocationWhenExists: "false"
+pzIndexCount: "62"
+pzInsKey: RULE-OBJ-CASETYPE MONORG-TEST-WORK-GETINFO PYDEFAULT #20261008T144931.371 GMT
+pzOriginalInstanceKey: RULE-OBJ-CASETYPE MONORG-TEST-WORK-GETINFO PYDEFAULT #20261008T144010.809 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pzShowLifeCycleStagesOnly: "true"
+pzSpecializationsCount: "0"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[1]:
+  - pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2026-10-08T14:40:11.130Z"
+    pxWarningCreateOperator: dev.un
+    pxWarningDetails: (Rule-)pxPegaUnit
+    pxWarningMessage: (Rule-)pxPegaUnit
+    pxWarningName: Pega Unit Warning
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "3"
+    pxWarningType: Maintainability
+    pzIndexOwnerKey: RULE-OBJ-CASETYPE MONORG-TEST-WORK-GETINFO PYDEFAULT #20261008T144931.371 GMT
+    pzIndexes:
+      Warnings: "21"
+pyAlternateStages[0]:
+pyAttachments[0]:
+pyCalculations[0]:
+pyCaseMatchList[0]:
+pyCaseOptionalProcesses[0]:
+pyCasePredictions[0]:
+pyCasetypeStartingFlows[1]{pxObjClass,pyAutomaticStart,pyClass,pyEnabled,pyManualStart,pyStartingFlowType}:
+  Embed-ChooseRule,"true",MONORG-Test-Work-GetInfo,"true","false",GetInfoStart
+pyCaseWideLocalActions[0]:
+pyCoverableClasses[1]:
+  - pxObjClass: Embed-ChooseRule
+    pyProperties[0]:
+pyDependents:
+pyFlowOutlineContainer:
+  pxObjClass: Embed-FlowOutlineContainer
+  pyFlowTree:
+    pxObjClass: Code-Pega-List
+    pxResults[0]:
+pyFlowsToStart[0]:
+pyPagesAndClasses[1]{pxObjClass,pyPagesAndClassesClass,pyPagesAndClassesPage}:
+  Embed-PagesAndClasses,$None,ChildPage
+pyParameters[1]{pxObjClass,pyParametersParamName,pyParametersParamType}:
+  Embed-MethodParams,ChildPage,PAGE
+pyPreviousValues:
+  pxObjClass: @baseclass
+pyRelatedClasses[0]:
+pyStages[3]:
+  - pxListSubscript: "1"
+    pxObjClass: Embed-Stage
+    pyIsInitializationStage: "true"
+    pyIsTerminalStage: "false"
+    pyStageID: PRIM0
+    pyStageName: Répondant
+    pyStageTransition: automatic
+    pxAdditionalProcessingEvents[0]:
+    pyChannels[1]{pxObjClass,pyLabel,pyShowChannel,pzChannelName}:
+      Data-Channel-Configuration,Default,"true",Default
+    pyLocalActions[0]:
+    pyOptionalProcesses[0]:
+    pyProcesses[1]:
+      - pxFlowID: FLOW0
+        pxListSubscript: "1"
+        pxObjClass: Embed-StageProcess
+        pyChannelName: Default
+        pyFlowName: GetInfoStart
+        pyLabel: Créer GetInfo et saisir le répondant
+        pyLaunchOnReentry: "false"
+        pyShowBackButton: "false"
+        pySkipOrAllowType: always
+        pyStartType: PARALLEL
+        pyCallParams:
+    pyRequiredCategories[0]:
+  - pxListSubscript: "2"
+    pxObjClass: Embed-Stage
+    pyChannelMenuLabel: Add channel process
+    pyIsTerminalStage: "false"
+    pyStageEntryStatus: Open-InProgress
+    pyStageID: PRIM1
+    pyStageName: Foyer
+    pyStageTransition: automatic
+    pxAdditionalProcessingEvents[0]:
+    pyLocalActions[0]:
+    pyOptionalProcesses[0]:
+    pyProcesses[1]:
+      - pxFlowID: FLOW0
+        pxListSubscript: "1"
+        pxObjClass: Embed-StageProcess
+        pyFlowName: CollectHousehold
+        pyLabel: Collecter les informations du foyer
+        pyLaunchOnReentry: "false"
+        pyShowBackButton: "false"
+        pySkipOrAllowType: always
+        pyStartType: PARALLEL
+        pyCallParams:
+    pyRequiredCategories[0]:
+  - pxListSubscript: "3"
+    pxObjClass: Embed-Stage
+    pyChannelMenuLabel: Add channel process
+    pyCleanupProcess: "true"
+    pyIsTerminalStage: "true"
+    pyResolveChildCases: "false"
+    pyStageID: PRIM2
+    pyStageName: Terminé
+    pyStageTransition: resolution
+    pyStageWorkStatus: Resolved-Completed
+    pxAdditionalProcessingEvents[0]:
+    pyLocalActions[0]:
+    pyOptionalProcesses[0]:
+    pyProcesses[0]:
+    pyRequiredCategories[0]:
+pyStatusGroups[0]:
+pyToolBarSettings:
+  pxObjClass: Embed-WBSettings-ToolBar

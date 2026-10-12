@@ -1,0 +1,228 @@
+{
+ "edges": [
+  {
+   "from": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "to": "DataPage:MONORG-Test-Data-People:D_People",
+   "via": "data page",
+   "confidence": "sure"
+  },
+  {
+   "from": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "to": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "via": "apply",
+   "confidence": "sure"
+  },
+  {
+   "from": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "to": "Property:MONORG-Test-Data-People:HouseholdMembers",
+   "via": "step",
+   "confidence": "sure"
+  },
+  {
+   "from": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdMembers",
+   "via": "name match",
+   "confidence": "probable"
+  },
+  {
+   "from": "CaseType:MONORG-Test-Work-GetInfo:pyDefault",
+   "to": "Flow:MONORG-Test-Work-GetInfo:GetInfoStart",
+   "via": "process",
+   "confidence": "sure",
+   "stage": "Répondant"
+  },
+  {
+   "from": "CaseType:MONORG-Test-Work-GetInfo:pyDefault",
+   "to": "Flow:MONORG-Test-Work-GetInfo:CollectHousehold",
+   "via": "process",
+   "confidence": "sure",
+   "stage": "Foyer"
+  },
+  {
+   "from": "DataPage:MONORG-Test-Data-People:D_PeopleList",
+   "to": "ReportDefinition:MONORG-Test-Data-People:DataTableEditorReport",
+   "via": "source",
+   "confidence": "sure"
+  },
+  {
+   "from": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdGroupID",
+   "via": "target",
+   "confidence": "sure"
+  },
+  {
+   "from": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "to": "Property:MONORG-Test-Work-GetInfo:PeopleForLinks",
+   "via": "target",
+   "confidence": "sure"
+  },
+  {
+   "from": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "to": "Property:MONORG-Test-Work-GetInfo:Requester",
+   "via": "source",
+   "confidence": "sure"
+  },
+  {
+   "from": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdMembers",
+   "via": "source",
+   "confidence": "sure"
+  },
+  {
+   "from": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "to": "Property:MONORG-Test-Data-People:HouseholdID",
+   "via": "target",
+   "confidence": "sure"
+  },
+  {
+   "from": "DataTransform:MONORG-Test-Work-GetInfo:BuildHouseholdReferences",
+   "to": "Property:MONORG-Test-Data-People:HouseholdMembers",
+   "via": "target",
+   "confidence": "sure"
+  },
+  {
+   "from": "DecisionTable:OrgEv-Int-CventAtt-Data:IgnoredRegistrationType",
+   "to": "Property:OrgEv-Int-CventAtt-Data:registrationType",
+   "via": "column",
+   "confidence": "sure"
+  },
+  {
+   "from": "Flow:MONORG-Test-Work-GetInfo:CollectHousehold",
+   "to": "FlowAction:MONORG-Test-Work-GetInfo:CollectHouseholdSize",
+   "via": "assignment",
+   "confidence": "sure"
+  },
+  {
+   "from": "Flow:MONORG-Test-Work-GetInfo:CollectHousehold",
+   "to": "FlowAction:MONORG-Test-Work-GetInfo:EnterHouseholdMembers",
+   "via": "assignment",
+   "confidence": "sure"
+  },
+  {
+   "from": "Flow:MONORG-Test-Work-GetInfo:CollectHousehold",
+   "to": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
+   "via": "utility",
+   "confidence": "sure"
+  },
+  {
+   "from": "Flow:MONORG-Test-Work-GetInfo:CollectHousehold",
+   "to": "View:MONORG-Test-Work-GetInfo:EnterHouseholdMembers",
+   "via": "name match",
+   "confidence": "probable"
+  },
+  {
+   "from": "Flow:MONORG-Test-Work-GetInfo:CollectHousehold",
+   "to": "View:MONORG-Test-Work-GetInfo:CollectHouseholdSize",
+   "via": "name match",
+   "confidence": "probable"
+  },
+  {
+   "from": "Flow:MONORG-Test-Work-GetInfo:GetInfoStart",
+   "to": "FlowAction:MONORG-Test-Work-GetInfo:CollectRequester",
+   "via": "assignment",
+   "confidence": "sure"
+  },
+  {
+   "from": "FlowAction:MONORG-Test-Work-GetInfo:CollectHouseholdSize",
+   "to": "View:MONORG-Test-Work-GetInfo:CollectHouseholdSize",
+   "via": "view",
+   "confidence": "sure"
+  },
+  {
+   "from": "Section:AutreOrg-Gameboard-Data-Player:IndividualScores",
+   "to": "DataPage:AutreOrg-Gameboard-Int-Demo-Response:D_GetDemoResults",
+   "via": "list source",
+   "confidence": "sure"
+  },
+  {
+   "from": "Section:AutreOrg-Gameboard-Data-Player:IndividualScores",
+   "to": "Section:AutreOrg-Gameboard-Int-Demo-Response:InData",
+   "via": "included section",
+   "confidence": "sure"
+  },
+  {
+   "from": "Validate:AutreOrg-Gameboard-Work-Game:ValidateToScene2",
+   "to": "DataPage:AutreOrg-Gameboard-Work-Game:D_GetTable",
+   "via": "condition",
+   "confidence": "sure"
+  },
+  {
+   "from": "Validate:AutreOrg-Gameboard-Work-Game:ValidateToScene2",
+   "to": "Property:AutreOrg-Gameboard-Work-Game:TableID",
+   "via": "condition",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Data-People:HouseholdMembersPicker",
+   "to": "DataPage:MONORG-Test-Data-People:D_PeopleList",
+   "via": "list source",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Data-People:HouseholdMembersPicker",
+   "to": "Property:MONORG-Test-Data-People:Age",
+   "via": "field",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Data-People:HouseholdMembersPicker",
+   "to": "Property:MONORG-Test-Data-People:FirstName",
+   "via": "field",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Data-People:HouseholdMembersPicker",
+   "to": "Property:MONORG-Test-Data-People:LastName",
+   "via": "field",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Data-People:HouseholdMembersPicker",
+   "to": "Property:MONORG-Test-Data-People:Title",
+   "via": "field",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Work-GetInfo:CollectHouseholdSize",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdMemberCount",
+   "via": "field",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Work-GetInfo:EnterHouseholdMembers",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdMembers",
+   "via": "list",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Work-GetInfo:EnterHouseholdMembers",
+   "to": "View:MONORG-Test-Data-People:pyPrimaryFields",
+   "via": "included view",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Work-GetInfo:EnterHouseholdMembers",
+   "to": "View:MONORG-Test-Work-GetInfo:pyEdit",
+   "via": "name match",
+   "confidence": "probable"
+  },
+  {
+   "from": "View:MONORG-Test-Work-GetInfo:pyEdit",
+   "to": "View:MONORG-Test-Data-People:RequesterDetails",
+   "via": "included view",
+   "confidence": "sure"
+  },
+  {
+   "from": "View:MONORG-Test-Work-GetInfo:pyEdit",
+   "to": "Property:MONORG-Test-Work-GetInfo:Requester",
+   "via": "context",
+   "confidence": "sure"
+  },
+  {
+   "from": "When:OrgEv-Int-CventAtt-Data:IsIgnoredRegistrationType",
+   "to": "DecisionTable:OrgEv-Int-CventAtt-Data:IgnoredRegistrationType",
+   "via": "condition",
+   "confidence": "sure"
+  }
+ ]
+}

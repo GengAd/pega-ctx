@@ -1,0 +1,10 @@
+{
+  "name": "pega-ctx",
+  "version": "0.0.0",
+  "description": "Local, readable mirror of Pega rules, client of the Pega MCP",
+  "type": "module",
+  "bin": { "pega-ctx": "bin/pega-ctx.mjs" },
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=20" },
+  "dependencies": { "@modelcontextprotocol/sdk": "^1.0.0" }
+}

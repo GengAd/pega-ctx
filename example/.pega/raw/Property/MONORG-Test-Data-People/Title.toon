@@ -1,0 +1,61 @@
+pxObjClass: Rule-Obj-Property
+pxUpdateOperator: dev.un
+pyAdvancedPropType: MANUAL
+pyBaseRule: "false"
+pyCannotBeDeclarativeTarget: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Data-People
+pyDataObject: ""
+pyDataRetrievalType: MANUAL
+pyDescription: Lien du membre du foyer avec le répondant.
+pyDTName: ""
+pyEditValidate: ""
+pyGatewayClass: ""
+pyIsGateway: ""
+pyIsLightweight: "false"
+pyIsNonTransient: "true"
+pyIsRetrieveEachPageSeparately: "false"
+pyLabel: Titre du membre
+pyLocalize: "false"
+pyOldStreamName: pxDropdown
+pyOnInput: ""
+pyOnObjChange: ""
+pyPropertyMode: String
+pyPropertyName: Title
+pyReflectStatus: "true"
+pyRuleAccessWhen: ""
+pyRuleAvailable: Yes
+pyRuleName: Title
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pySortDateCircumWithinRSMajor: "true"
+pySpecial: "false"
+pyStreamName: pxDropdown
+pyStringType: Text
+pyTableAmountUnits: "true"
+pyTableOption: PromptList
+pyUseForLocalization: ""
+pyValueChanged: "false"
+pzChecksum: "-819203410"
+pzEntryCode: stN
+pzIndexCount: "12"
+pzInsKey: RULE-OBJ-PROPERTY MONORG-TEST-DATA-PEOPLE TITLE #20261008T144943.978 GMT
+pzOriginalInstanceKey: RULE-OBJ-PROPERTY MONORG-TEST-DATA-PEOPLE TITLE #20261008T140848.916 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyDOKeyList[0]:
+pyDOParamList[0]:
+pyDTParamList[0]:
+pyGatewayPropertyMap[0]:
+pyHTMLPropertyParams:
+pyPromptTableList[3]{pxObjClass,pyLocalizedValue,pyStandardValue}:
+  Embed-PropertyPromtValues,Conjoint,Conjoint
+  Embed-PropertyPromtValues,Enfant,Enfant
+  Embed-PropertyPromtValues,Autre,Autre
+pyQualifier:
+  none: ""

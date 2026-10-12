@@ -1,0 +1,30 @@
+pxContextMetadata: "{\"$properties\":[\".HouseholdMemberCount\"],\"$insights\":[],\"$genAICoaches\":[],\"$AIAgents\":[],\"$attachments\":[],\"$widgets\":[],\"$addresses\":[],\"$associated\":[],\"$users\":[],\"$classesmetadata\":[],\"$views\":[],\"$pagelists\":[],\"$fields\":[{\"name\":\".HouseholdMemberCount\"}],\"$whens\":[],\"$paragraphs\":[]}"
+pxDependencies: "{\"components\":[\"Integer\",\"Region\",\"DefaultForm\"]}"
+pxObjClass: Rule-UI-View
+pxUpdateOperator: dev.un
+pxViewMetadata: "{\"children\":[{\"children\":[{\"config\":{\"label\":\"@FL .HouseholdMemberCount\",\"labelOption\":\"default\",\"required\":true,\"value\":\"@P .HouseholdMemberCount\"},\"type\":\"Integer\"}],\"name\":\"Fields\",\"type\":\"Region\"}],\"config\":{\"ruleClass\":\"MONORG-Test-Work-GetInfo\",\"template\":\"DefaultForm\"},\"name\":\"CollectHouseholdSize\",\"type\":\"View\"}"
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyLabel: Composition du foyer
+pyRuleAvailable: Yes
+pyRuleName: CollectHouseholdSize
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyTemplateName: DefaultForm
+pyValueChanged: "false"
+pzChecksum: "1484618009"
+pzIndexCount: "2"
+pzInsKey: RULE-UI-VIEW MONORG-TEST-WORK-GETINFO COLLECTHOUSEHOLDSIZE #20261008T144935.435 GMT
+pzOriginalInstanceKey: RULE-UI-VIEW MONORG-TEST-WORK-GETINFO COLLECTHOUSEHOLDSIZE #20261008T142120.837 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyContent[1]:
+  - pxObjClass: Pega-UI-Content-Region
+    pyComponentName: Region
+    pyDisplayLabel: Region
+    pyName: Fields
+    pyPromptClass: MONORG-Test-Work-GetInfo
+    pyContent[1]{pxObjClass,pyComponentName,pyFieldReference,pyLabel,pyLabelOption,pyPromptClass,pyRequiredOption,pyValue,pyValueWithoutAnnotation}:
+      Pega-UI-Content-Field-Integer,Integer,HouseholdMemberCount,.HouseholdMemberCount,field,MONORG-Test-Work-GetInfo,always,.HouseholdMemberCount,.HouseholdMemberCount

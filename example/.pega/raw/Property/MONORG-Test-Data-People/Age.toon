@@ -1,0 +1,58 @@
+pxObjClass: Rule-Obj-Property
+pxUpdateOperator: dev.un
+pyAdvancedPropType: MANUAL
+pyBaseRule: "false"
+pyCannotBeDeclarativeTarget: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Data-People
+pyDataObject: ""
+pyDataRetrievalType: MANUAL
+pyDescription: "Âge de la personne, facultatif."
+pyDTName: ""
+pyEditValidate: ""
+pyGatewayClass: ""
+pyIsGateway: ""
+pyIsLightweight: "false"
+pyIsNonTransient: "true"
+pyIsRetrieveEachPageSeparately: "false"
+pyLabel: Âge
+pyLocalize: "false"
+pyMaxLength: ""
+pyOldStreamName: pxInteger
+pyOnInput: ""
+pyOnObjChange: ""
+pyPropertyMode: String
+pyPropertyName: Age
+pyReflectStatus: "true"
+pyRuleAccessWhen: ""
+pyRuleAvailable: Yes
+pyRuleName: Age
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pySortDateCircumWithinRSMajor: "true"
+pySpecial: "false"
+pyStreamName: pxInteger
+pyStringType: Integer
+pyTableAmountUnits: "true"
+pyTableOption: ""
+pyUseForLocalization: ""
+pyValueChanged: "false"
+pzChecksum: "682496323"
+pzEntryCode: sNN
+pzIndexCount: "6"
+pzInsKey: RULE-OBJ-PROPERTY MONORG-TEST-DATA-PEOPLE AGE #20261008T144939.833 GMT
+pzOriginalInstanceKey: RULE-OBJ-PROPERTY MONORG-TEST-DATA-PEOPLE AGE #20261008T140833.182 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyDOKeyList[0]:
+pyDOParamList[0]:
+pyDTParamList[0]:
+pyGatewayPropertyMap[0]:
+pyHTMLPropertyParams:
+pyQualifier:
+  none: ""

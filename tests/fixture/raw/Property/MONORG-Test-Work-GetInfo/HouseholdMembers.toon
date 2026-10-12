@@ -1,0 +1,55 @@
+pxObjClass: Rule-Obj-Property
+pxUpdateOperator: dev.un
+pyAdvancedPropType: MANUAL
+pyBaseRule: "false"
+pyCannotBeDeclarativeTarget: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work-GetInfo
+pyDataObject: ""
+pyDataRetrievalType: MANUAL
+pyDescription: Saisie temporaire des autres membres avant création de leurs fiches People.
+pyDTName: ""
+pyEditValidate: ""
+pyGatewayClass: ""
+pyIsGateway: ""
+pyIsLightweight: "false"
+pyIsNonTransient: "true"
+pyIsRetrieveEachPageSeparately: "false"
+pyLabel: Autres membres du foyer
+pyLocalize: "false"
+pyOnInput: ""
+pyOnObjChange: ""
+pyPageClass: MONORG-Test-Data-People
+pyPropertyMode: PageList
+pyPropertyName: HouseholdMembers
+pyReflectStatus: "true"
+pyRuleAccessWhen: ""
+pyRuleAvailable: Yes
+pyRuleName: HouseholdMembers
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pySkipLocalization: "false"
+pySortDateCircumWithinRSMajor: "true"
+pySpecial: "false"
+pyTableAmountUnits: "true"
+pyTableOption: ""
+pyUseForLocalization: ""
+pyValueChanged: "false"
+pzChecksum: "-502940124"
+pzEntryCode: L*NMONORG-Test-Data-People
+pzIndexCount: "6"
+pzInsKey: RULE-OBJ-PROPERTY MONORG-TEST-WORK-GETINFO HOUSEHOLDMEMBERS #20261008T144942.410 GMT
+pzOriginalInstanceKey: RULE-OBJ-PROPERTY MONORG-TEST-WORK-GETINFO HOUSEHOLDMEMBERS #20261008T141246.511 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyDOKeyList[0]:
+pyDOParamList[0]:
+pyDTParamList[0]:
+pyGatewayPropertyMap[0]:
+pyQualifier:
+  none: ""

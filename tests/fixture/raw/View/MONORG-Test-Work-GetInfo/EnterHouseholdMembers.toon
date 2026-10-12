@@ -1,0 +1,49 @@
+pxContextMetadata: "{\"$properties\":[],\"$insights\":[],\"$genAICoaches\":[],\"$AIAgents\":[],\"$attachments\":[],\"$widgets\":[],\"$addresses\":[],\"$associated\":[],\"$users\":[],\"$classesmetadata\":[{\"name\":\"MONORG-Test-Data-People\",\"fetchDefaultDataSources\":true}],\"$views\":[],\"$pagelists\":[{\"$associated\":[],\"$properties\":[],\"$actions\":[{\"name\":\"pyEdit\"}],\"$views\":[{\"name\":\"pyPrimaryFields\"}],\"pagelist\":\".HouseholdMembers\",\"$fields\":[],\"includePrimaryFields\":true}],\"$whens\":[],\"$paragraphs\":[]}"
+pxDependencies: "{\"components\":[\"SimpleTable\",\"EmbeddedDataMulti\",\"Region\",\"DefaultForm\"]}"
+pxObjClass: Rule-UI-View
+pxUpdateOperator: dev.un
+pxViewMetadata: "{\"children\":[{\"children\":[{\"config\":{\"addEditAction\":\"pyEdit\",\"columns\":[{\"config\":{\"inheritedProps\":[{\"prop\":\"label\",\"value\":\"@L Primary fields\"},{\"prop\":\"showLabel\",\"value\":true}],\"name\":\"pyPrimaryFields\",\"value\":\"pyPrimaryFields\"},\"type\":\"reference\"}],\"displayAs\":\"table\",\"editMode\":\"modal\",\"editType\":\"action\",\"label\":\"@FL .HouseholdMembers\",\"labelOption\":\"default\",\"pagelistValue\":\"@P .HouseholdMembers\",\"targetClassLabel\":\"@L Membre du foyer\",\"targetClassLabelOption\":\"custom\",\"targetObjectClass\":\"MONORG-Test-Data-People\"},\"type\":\"EmbeddedDataMulti\"}],\"name\":\"Fields\",\"type\":\"Region\"}],\"config\":{\"ruleClass\":\"MONORG-Test-Work-GetInfo\",\"template\":\"DefaultForm\"},\"name\":\"EnterHouseholdMembers\",\"type\":\"View\"}"
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyLabel: Saisie des autres membres
+pyRuleAvailable: Yes
+pyRuleName: EnterHouseholdMembers
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyTemplateName: DefaultForm
+pyValueChanged: "false"
+pzChecksum: "1478243582"
+pzIndexCount: "2"
+pzInsKey: RULE-UI-VIEW MONORG-TEST-WORK-GETINFO ENTERHOUSEHOLDMEMBERS #20261008T144935.864 GMT
+pzOriginalInstanceKey: RULE-UI-VIEW MONORG-TEST-WORK-GETINFO ENTERHOUSEHOLDMEMBERS #20261008T142325.527 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyContent[1]:
+  - pxObjClass: Pega-UI-Content-Region
+    pyComponentName: Region
+    pyDisplayLabel: Region
+    pyName: Fields
+    pyPromptClass: MONORG-Test-Work-GetInfo
+    pyContent[1]:
+      - pxObjClass: Pega-UI-Content-Field-Data-Embedded
+        pyAddEditAction: pyEdit
+        pyComponentName: EmbeddedDataMulti
+        pyDisplayAs: table
+        pyDisplayLabel: Embedded Data
+        pyEditModeConfig: modal
+        pyEditType: action
+        pyFieldReference: HouseholdMembers
+        pyLabel: .HouseholdMembers
+        pyLabelOption: field
+        pyModeOption: editable
+        pyPagelistValue: .HouseholdMembers
+        pyPromptClass: MONORG-Test-Work-GetInfo
+        pyTargetClassLabel: Membre du foyer
+        pyTargetClassLabelOption: text
+        pyTargetObjectClass: MONORG-Test-Data-People
+        pyTargetProperty: HouseholdMembers
+        pyType: PageList
+        pyColumns[1]{pxObjClass,pyComponentName,pyHeadingOption,pyLabel,pyPromptClass,pyRuleName,pyShowHeading,pyValue,pyValueWithoutAnnotation}:
+          Pega-UI-Content-Reference,reference,text,Primary fields,MONORG-Test-Work-GetInfo,pyPrimaryFields,"true",pyPrimaryFields,pyPrimaryFields

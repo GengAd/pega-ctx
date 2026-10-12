@@ -1,0 +1,36 @@
+pxContextMetadata: "{\"$properties\":[],\"$insights\":[],\"$genAICoaches\":[],\"$AIAgents\":[],\"$attachments\":[],\"$widgets\":[],\"$addresses\":[],\"$associated\":[],\"$users\":[],\"$classesmetadata\":[{\"name\":\"MONORG-Test-Data-People\",\"fetchDefaultDataSources\":true}],\"$views\":[],\"$pagelists\":[{\"$associated\":[],\"$properties\":[\".FirstName\",\".Age\",\".pyGUID\",\".LastName\",\".Title\"],\"pagelist\":\".HouseholdMembers\",\"$fields\":[{\"name\":\".LastName\"},{\"name\":\".Title\"},{\"name\":\".FirstName\"},{\"name\":\".Age\"}]},{\"metaDataOnly\":true,\"pagelist\":\"D_PeopleList\"}],\"$whens\":[],\"$paragraphs\":[]}"
+pxDependencies: "{\"components\":[\"SimpleTableSelect\",\"Region\",\"TextInput\",\"DataReference\",\"SemanticLink\"]}"
+pxObjClass: Rule-UI-View
+pxUpdateOperator: dev.un
+pxViewMetadata: "{\"children\":[{\"config\":{\"contextClass\":\"MONORG-Test-Data-People\",\"detailsDisplay\":[{\"config\":{\"label\":\"@FL .Age\",\"value\":\"@P .Age\"},\"type\":\"Integer\"}],\"label\":\"@L Membres du foyer\",\"presets\":[{\"children\":[{\"children\":[{\"config\":{\"label\":\"@FL .FirstName\",\"labelOption\":\"default\",\"value\":\"@P .FirstName\"},\"type\":\"TextInput\"},{\"config\":{\"label\":\"@FL .LastName\",\"labelOption\":\"default\",\"value\":\"@P .LastName\"},\"type\":\"TextInput\"},{\"config\":{\"label\":\"@FL .Title\",\"labelOption\":\"default\",\"value\":\"@P .Title\"},\"type\":\"TextInput\"}],\"name\":\"Columns\",\"type\":\"Region\"}],\"config\":{},\"id\":\"P_\",\"label\":\"\",\"name\":\"presets\",\"template\":\"Table\"}],\"primaryField\":\".LastName\",\"readonlyContextList\":\"@P .HouseholdMembers\",\"referenceList\":\"D_PeopleList\",\"referenceType\":\"Data\",\"rowHeader\":{\"config\":{\"label\":\"@FL .LastName\",\"labelOption\":\"default\",\"value\":\"@P .LastName\"},\"type\":\"TextInput\"},\"selectionKey\":\".pyGUID\",\"selectionList\":\".HouseholdMembers\",\"selectionMode\":\"multi\"},\"type\":\"SimpleTableSelect\"},{\"children\":[],\"name\":\"Views\",\"type\":\"Region\"}],\"config\":{\"classKeys\":[{\"name\":\"pyGUID\"}],\"contextClass\":\"MONORG-Test-Data-People\",\"displayAs\":\"simpleTable\",\"isCreationOfNewRecordAllowedForReference\":false,\"mode\":\"multiselect\",\"name\":\"HouseholdMembersPicker\",\"parentContextClass\":\"MONORG-Test-Data-People\",\"referenceList\":\"D_PeopleList\",\"ruleClass\":\"MONORG-Test-Data-People\",\"selectionMode\":\"multi\",\"template\":\"DataReference\"},\"name\":\"HouseholdMembersPicker\",\"type\":\"View\"}"
+pxViewType: datareference
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Data-People
+pyJsonConfig: "{\"classKeys\":[{\"name\":\"pyGUID\"}],\"contextClass\":\"MONORG-Test-Data-People\",\"displayAs\":\"simpleTable\",\"isCreationOfNewRecordAllowedForReference\":false,\"mode\":\"multiselect\",\"name\":\"HouseholdMembersPicker\",\"parentContextClass\":\"MONORG-Test-Data-People\",\"referenceList\":\"D_PeopleList\",\"selectionMode\":\"multi\"}"
+pyLabel: Membres du foyer
+pyRuleAvailable: Yes
+pyRuleName: HouseholdMembersPicker
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyTemplateName: DataReference
+pyValueChanged: "false"
+pzChecksum: "-260519979"
+pzIndexCount: "14"
+pzInsKey: RULE-UI-VIEW MONORG-TEST-DATA-PEOPLE HOUSEHOLDMEMBERSPICKER #20261008T144936.739 GMT
+pzOriginalInstanceKey: RULE-UI-VIEW MONORG-TEST-DATA-PEOPLE HOUSEHOLDMEMBERSPICKER #20261008T144429.645 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyContent[2]:
+  - pxObjClass: Pega-UI-Content
+    pyComponentName: SimpleTableSelect
+    pyDisplayLabel: SimpleTableSelect
+    pyJsonConfig: "{\"contextClass\":\"MONORG-Test-Data-People\",\"detailsDisplay\":[{\"config\":{\"label\":\"@FL .Age\",\"value\":\"@P .Age\"},\"type\":\"Integer\"}],\"label\":\"@L Membres du foyer\",\"presets\":[{\"children\":[{\"children\":[{\"config\":{\"label\":\"@FL .FirstName\",\"labelOption\":\"default\",\"value\":\"@P .FirstName\"},\"type\":\"TextInput\"},{\"config\":{\"label\":\"@FL .LastName\",\"labelOption\":\"default\",\"value\":\"@P .LastName\"},\"type\":\"TextInput\"},{\"config\":{\"label\":\"@FL .Title\",\"labelOption\":\"default\",\"value\":\"@P .Title\"},\"type\":\"TextInput\"}],\"name\":\"Columns\",\"type\":\"Region\"}],\"config\":{},\"id\":\"P_\",\"label\":\"\",\"name\":\"presets\",\"template\":\"Table\"}],\"primaryField\":\".LastName\",\"readonlyContextList\":\"@P .HouseholdMembers\",\"referenceList\":\"D_PeopleList\",\"referenceType\":\"Data\",\"rowHeader\":{\"config\":{\"label\":\"@FL .LastName\",\"labelOption\":\"default\",\"value\":\"@P .LastName\"},\"type\":\"TextInput\"},\"selectionKey\":\".pyGUID\",\"selectionList\":\".HouseholdMembers\",\"selectionMode\":\"multi\"}"
+    pyPromptClass: MONORG-Test-Data-People
+  - pxObjClass: Pega-UI-Content-Region
+    pyComponentName: Region
+    pyDisplayLabel: Region
+    pyName: Views
+    pyPromptClass: MONORG-Test-Data-People
+    pyContent[0]:

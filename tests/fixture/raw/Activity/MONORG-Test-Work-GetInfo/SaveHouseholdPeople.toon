@@ -1,0 +1,188 @@
+pxObjClass: Rule-Obj-Activity
+pxUpdateOperator: dev.un
+pyActivityName: SaveHouseholdPeople
+pyActivityType: UTILITY
+pyAuthenticatedOnly: "true"
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work-GetInfo
+pyDescription: "Persiste le répondant et les autres membres dans People, construit leurs références par pyGUID, puis sauvegarde les liens."
+pyJavaClassName: Rule_Obj_Activity_MONORG_Test_Work_GetInfo_SaveHouseholdPeople_Action_20261008T144656_405_GMT
+pyJavaGenerateAPIVersion: "03-02"
+pyJavaGenerateTime: "2026-10-08T14:46:56.447Z"
+pyJavaGenerateVersion: "03-01-01"
+pyJavaStream: ""
+pyLabel: Enregistrer les personnes du foyer
+pyOldActivityType: UTILITY
+pyRelativePath: ""
+pyRuleAvailable: Yes
+pyRuleName: SaveHouseholdPeople
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyStatus: ""
+pyTaskStatusXml: <pagedata></pagedata>
+pyValueChanged: "false"
+pyXMLSignature: "<?xml version=\"1.0\"?><methodSignature><pyStepsCallParams></pyStepsCallParams><pyStepsPageAliases></pyStepsPageAliases></methodSignature>"
+pzChecksum: "2114508393"
+pzIndexCount: "30"
+pzInsKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO SAVEHOUSEHOLDPEOPLE #20261008T144931.593 GMT
+pzOriginalInstanceKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO SAVEHOUSEHOLDPEOPLE #20261008T143046.187 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[2]:
+  - pxObjClass: Embed-Reference-NamedPage
+    pxPageClass: MONORG-Test-Data-People
+    pxPageName: Requester
+    pzIndexOwnerKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO SAVEHOUSEHOLDPEOPLE #20261008T144931.593 GMT
+    pzIndexes:
+      NamedPageReference: "17"
+  - pxObjClass: Embed-Reference-NamedPage
+    pxPageClass: MONORG-Test-Work-GetInfo
+    pxPageName: pyWorkPage
+    pzIndexOwnerKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO SAVEHOUSEHOLDPEOPLE #20261008T144931.593 GMT
+    pzIndexes:
+      NamedPageReference: "18"
+pxWarnings[2]:
+  - pxIsWarningJustified: ""
+    pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2026-10-08T14:31:08.220Z"
+    pxWarningCreateOperator: dev.un
+    pxWarningDetails: (Rule-Obj-Activity)pxSaveDataPageWriteNow
+    pxWarningJustifiedOperator: ""
+    pxWarningMessage: (Rule-Obj-Activity)pxSaveDataPageWriteNow
+    pxWarningName: Save-DataPage Write Now
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "2"
+    pxWarningType: Data Integrity
+    pyWarningJustifiedMessage: ""
+    pzIndexOwnerKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO SAVEHOUSEHOLDPEOPLE #20261008T144931.593 GMT
+    pzIndexes:
+      Warnings: "15"
+  - pxIsWarningJustified: ""
+    pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2026-10-08T14:31:08.289Z"
+    pxWarningCreateOperator: dev.un
+    pxWarningDetails: (Rule-)pxPegaUnit
+    pxWarningJustifiedOperator: ""
+    pxWarningMessage: (Rule-)pxPegaUnit
+    pxWarningName: Pega Unit Warning
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "3"
+    pxWarningType: Maintainability
+    pyWarningJustifiedMessage: ""
+    pzIndexOwnerKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO SAVEHOUSEHOLDPEOPLE #20261008T144931.593 GMT
+    pzIndexes:
+      Warnings: "16"
+pyActivityPrivilegeList[0]:
+pyActivityRolesList[0]:
+pyLocalParameters[0]:
+pyPagesAndClasses[4]{pxObjClass,pyPagesAndClassesClass,pyPagesAndClassesPage}:
+  Embed-PagesAndClasses,MONORG-Test-Data-People,Requester
+  Embed-PagesAndClasses,MONORG-Test-Data-People,Primary.HouseholdMembers
+  Embed-PagesAndClasses,MONORG-Test-Data-People,Primary.PeopleForLinks
+  Embed-PagesAndClasses,MONORG-Test-Work-GetInfo,pyWorkPage
+pyParameters[0]:
+pySteps[5]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Save-DataPage
+    pyStepsDescription: Persister la fiche People du répondant
+    pyStepsObjectName: Requester
+    pyParamArray[0]:
+    pyStepsCallParams:
+      DataPage: D_People
+      pyAutopopPropPageClass: ""
+      pyAutopopulatePropertyName: ""
+      pyGUID: .pyGUID
+      pySaveAutoPopPropWhen: ""
+      WriteNow: "true"
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+    pyStepsTransParams[0]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Save-DataPage
+    pyStepsDescription: Persister chaque fiche People membre du foyer
+    pyStepsObjectName: Primary.HouseholdMembers
+    pyParamArray[0]:
+    pyStepsCallParams:
+      DataPage: D_People
+      pyAutopopPropPageClass: ""
+      pyAutopopulatePropertyName: ""
+      pyGUID: .pyGUID
+      pySaveAutoPopPropWhen: ""
+      WriteNow: "true"
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+      pyForEachProperty: ""
+      pyStepsRepeatDefHasRepeat: EMBEDDED
+      pyStepsRepeatDefIteration: ""
+      pyStepsRepeatDefLimit: ""
+      pyStepsRepeatDefStart: ""
+      pyStepsRepeatDefStop: ""
+      pyForEachValidClasses[1]{pxObjClass,pyForEachClass}:
+        Embed-ActivityForEachClasses,MONORG-Test-Data-People
+    pyStepsTransParams[0]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Apply-DataTransform
+    pyStepsDescription: Construire les références croisées des People
+    pyStepsObjectName: pyWorkPage
+    pyParamArray[0]:
+    pyStepsCallParams:
+      DataTransform: BuildHouseholdReferences
+      PassParameterPage: "false"
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+    pyStepsTransParams[0]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Property-Remove
+    pyStepsDescription: Retirer l’identifiant propre à chaque personne de sa liste de membres liés
+    pyStepsObjectName: Primary.PeopleForLinks
+    pyParamArray[1]{Property,pxObjClass}:
+      .HouseholdMembers(param.pyForEachCount),Embed-MethodParams
+    pyStepsCallParams:
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+      pyForEachProperty: ""
+      pyStepsRepeatDefHasRepeat: EMBEDDED
+      pyStepsRepeatDefIteration: ""
+      pyStepsRepeatDefLimit: ""
+      pyStepsRepeatDefStart: ""
+      pyStepsRepeatDefStop: ""
+      pyForEachValidClasses[1]{pxObjClass,pyForEachClass}:
+        Embed-ActivityForEachClasses,MONORG-Test-Data-People
+    pyStepsTransParams[0]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Save-DataPage
+    pyStepsDescription: Persister les identifiants et références de chaque personne
+    pyStepsObjectName: Primary.PeopleForLinks
+    pyParamArray[0]:
+    pyStepsCallParams:
+      DataPage: D_People
+      pyAutopopPropPageClass: ""
+      pyAutopopulatePropertyName: ""
+      pyGUID: .pyGUID
+      pySaveAutoPopPropWhen: ""
+      WriteNow: "true"
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+      pyForEachProperty: ""
+      pyStepsRepeatDefHasRepeat: EMBEDDED
+      pyStepsRepeatDefIteration: ""
+      pyStepsRepeatDefLimit: ""
+      pyStepsRepeatDefStart: ""
+      pyStepsRepeatDefStop: ""
+      pyForEachValidClasses[1]{pxObjClass,pyForEachClass}:
+        Embed-ActivityForEachClasses,MONORG-Test-Data-People
+    pyStepsTransParams[0]:

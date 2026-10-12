@@ -1,0 +1,30 @@
+pxContextMetadata: "{\"$properties\":[],\"$insights\":[],\"$genAICoaches\":[],\"$AIAgents\":[],\"$attachments\":[],\"$widgets\":[],\"$addresses\":[],\"$associated\":[],\"$users\":[],\"$classesmetadata\":[],\"$views\":[{\"name\":\"RequesterDetails\",\"context\":\".Requester\",\"ruleClass\":\"MONORG-Test-Data-People\"}],\"$pagelists\":[],\"$whens\":[],\"$paragraphs\":[]}"
+pxDependencies: "{\"components\":[\"Region\",\"DefaultForm\"]}"
+pxObjClass: Rule-UI-View
+pxUpdateOperator: dev.un
+pxViewMetadata: "{\"children\":[{\"children\":[{\"config\":{\"context\":\".Requester\",\"inheritedProps\":[{\"prop\":\"label\",\"value\":\"@FL .Requester\"}],\"name\":\"RequesterDetails\",\"ruleClass\":\"MONORG-Test-Data-People\",\"type\":\"view\"},\"type\":\"reference\"}],\"name\":\"Fields\",\"type\":\"Region\"}],\"config\":{\"ruleClass\":\"MONORG-Test-Work-GetInfo\",\"template\":\"DefaultForm\"},\"name\":\"pyEdit\",\"type\":\"View\"}"
+pyBaseRule: "false"
+pyClassName: MONORG-Test-Work-GetInfo
+pyLabel: Informations du répondant
+pyRuleAvailable: Yes
+pyRuleName: pyEdit
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyTemplateName: DefaultForm
+pyValueChanged: "false"
+pzChecksum: "497793139"
+pzIndexCount: "2"
+pzInsKey: RULE-UI-VIEW MONORG-TEST-WORK-GETINFO PYEDIT #20261008T144937.671 GMT
+pzOriginalInstanceKey: RULE-UI-VIEW MONORG-TEST-WORK-GETINFO PYEDIT #20261008T142052.000 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxWarnings[0]:
+pyContent[1]:
+  - pxObjClass: Pega-UI-Content-Region
+    pyComponentName: Region
+    pyDisplayLabel: Region
+    pyName: Fields
+    pyPromptClass: MONORG-Test-Work-GetInfo
+    pyContent[1]{pxObjClass,pyClassContext,pyComponentName,pyFieldReference,pyJsonConfig,pyLabel,pyLabelOption,pyPromptClass,pyRuleName,pyRuleType,pyType}:
+      Pega-UI-Content-Field-Data-Embedded,MONORG-Test-Data-People,reference,Requester,"{\"context\":\".Requester\"}",.Requester,field,MONORG-Test-Work-GetInfo,RequesterDetails,view,Page

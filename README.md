@@ -1,0 +1,125 @@
+# pega-ctx
+
+A local, readable mirror of the rules of a Pega application, so that a coding agent (Claude Code, Copilot) understands the application without reading the raw JSON of its rules.
+
+pega-ctx is a CLI client of the Pega MCP server (plugin `pega-infinity-authoring`). It keeps a `.pega/` folder in the project, in three layers: the raw content of each rule, one Markdown digest per rule, and an index plus a graph of the references. The model greps the index, reads digests, and goes through pega-ctx to write.
+
+## What it changes
+
+`pega-ctx measure` on the fixture (20 real anonymized rules, `example/.pega/raw`):
+
+| type | rules | raw average (B) | digest average (B) | ratio |
+|---|---:|---:|---:|---:|
+| Activity | 1 | 7188 | 1393 | ×5.2 |
+| CaseType | 1 | 5057 | 713 | ×7.1 |
+| Class | 1 | 1207 | 357 | ×3.4 |
+| DataPage | 1 | 4276 | 398 | ×10.7 |
+| DataTransform | 1 | 4531 | 1012 | ×4.5 |
+| DecisionTable | 1 | 7170 | 383 | ×18.7 |
+| Flow | 2 | 11950 | 727 | ×16.4 |
+| FlowAction | 1 | 5554 | 309 | ×18 |
+| Property | 3 | 1566 | 284 | ×5.5 |
+| ReportDefinition | 1 | 19026 | 710 | ×26.8 |
+| Section | 1 | 62513 | 493 | ×126.8 |
+| Validate | 1 | 19893 | 485 | ×41 |
+| View | 4 | 3038 | 582 | ×5.2 |
+| When | 1 | 6368 | 386 | ×16.5 |
+| **total** | **20** | **9177** | **564** | **×16.3** |
+
+On a Constellation application of 32 rules, the ratio was ×9.2 (measured before the switch to English, whose digests are slightly shorter). Small rules (views, properties, data transforms) keep almost all their useful content; large ones (sections, validations, reports) mostly lose persistence data and generated code. The gain goes beyond the ratio: `around <CaseType> --stage <stage>` returns a user story's context in one command (flows, flow actions, views), without the model opening one rule too many.
+
+Measured on a real task (create a case type with two stages and three fields, modelled on an existing case type, three runs per condition, Sonnet 5.5): with pega-ctx, **2.3 times cheaper** ($0.51 against $1.20), half the tool calls, eight times less text read, for at least equal quality (20/24 against 19/24 on the scorecard, the case runs 3 times out of 3). Details: `docs/measurement.md`.
+
+## Install
+
+### 1. Requirements
+
+- **Node 20 or later**: `node -v`.
+- **Java 17 or later**: `java -version` (the Pega MCP server is a Java program).
+- **Claude Code with the Pega plugin `pega-infinity-authoring`**, connected to your Pega server. In Claude Code, run `/pega-infinity-authoring:pega-setup` and follow it: it writes `~/.infinity-rules-mcp/config.json` (server URL, OAuth client, Infinity version). Check it works by asking Claude to list the applications.
+
+pega-ctx needs nothing more: it finds the plugin in `~/.claude/plugins/cache/Pega/pega-infinity-authoring/` and launches the same server. It keeps no secret.
+
+### 2. Install pega-ctx
+
+```bash
+npm install -g github:GengAd/pega-ctx
+pega-ctx             # lists the commands
+```
+
+A single dependency, `@modelcontextprotocol/sdk`. To update later, run the same `npm install -g` again. To work on pega-ctx itself instead: `git clone https://github.com/GengAd/pega-ctx.git`, `npm install`, then `npm link` in the clone.
+
+### 3. Set it up in your Pega project
+
+From the root of the project's repository (the folder Claude Code or Copilot is opened in):
+
+```bash
+pega-ctx init        # creates .pega/config.json and .pega/stack.md (--ruleset A,B to follow only some rulesets)
+pega-ctx sync        # first mirror: lists, reads and projects every rule (a few minutes)
+pega-ctx install     # writes the instructions into CLAUDE.md and .github/copilot-instructions.md
+```
+
+Then, once:
+
+1. **Say where new rules go.** `sync` wrote `.pega/write.draft.json`, guessed from the rulesets seen. Review it, and copy it into `.pega/config.json` as `write` (the server does not say which ruleset is unlocked). Set `branch` there too if you always work on the same branch.
+2. **Complete the instructions.** In `CLAUDE.md`, fill the brackets left by `install` (application name, project conventions). `install` can be run again safely: it only replaces its own block, between `<!-- pega-ctx:start -->` and `<!-- pega-ctx:end -->`.
+3. **Ignore the server's files in git.** The Pega MCP server writes its OAuth tokens and logs in the folder it is launched from: add `.infinity-rules-mcp/` and `logs/` to `.gitignore`. `.pega/` itself can be committed (`init --ignore-raw` keeps `.pega/raw/` out of git).
+
+`sync` follows every rule type the Pega MCP knows (the 37 it can write, and sections); add any other rule class to `types` in `.pega/config.json` (`["Rule-Declare-Expressions"]`).
+
+## Use
+
+Always from the project root, where `.pega/` lives. Most of the time you do not type the commands yourself: the instructions written by `install` tell the agent when to call them. Ask it for a user story as usual.
+
+The day-to-day loop:
+
+```bash
+pega-ctx sync                                      # each morning, or after changes in Dev Studio
+pega-ctx search household                          # find rules by words
+pega-ctx around CaseType:MyOrg-App-Work-Claim:pyDefault --stage Review
+                                                   # a story's context: case type, flows, flow actions, views
+pega-ctx rule View:MyOrg-App-Work-Claim:pyEdit     # the digest of one rule (or just its name, if unique)
+pega-ctx create View MyOrg-App-Work-Claim Summary --from pyEdit --fields Amount,Reason --draft
+pega-ctx send Summary --branch MyBranch            # sends the reviewed draft to Pega
+pega-ctx check                                     # broken references, old sync, drafts waiting
+```
+
+Writes go through drafts: `--draft` writes the JSON that will be sent to `.pega/drafts/`, checked against the server's schema; you (or the agent) review it, then `send` sends it to a branch. Details of every command below.
+
+## Commands
+
+All from the project root, where `.pega/` lives. `--json` everywhere; a failure returns a non-zero code and one line that says what to do.
+
+| Command | What it does |
+|---|---|
+| `init [--ruleset A,B] [--ignore-raw]` | creates `.pega/config.json` and `stack.md` |
+| `sync [--full] [--since <date>] [--ruleset R]` | reads again what changed in Pega, recomputes index, graph and digests |
+| `search <words> [--type T] [--class C]` | grep on the index, name and description |
+| `rule <id> [--cited-by] [--raw]` | the digest of a rule (`Type:Class:Name`, or its name if unique) |
+| `around <id> [--depth 2] [--types Flow,View] [--stage S]` | the subgraph, digests from the closest to the farthest; 40 rules at most |
+| `stack [--for <Class>]` | applications and rulesets seen; known inheritance of a class and where its new rules are written |
+| `live <id>` | the rule read in Pega right now, and how it differs from the mirror |
+| `create <Type> <Class> <Name> --from <id> [--patch <f.json>] [--rename A=B] [--fields P1,P2] [--dry-run \| --draft] [--branch B]` | creates a rule from a sibling rule, describing only the difference; `--fields` for the fields of a view. Any of the 37 types `create-rule` accepts; the others are refused with the server's reason |
+| `examples [Type]` | the server's examples for a type, templates when the application has no rule of that type yet (`create … --from example:stub`) |
+| `update <id> --patch <f.json> [--dry-run \| --draft] [--branch B]` | updates a rule, after an implicit `live` |
+| `send <draft \| id> [--branch B] [--dry-run] [--force] [--no-lint]` | sends a draft as it is in the file, then deletes it |
+| `lint <draft \| id>` | checks a draft against the server's schema, one line per problem with its line in the file |
+| `check` | missing references, orphan rules, old sync |
+| `measure [--raw <folder>]` | size of the raw rule and of the digest, per type |
+| `install [--claude] [--copilot]` | writes the instructions from `templates/` into the project |
+
+`create` and `update` only write to a branch, as the server requires. `--dry-run` returns the digest of what would be written; `--json` adds the content sent. `--draft` writes that content to `.pega/drafts/<Type>/<Class>/<Name>.json`, readable (two-space indentation, identity fields first, `pxViewMetadata` and other JSON strings unfolded as objects), to be reviewed and corrected by hand; `send` then sends the file without recomputing anything. An update draft remembers the rule it was written against: if the rule changed in Pega meanwhile, `send` refuses (`--force` to apply it anyway). `check` lists the drafts waiting.
+
+Before anything is written, the content is checked against the JSON Schema the Pega MCP itself validates with (read from the Pega plugin's files, no call to Pega): `lint: N errors`, then one line per problem, `error line 71  /content/pyDataSourceList/0: …`. An error stops `create`, `update` and `send` (`--no-lint` leaves the decision to the server). Numbers and booleans that the raw rule keeps as strings (`"10"`, `"true"`) are typed first where the schema says so. Each draft starts with a `"$schema"` pointing to a copy of that schema in `.pega/schemas/`: opened in VS Code, the draft is highlighted, what the server would refuse is underlined, and field names are completed. `.pega/schemas/` is rewritten with each draft and can be ignored by git. `create` picks the write ruleset from `--ruleset`, then the `write` table, then the rulesets of the class's existing rules; when none applies or the class spans several rulesets, it refuses and lists the candidates, so the model asks instead of guessing.
+
+## Example
+
+`example/.pega/` is a mirror built from the fixture: `example/.pega/digest/CaseType/MONORG-Test-Work-GetInfo/pyDefault.md` for a case type, `example/.pega/index.jsonl` for the index. It is rebuilt by `node scripts/example.mjs`.
+
+## Development
+
+- `npm test`: `node --test`, on the fixture `tests/fixture/raw/`. No test launches Java: a fake client serves the fixture (`tests/fake-pega.mjs`).
+- `node scripts/types.mjs` regenerates `src/mcp/types.mjs` from the Pega plugin's schemas, after a plugin update; `npm test` says when it is behind.
+- `UPDATE_DIGESTS=1 npm test` rewrites the expected digests in `tests/fixture/digest/`; read them before committing.
+- `pega-ctx.md`: the build specification. `docs/mcp-tools.md`: the real tools of the Pega MCP. `docs/projection.md`: what each type keeps. `docs/mirror.md`: the actual mirror format. `docs/mcp-gaps.md`: what the Pega MCP lacks, found while building pega-ctx. `docs/decisions/`: the architecture decisions.
+- `templates/`: the instructions to copy into a Pega project (`CLAUDE.md`, `copilot-instructions.md`, same content).

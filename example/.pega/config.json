@@ -1,0 +1,17 @@
+{
+  "mcp": {
+    "source": "plugin"
+  },
+  "application": "Test",
+  "rulesets": [
+    "Test",
+    "Gameboard",
+    "Cvent"
+  ],
+  "write": {
+    "byClass": [],
+    "default": null
+  },
+  "branch": null,
+  "lastSync": "2026-10-11T14:49:02.318Z"
+}

@@ -1,0 +1,216 @@
+pxMoveFromSystem: ""
+pxObjClass: Rule-Declare-DecisionTable
+pxServerReqURI: /prweb/app/gameboard/rArlsY8dneoodxOMFufI--qaDw2LgP9U*/!TABTHREAD10
+pxUpdateOperator: dev.quatre
+pyAction: ""
+pyAllowedResultsProperty: ""
+pyAllowedToLoadResults: yes
+pyBaseRule: "false"
+pyCircumstanceDate: "1970-01-01T00:00:00.000Z"
+pyCircumstanceDateProp: ""
+pyCircumstanceDefinition: ""
+pyCircumstanceProp: ""
+pyCircumstanceTemplate: ""
+pyCircumstanceType: ""
+pyCircumstanceVal: ""
+pyClassName: OrgEv-Int-CventAtt-Data
+pyDefaultAction: RETURN
+pyDefaultResult: "false"
+pyDescription: ""
+pyDisplayMode: clone
+pyDoHarvesting: "true"
+pyEditable: ""
+pyJavaGenerateAPIVersion: "05-02"
+pyJavaStream: ""
+pyLabel: Ignored registration type
+pyMemo: wip
+pyMethodStatus: ""
+pyPageContext: ""
+pyPageContextClass: ""
+pyPurpose: IgnoredRegistrationType
+pyRedirectRule: "false"
+pyRelativePath: ""
+pyReturnColumnHasAccess: "true"
+pyRuleAvailable: Yes
+pyRuleEnds: "1970-01-01T00:00:00.000Z"
+pyRuleName: IgnoredRegistrationType
+pyRuleSet: Cvent
+pyRuleSetVersion: "01-01-05"
+pyRuleStarts: "1970-01-01T00:00:00.000Z"
+pySelected: "false"
+pySortDateCircumWithinRSMajor: "true"
+pyStatus: ""
+pyStreamName: ""
+pySubstituteCircumstanceVal: ""
+pySystemName: ""
+pyTableSizeThreshold: "500"
+pyTableSizeThreshold2: "50000"
+pyTaskID: ""
+pyTaskStatusXml: <pagedata><TaskStatus>true</TaskStatus><TaskStatus>false</TaskStatus></pagedata>
+pyUsage: ""
+pyValueChanged: "false"
+pyWindowTitle: ""
+pzChecksum: "1081911122"
+pzIndexCount: "12"
+pzInsKey: RULE-DECLARE-DECISIONTABLE ORGEV-INT-CVENTATT-DATA IGNOREDREGISTRATIONTYPE #20251209T180309.988 GMT
+pzOriginalInstanceKey: RULE-DECLARE-DECISIONTABLE ORGEV-INT-CVENTATT-DATA IGNOREDREGISTRATIONTYPE #20251209T151035.764 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "05"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[1]:
+  - pxIsWarningJustified: "false"
+    pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2024-12-24T08:35:32.124Z"
+    pxWarningCreateOperator: dev.trois
+    pxWarningDetails: (Rule-)pxPegaUnit
+    pxWarningJustifiedOperator: ""
+    pxWarningJustifiedTime: "1970-01-01T00:00:00.000Z"
+    pxWarningMessage: (Rule-)pxPegaUnit
+    pxWarningName: Pega Unit Warning
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "3"
+    pxWarningType: Maintainability
+    pyWarningJustifiedMessage: ""
+    pzIndexOwnerKey: RULE-DECLARE-DECISIONTABLE ORGEV-INT-CVENTATT-DATA IGNOREDREGISTRATIONTYPE #20251209T180309.988 GMT
+    pzIndexes:
+      Warnings: "6"
+pyAdditionalDependencies[1]: ""
+pyAllowedValues[1]:
+  - pxObjClass: Embed-Decision-AllowedValues
+    pyAllowedValue: ""
+    pzIsAllowedResultsPropSetExist: "false"
+    pyPropertySet[1]:
+      - pxObjClass: Embed-ModelParams
+        pyExpressionBuilder: ""
+        pyPropertiesName: ""
+        pyPropertiesValue: ""
+        pyExpressionGadget:
+          pxObjClass: PegaGadget-ExpressionBuilder
+          pyEditable: "true"
+          pyIsLaunchAsOverlay: "true"
+          pyShowCustomPages: "true"
+          pyShowLocalVariables: "false"
+          pyShowParameters: "true"
+          pyTemplateInputBox: ""
+          pyExpressionMapNew:
+pyColumnPreferences[5]{pxObjClass,pyWidth}:
+  Embed-ColumnPreferences,80px
+  Embed-ColumnPreferences,80px
+  Embed-ColumnPreferences,25px
+  Embed-ColumnPreferences,80px
+  Embed-ColumnPreferences,80px
+pyColumns[1]:
+  - pxObjClass: Embed-DecisionTable-Column
+    pyColumnDataType: text
+    pyDefaultOperator: =
+    pyHasAccess: "true"
+    pyProperty: .registrationType.code
+    pyPropertyLabel: Code
+    pyUseRange: "false"
+    pyUseRangeMax: ""
+    pyColumnRestrictions:
+      default:
+        pxObjClass: Embed-Restrictions-FunctionAliases
+        pxSubscript: default
+        pyAllowedToEditValues: yes
+    pyCondition[2]: Vendor,Client Speaker
+    pyOrConditions[1]:
+      - pxObjClass: Embed-DecisionTable-OrCondition
+        pyRowNum: "-1"
+        pyOrCondition[1]: ""
+pyDefaultResultPropSet[1]{pxObjClass,pyPropertiesName,pyPropertiesValue}:
+  Embed-ModelParams,"",""
+pyDelegatedRestrictions:
+  default:
+    pxObjClass: Embed-Restrictions-FunctionAliases
+    pxSubscript: default
+    pyAllowedToBuildExpressions: yes
+    pyAllowedToBuildExpressionsStr: "true"
+    pyAllowedToChangeColumns: yes
+    pyAllowedToChangeColumnsStr: "true"
+    pyAllowedToChangePropSets: yes
+    pyAllowedToChangePropSetsStr: "true"
+    pyAllowedToChangeRows: yes
+    pyAllowedToChangeRowsStr: "true"
+    pyAllowedToReturnValues: yes
+    pyAllowedToReturnValuesStr: "true"
+    pyEvaluateAllRows: no
+    pyEvaluateAllRowsStr: "false"
+pyInitialPropSet[1]:
+  - pxObjClass: Embed-ModelParams
+    pyPropertiesName: ""
+    pyPropertiesValue: ""
+    pyExpressionGadget:
+      pxObjClass: PegaGadget-ExpressionBuilder
+      pyEditable: "true"
+      pyIsLaunchAsOverlay: "true"
+      pyShowCustomPages: "true"
+      pyShowLocalVariables: "false"
+      pyShowParameters: "true"
+      pyTemplateInputBox: ""
+      pyExpressionMapNew:
+pyLogicErrors[0]:
+pyPagesAndClasses[1]{pxObjClass,pyPagesAndClassesClass,pyPagesAndClassesDescription,pyPagesAndClassesKey,pyPagesAndClassesMode,pyPagesAndClassesPage}:
+  Embed-PagesAndClasses,"","","","",""
+pyParameters[1]{pxObjClass,pyParametersParamDesc,pyParametersParamName,pyParametersParamType}:
+  Embed-MethodParams,"","",Text
+pyPropertyColumns[1]:
+  - pxObjClass: Embed-DecisionTable-PropertyColumn
+    pyDefaultPropertySetOperator: =
+    pyHasAccess: "true"
+    pyProperty: ""
+    pyPropertyLabel: ""
+    pyPropSetDefaultValue: ""
+    pyColumnRestrictions:
+      default:
+        pxObjClass: Embed-Restrictions-FunctionAliases
+        pxSubscript: default
+        pyAllowedToEditValues: ""
+    pyPropertyValues[2]: "",""
+pyResults[2]: "true","true"
+pyReturnColumnRestrictions:
+  default:
+    pxObjClass: Embed-Restrictions-FunctionAliases
+    pxSubscript: default
+    pyAllowedToEditValues: "true"
+    pyAllowedToEditValuesPrivileges[1]{pxObjClass,pyPrivilegeName}:
+      Embed-Rule-PrivilegeSecurity,""
+pyToolBarSettings:
+  pxCanJustifyWarnings: "true"
+  pxObjClass: Embed-WBSettings-ToolBar
+  pyAvailability: "false"
+  pyBack: "true"
+  pyBranchOut: "false"
+  pyCheckIn: "false"
+  pyCheckOut: "true"
+  pyCompareVersion: ""
+  pyCurrentlyOpen: "true"
+  pyDelegates: "true"
+  pyDelete: "true"
+  pyFavorites: "true"
+  pyForward: "true"
+  pyHasQualifiers: "false"
+  pyHelpURI: "https://community.pega.com/help_v261/rule-/rule-declare-/rule-declare-decisiontable/main"
+  pyLaunch: "true"
+  pyNew: "true"
+  pyPreview: "false"
+  pyPropertyPane: "false"
+  pyRecover: "false"
+  pyRefresh: "true"
+  pyRequiresCheckOut: "true"
+  pyRestore: "false"
+  pyRuleData: "true"
+  pyRuleResolution: "true"
+  pyRun: "true"
+  pySave: "false"
+  pySaveAs: "true"
+  pyShowJava: "true"
+  pySiblings: "true"
+  pyUsesInheritance: "true"
+  pyVersionSecure: "false"
+pyWhenChange[2]{pxObjClass,pyAddPageContext,pyDesignatedClass,pyDesignatedClassPath,pyDesignatedProperty,pyUnmodifiedPath}:
+  Embed-ChangeDesignation,"true",OrgEv-Int-CventAtt-Data,.registrationType,registrationType,.registrationType.code
+  Embed-ChangeDesignation,"true",OrgEv-Int-CventAtt-RegistrationType,.registrationType.code,code,.registrationType.code
+pyWillChange[0]:

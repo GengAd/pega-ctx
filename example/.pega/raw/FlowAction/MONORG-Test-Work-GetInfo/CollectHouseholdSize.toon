@@ -1,0 +1,135 @@
+pxObjClass: Rule-Obj-FlowAction
+pxUpdateOperator: dev.un
+pyAccessibilityCount: "0"
+pyAccessibilityLevel: "0"
+pyActionInstructionsCaption: Instructions
+pyActionName: CollectHouseholdSize
+pyActionTransformRule: ""
+pyAdditionalSubmitFieldsDataTransform: ""
+pyAllowRuntimeEdit: "true"
+pyAuditActivity: Audit
+pyAuditUse: "false"
+pyAutoHelp: ""
+pyAutoHTML: "true"
+pyBaseRule: "false"
+pyBrowserSupportLevel: "1"
+pyBulkOnlyAction: "false"
+pyCancelLabel: Cancel
+pyCategory: ""
+pyCategoryDisplayName: None
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work-GetInfo
+pyClientRuntimeVersion: "05-03"
+pyClientValidation: "true"
+pyCompact: "true"
+pyconfirmchoice: ShowHarness
+pyConfirmHarness: Confirm
+pyContainerType: STANDARD
+pyCustomizeFALabels: "false"
+pyDesignTemplateIcon: webwb/pzDesignTemplate1Column.svg
+pyDesignTemplateInsName: @BASECLASS!PZDESIGNTEMPLATE1COLUMN
+pyDesignTemplateLabel: 1 Column
+pyDesignTemplateName: pzDesignTemplate1Column
+pyDisplayMode: basic
+pyDisqualifyAction: "true"
+pyExpressionCalculation: "false"
+pyHelpStream: ""
+pyHelpType: DEFINE
+pyHTMLVersion: "1"
+pyIsUsingDesignTemplate: "true"
+pyJavaClassName: Rule_Obj_FlowAction_MONORG_Test_Work_GetInfo_CollectHouseholdSize_Stream_20261008T143431_601_GMT
+pyJavaGenerateAPIVersion: "04-02"
+pyJavaStream: ""
+pyJSRCompliant: "false"
+pyLabel: Composition du foyer
+pyLocalized: "false"
+pyNextAssignment: "true"
+pyNextAssignmentCover: "false"
+pyNextAssignmentFlow: "false"
+pyNextAssignmentWorkBasket: "false"
+pyNextLabel: Next
+pyOldStreamType: Rule-HTML-Section
+pyParameterSetFlag: "false"
+pyPreProcessingTransformRule: ""
+pyPreviousLabel: Previous
+pyRelativePath: ""
+pyRuleAvailable: Yes
+pyRuleName: CollectHouseholdSize
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pySaveButtonVisibility: Always
+pySaveLabel: Save for later
+pySectionReference: ""
+pySectionReferenceDisplayWhen: ""
+pySectionReferencePage: ""
+pySectionReferencePassParamPage: ""
+pySectionReferencePrivilegeUpdate: ""
+pySectionReferencePrivilegeView: ""
+pySectionReferenceRefreshWhen: ""
+pyShowFAButtons: "false"
+pySortDateCircumWithinRSMajor: "true"
+pySourceStream: "\n<% tools.putSaveValue(\"bClientValidation\", \"true\"); %>\n<% tools.putSaveValue(\"FlowActionValidate\", \"NO_VALIDATION\"); %>\n<%pzAuto.getSection().includeShowMeHarnessInsert();%>\n<pega:when test=\"$input-enabled\">\n</pega:when><%tools.putParamValue(\"flowActionUIRef\",\"\"); %>\n<%\ntools.putParamValue(\"pyShowFAButtons\",\"false\");\nString bshowFAButtons = tools.getParamValue(\"pyShowFAButtons\");\ntools.putParamValue(\"pyCustomizeFALabels\",\"false\");\ntools.putParamValue(\"pySubmitLabel\",\"Submit\");\ntools.putParamValue(\"pyCancelLabel\",\"Cancel\");\ntools.putParamValue(\"pyNextLabel\",\"Next\");\ntools.putParamValue(\"pyPreviousLabel\",\"Previous\");\ntools.putParamValue(\"StreamType\",\"Rule-Obj-FlowAction\");\n%><% if(pzAuto.isInspectMode()){ %><span  <%= pzAuto.getInpectorData(\"FlowAction\", \"\", \"\",\"CollectHouseholdSize\",\"Rule-Obj-FlowAction\",\"MONORG-Test-Work-GetInfo\") %> ><% } %><%if(pega_uiengine_offlinesupport.pzIsForOfflineTemplate()){%><%pzPackageRuntime.packageSection(\"\",tools.getStepPage().getReference(), null);%><div id='section-placeholder' data-class='<%=tools.getStepPage().getString(\"pxObjClass\")%>' data-section=''></div>\n<%} else {%><%includeSectionBody_1();%><%}%><span style=\"display: none;\" uitype=\"Rule-HTML-Section\" id=\"pzFlowActionUITypeRef\" uiref=\"\"></span>\n<%tools.putParamValue(\"pyShowFAButtons\",bshowFAButtons);%><% if(pzAuto.isInspectMode()){ %></span><% } %>"
+pyStatus: ""
+pyStreamName: CollectHouseholdSize
+pyStreamType: Rule-Obj-FlowAction
+pySubmitLabel: Submit
+pySystemAction: "false"
+pyUpdateStatus: "false"
+pyUsedAs: LOCALANDCONNECTOR
+pyValidateActivity: ""
+pyValueChanged: "false"
+pyViewModelActivity: ""
+pyViewReference: CollectHouseholdSize
+pyXMLSignature: <methodSignature><pyStepsPageAliases></pyStepsPageAliases></methodSignature>
+pzChecksum: "1813297728"
+pzIndexCount: "6"
+pzInsKey: RULE-OBJ-FLOWACTION MONORG-TEST-WORK-GETINFO COLLECTHOUSEHOLDSIZE #20261008T144932.238 GMT
+pzOriginalInstanceKey: RULE-OBJ-FLOWACTION MONORG-TEST-WORK-GETINFO COLLECTHOUSEHOLDSIZE #20261008T143233.114 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxFARefreshSettingsOfView[0]:
+pxNamedPageReferences[0]:
+pxWarnings[0]:
+pyActionPrivilegeList[0]:
+pyActionWhensList[1]{pxObjClass,pyWhenName}:
+  Embed-Rule-Whens,""
+pyCachingData:
+  pxObjClass: Rule-Obj-FlowAction
+  pyLabel: Composition du foyer
+  pyUsedAs: LOCALANDCONNECTOR
+pyDeclareParams:
+  pxObjClass: $Any
+pyPagesAndClasses[0]:
+pyPostAutomationList[1]{pxObjClass,pyRoboticAutomationId}:
+  Embed-RoboticAutomation,""
+pyPreAutomationList[1]{pxObjClass,pyRoboticAutomationId}:
+  Embed-RoboticAutomation,""
+pySavableDataPageList[0]:
+pySaveConfiguration:
+  pxObjClass: Embed-DataPage
+pySectionReferenceParams:
+  pxObjClass: ""
+pySections[1]:
+  - pxObjClass: Embed-Harness-Section
+    pyPageContext: none
+    pyPromptClass: MONORG-Test-Work-GetInfo
+    pySectionBody[1]:
+      - pxObjClass: Embed-Harness-SectionBody
+        pyInclude: ""
+        pyPreActivity: ""
+        pyPrivilegeUpdate: ""
+        pyRefreshWhen: ""
+        pyUsingPage: ""
+        pyDeclareParams:
+        pyPreDataTransform:
+          pxObjClass: Embed-Invoke-DataTransform
+          pyName: ""
+        pySectionParams:
+        pyTable:
+          pxObjClass: Embed-Display-Table
+          pyRows[0]:
+        pzSectionParamPage:
+          pxObjClass: PegaGadget

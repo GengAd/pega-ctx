@@ -1,0 +1,6 @@
+node_modules/
+logs/
+.infinity-rules-mcp/
+tests/fixture/anonymization.json
+.claude/settings.local.json
+.DS_Store

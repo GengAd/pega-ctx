@@ -1,0 +1,14 @@
+@AGENTS.md
+
+## Guardrails hook
+
+`.claude/hooks/guardrails.mjs` reads the raw text of every Bash command: `npm install` / `npm i` followed by anything but `@modelcontextprotocol/sdk` is refused, even inside a heredoc, a Python script or a commit message. Write such text with Edit/Write, and phrase commit messages without it.
+
+## Pega environment
+
+- Target: `https://cap-cs-crm-261.pegademo.com` (root, without `/prweb`), Infinity 26.1 (plugin version `26-1`), standard OAuth client.
+- The target application (`Test`) is Constellation: its interface is made of `Rule-UI-View` views (type `View`), no `Section`. No When, DecisionTable or Validate in the application.
+- The connection is configured in `~/.infinity-rules-mcp/config.json`, outside the repository — never in the project. That file takes precedence over the `/plugin` values.
+- The MCP server does not reload that file live: after a change, reload the plugin (`/reload-plugins`) or restart the session.
+- The server writes `.infinity-rules-mcp/` (OAuth tokens) and `logs/` in its launch folder: ignored by git, never read.
+- Trying pega-ctx on the real server: run `node` from the repository root (the OAuth session is there) and pass a scratchpad folder as `root` to `launch()` (`src/commands/index.mjs`). The real `.pega/` carries non-anonymized names: never in the repository.

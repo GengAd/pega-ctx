@@ -1,0 +1,132 @@
+pxObjClass: Rule-Declare-Pages
+pxSavedInPegaVersion: 26.1.0
+pxUpdateOperator: dev.un
+pyAccessGroup: ""
+pyAllowDuplicates: "false"
+pyAllowExternalExpiration: "true"
+pyAllowIdle: "true"
+pyAllowOverride: "false"
+pyBaseRule: "false"
+pyCircumstanceDate: "1970-01-01T00:00:00.000Z"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyCircumstanceType: ""
+pyCircumstanceVal: ""
+pyClassName: MONORG-Test-Data-People
+pyDeclarePagesDataSource: ""
+pyDescription: Data Page to read list of records from System of Record.
+pyEnableLoadOnlyPage: "true"
+pyIsQueryable: "true"
+pyIsSimulated: "false"
+pyJavaStream: ""
+pyKeepOneCopy: "false"
+pyKeyPageReference: ""
+pyLabel: List People
+pyLoadActivity: ""
+pyLoadOnlyPageEnabled: "true"
+pyLoadReportDefinition: ""
+pyMethodStatus: API
+pyPageContext: ""
+pyPageContextClass: ""
+pyPageName: D_PeopleList
+pyPageType: normal
+pyRefreshDataPageAfterSave: "false"
+pyRefreshOncePerInteraction: "false"
+pyRefreshStrategy: never
+pyReportDefinitionClass: ""
+pyRuleAvailable: Yes
+pyRuleEnds: "1970-01-01T00:00:00.000Z"
+pyRuleName: D_PeopleList
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyRuleStarts: "1970-01-01T00:00:00.000Z"
+pySaveOptionsCount: "0"
+pyScope: thread
+pySortDateCircumWithinRSMajor: "true"
+pySourceCount: "1"
+pyStructure: list
+pyTimeoutDD: ""
+pyTimeoutHH: ""
+pyTimeoutMM: ""
+pyTimeoutSS: ""
+pyType: normal
+pyUsage: Configure source(s) to read list of records from System of Record.
+pyUseTimeout: ""
+pyUseWhen: ""
+pyValueChanged: "false"
+pyWhen: ""
+pyWorkKey: ""
+pyXMLSignature: <methodSignature><pyStepsPageAliases></pyStepsPageAliases></methodSignature>
+pzChecksum: "882325936"
+pzIndexCount: "6"
+pzInsKey: RULE-DECLARE-PAGES D_PEOPLELIST #20261008T144933.840 GMT
+pzIsThreadFamilyEnabled: "false"
+pzOriginalInstanceKey: RULE-DECLARE-PAGES D_PEOPLELIST #20261008T140523.990 GMT
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[1]:
+  - pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2026-10-08T14:05:24.144Z"
+    pxWarningCreateOperator: dev.un
+    pxWarningDetails: (Rule-)pxPegaUnit
+    pxWarningMessage: (Rule-)pxPegaUnit
+    pxWarningName: Pega Unit Warning
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "3"
+    pxWarningType: Maintainability
+    pzIndexOwnerKey: RULE-DECLARE-PAGES D_PEOPLELIST #20261008T144933.840 GMT
+    pzIndexes:
+      Warnings: "3"
+pyAdditionalDependencies[1]: ""
+pyDataPageSaveOptionList[0]:
+pyDataSourceList[1]:
+  - pxCreateDateTime: "2026-10-08T14:05:23.993Z"
+    pxCreateOperator: dev.un
+    pxCreateOpName: dev.un
+    pxCreateSystemID: serveur.exemple
+    pxListSubscript: "1"
+    pxObjClass: Embed-DeclarePageSource
+    pyClassName: MONORG-Test-Data-People
+    pyConnectorDisplayProp: pyServiceName
+    pyConnectorList: Rule-Connect-REST
+    pyDeclarePagesDataSource: ReportDefinition
+    pyDescription: Report Definition • MONORG-Test-Data-People • DataTableEditorReport
+    pyDTName: ""
+    pyExecuteOnDataPage: "true"
+    pyIsRequired: "false"
+    pyIsSimulated: "false"
+    pyLoadActivity: pxCallRetrieveReportData
+    pyLoadReportDefinition: DataTableEditorReport
+    pyModalTitle: List People
+    pyPageListPropClassName: Code-Pega-List
+    pyReportDefinitionClass: MONORG-Test-Data-People
+    pySourceWhen: Always
+    pySQLOption: "false"
+    pyStructure: list
+    pzIndexOwnerKey: RULE-DECLARE-PAGES D_PEOPLELIST #20261008T144933.840 GMT
+    pyActivityParams[0]:
+    pyDisabledSource:
+      pxObjClass: Embed-DeclarePageSource
+      pyDeclarePagesDataSource: DataTransform
+      pyDescription: Data Transform
+    pyDTParamList[0]:
+    pyLoadActivityParameters:
+      pyClassName: MONORG-Test-Data-People
+      pyExecuteOnDataPage: "true"
+      pyPageName: ""
+      pyPassCurrentParamPageForRespDT: ""
+      pyReportClass: MONORG-Test-Data-People
+      pyReportName: DataTableEditorReport
+      pyResDataTransform: ""
+      pySavedInPegaVersion: "\"26.1.0\""
+      pySkipSummaryProcessing: ""
+    pzIndexes:
+      pzDataSources: "4"
+pyKeysForPageList[0]:
+pyLoadActivityParameters:
+pyPagesAndClasses[1]{pxObjClass,pyPagesAndClassesClass,pyPagesAndClassesDescription,pyPagesAndClassesKey,pyPagesAndClassesMode,pyPagesAndClassesPage}:
+  Embed-PagesAndClasses,"","","","",""
+pyParameters[0]:

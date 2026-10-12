@@ -1,0 +1,32 @@
+{
+  "byClass": [
+    {
+      "prefix": "AutreOrg-Gameboard-",
+      "ruleset": "Gameboard:01-01-17",
+      "rules": 2,
+      "classes": [
+        "AutreOrg-Gameboard-Data-Player",
+        "AutreOrg-Gameboard-Work-Game"
+      ]
+    },
+    {
+      "prefix": "MONORG-Test-",
+      "ruleset": "Test:01-01-01",
+      "rules": 16,
+      "classes": [
+        "MONORG-Test-Data-People",
+        "MONORG-Test-Work-GetInfo"
+      ]
+    },
+    {
+      "prefix": "OrgEv-Int-",
+      "ruleset": "Cvent:01-01-05",
+      "rules": 2,
+      "classes": [
+        "OrgEv-Int-CventAtt-Data"
+      ]
+    }
+  ],
+  "default": null,
+  "ambiguous": []
+}
