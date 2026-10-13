@@ -69,6 +69,15 @@ Written by each `sync` (`src/mirror/rebuild.mjs`), from `raw/` alone, nothing as
 - One `## @Name` section per function: usages (the same call in several fields of a rule counts once), number of rules, up to three distinct real calls each with its rule's identifier.
 - `check`: a draft calling a function `functions.md` does not list gives a `warning:` line; the user decides. What a function does and its parameters are not in the mirror (`D_pxListRules` does not list functions: `docs/mcp-tools.md`, Trello card 23).
 
+## `conventions.md`
+
+Written by each `sync` from the index alone (`src/mirror/conventions.mjs`): how the application names its rules, one section per class prefix of two segments (`Org-App-`), the largest first.
+
+- Language of names and of labels: a name or a label with an accent is French; otherwise its words (CamelCase split) are counted against two short lists, English and French, a word of both counting for neither. A convention is a value shared by three quarters of the rules that can be decided, three at least; otherwise `mixed`, or `too few rules to tell`.
+- Case of names (PascalCase, camelCase, snake_case, with spaces), recurring first words (two rules at least), views named like their flow action, names built on the class's last segment (`GetInfoStart`), the classes of the group.
+- Pega's names (`pyDefault`, `pxView`…) and a class rule named after its class say nothing of the project and are left out; a label equal to the name is the technical name, not a label.
+- `create` (`--dry-run` and `--draft`) adds a `convention:` line under `ruleset:` (`conventions` in JSON) for a name in the other language, another case, a label in the other language, and a class created without `--label`. Never a refusal.
+
 ## `live`, `create`, `update`
 
 - `live` reads the rule again (`list({type, class})` then the name ignoring case, the highest version), rewrites its raw rule, its digest, its index line and its outgoing edges. The `## Cited by` of other digests wait for the next `sync`. A rule outside the mirror is given by its full identifier: `live` adds it.

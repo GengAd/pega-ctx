@@ -13,6 +13,7 @@ import { project } from '../projection/index.mjs';
 import { isParentClass } from '../projection/common.mjs';
 import { prepareCreation, COMPONENTS } from './template.mjs';
 import { findRule, render, shown, warnings, warningsText } from './common.mjs';
+import { departures } from '../mirror/conventions.mjs';
 import { header } from './live.mjs';
 import { resolveWrite, unresolvedMessage } from '../mirror/write.mjs';
 import { fitted, lintOf, writeDraft, draftFindingsText, refusal, keepOf } from './checked.mjs';
@@ -155,19 +156,22 @@ export async function run({ positionals, options, root, connect, schemas, exampl
   const [rsName, rsVersion] = write.ruleset.split(':');
   const ruleset = rsName || undefined;
 
+  // How the neighbours are named: warnings, never a refusal.
+  const conventions = departures({ type, class: cls, name, label: content.pyLabel, labelGiven: typeof options.label === 'string', index });
+  const conventionLines = conventions.map((c) => `\nconvention: ${c}`).join('');
   const branch = typeof options.branch === 'string' ? options.branch : config.branch;
   const reason = typeof options.reason === 'string' ? options.reason : `pega-ctx create ${name} from ${fromName}`;
   const exampleNotes = notes ? `\n\nnotes of the example (${from}):\n${notes}` : '';
   if (options['dry-run'] || options.draft) {
     const digest = plannedDigest({ ...content, pyRuleSet: ruleset ?? '?', pyRuleSetVersion: rsVersion ?? '(branch)' }, index);
     if (options['dry-run']) {
-      return render(options, { payload: { type, ruleset, content }, write, digest, findings }, `dry-run: nothing is written to Pega\nruleset: ${write.ruleset} (${write.source})\n\n${digest.trimEnd()}\n\n${findingsText(findings)}${exampleNotes}`);
+      return render(options, { payload: { type, ruleset, content }, write, conventions, digest, findings }, `dry-run: nothing is written to Pega\nruleset: ${write.ruleset} (${write.source})${conventionLines}\n\n${digest.trimEnd()}\n\n${findingsText(findings)}${exampleNotes}`);
     }
     const draft = { operation: 'create', id, type, ruleClass: TYPES[type], ruleset, write: `${write.ruleset} (${write.source})`, from, reason, ...(typeof options.branch === 'string' ? { branch } : {}) };
     if (manual) Object.assign(draft, manualHeader({ ...draft, cls, name, changed: changedPaths(withoutPersistence(template, true, keep), content) }));
     const file = writeDraft(m, schemas, draft, content, digest);
     const note = manual ? manualNote(shown(root, file), type) : draftNote(root, file, id);
-    return render(options, { draft: file, header: draft, content, digest, findings }, `${note}\nruleset: ${write.ruleset} (${write.source})\n\n${digest.trimEnd()}\n\n${draftFindingsText(file, findings)}${exampleNotes}`);
+    return render(options, { draft: file, header: draft, content, conventions, digest, findings }, `${note}\nruleset: ${write.ruleset} (${write.source})${conventionLines}\n\n${digest.trimEnd()}\n\n${draftFindingsText(file, findings)}${exampleNotes}`);
   }
   if (!branch) return { code: 1, output: '--branch <ID> required: create-rule always writes to a branch (or set branch in .pega/config.json)' };
   const refused = refusal(findings, options);

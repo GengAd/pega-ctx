@@ -150,7 +150,8 @@ test('create --dry-run: digest of the planned rule, nothing sent to Pega', async
   pega.calls.length = 0;
   const r = await pc(`create FlowAction ${W} Confirm --from ${FA} --patch ${f} --label Confirm-the-entry --dry-run`);
   assert.equal(r.code, 0, r.output);
-  assert.match(r.output, new RegExp(`^dry-run: nothing is written to Pega\\nruleset: Test:01-01-01 \\(sibling rules of ${W}\\)\\n\\n# FlowAction Confirm\\n`));
+  // The label is English where the application's labels are French: a convention line, not a refusal.
+  assert.match(r.output, new RegExp(`^dry-run: nothing is written to Pega\\nruleset: Test:01-01-01 \\(sibling rules of ${W}\\)\\nconvention: the label "Confirm-the-entry" reads English, the labels of MONORG-Test- are in French\\n\\n# FlowAction Confirm\\n`));
   assert.match(r.output, /\ndescription: Confirm-the-entry\n/);
   assert.match(r.output, /\nview: Confirmation\n/);
   assert.deepEqual(pega.calls, []);

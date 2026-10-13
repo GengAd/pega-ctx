@@ -1,4 +1,4 @@
-// Reading and writing .pega/: config.json, stack.md, stack.json, index.jsonl, graph.json, write.draft.json, sync.partial.jsonl, functions.md, digest/, raw/, drafts/.
+// Reading and writing .pega/: config.json, stack.md, stack.json, index.jsonl, graph.json, write.draft.json, sync.partial.jsonl, functions.md, conventions.md, digest/, raw/, drafts/.
 // An identifier Type:Class:Name is stored as <Type>/<Class>/<Name>.
 import { readFileSync, writeFileSync, appendFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -17,6 +17,7 @@ export function paths(root = process.cwd()) {
     writeDraft: join(base, 'write.draft.json'),
     partial: join(base, 'sync.partial.jsonl'),
     functions: join(base, 'functions.md'),
+    conventions: join(base, 'conventions.md'),
     raw: join(base, 'raw'),
     digest: join(base, 'digest'),
     drafts: join(base, 'drafts'),
@@ -93,6 +94,8 @@ export function mirror(root = process.cwd()) {
 
     readFunctions: () => readIfExists(p.functions),
     writeFunctions: (md) => write(p.functions, md),
+    readConventions: () => readIfExists(p.conventions),
+    writeConventions: (md) => write(p.conventions, md),
 
     readDigest: (id) => readIfExists(fileOf(p.digest, id, '.md')),
     writeDigest: (id, md) => write(fileOf(p.digest, id, '.md'), md),
