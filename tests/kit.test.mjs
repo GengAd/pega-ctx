@@ -134,5 +134,6 @@ test('hook explorer: pega-ctx read commands only, one at a time, without --raw',
   const bash = (command) => runHook('explorer', { tool_name: 'Bash', tool_input: { command } }).status;
   assert.equal(bash('pega-ctx around Flow:A:B --stage Collect'), 0);
   assert.equal(bash('pega-ctx search household --type View'), 0);
+  assert.equal(bash('pega-ctx model MyOrg-App-Work-Case --depth 2'), 0);
   for (const c of ['pega-ctx send Flow:A:B', 'pega-ctx rule X --raw', 'pega-ctx rule X | head', 'pega-ctx rule X; rm -rf .', 'cat .pega/index.jsonl', 'pega-ctx rule $(id)']) assert.equal(bash(c), 2, c);
 });

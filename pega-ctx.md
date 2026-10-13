@@ -214,6 +214,10 @@ For each type: number of rules, average size of the raw rule, average size of th
 
 What pega-ctx needs, one line per point, `ok`, `problem` or `note`; each problem says what to do, and the code is non-zero if there is one. In order: Node 20+, Java 17+ (`java -version`, old `1.8` format included), the Pega plugin's folder, `~/.infinity-rules-mcp/config.json` (valid JSON, its three keys, a root URL without `/prweb`), the plugin's schemas for that Infinity version, the server's session folder (`.infinity-rules-mcp/` where pega-ctx is launched), `.pega/` and its last sync, then the connection: the server started and `list-available-applications` asked, 90 s at most. The Pega MCP has no session status tool: an expired session shows as a refused call, a sign-in waiting in the browser as no answer. The connection is not tried while a local problem stands; `--offline` skips it. `init` adds the local problems to its message when it cannot reach Pega.
 
+### `pega-ctx model <Class> [--depth 1]`
+
+The data model of a class in one page. The inheritance chain the mirror sees: parents by name, then the Class rule's `pyDerivesFrom`, followed even outside the mirror. The properties, own first then inherited class by class, a property masking a farther one of the same name; each with mode, page class, type, values, label, rulesets and application. Properties that rules of the mirror cite on these classes but the mirror lacks, with who cites them. `--depth` (1 by default) goes into the classes of Page and PageList properties; beyond 100 properties it stops and says how to narrow. Then the data pages of these classes and the views that show their properties (from the graph).
+
 ### `pega-ctx check`
 
 The mirror's inconsistencies, one line each with its fix: reference to a rule missing from the index, rule cited by no one in a type that should be (an orphan section or data transform), digest without projection, sync older than seven days. Returns a non-zero code if there is anything.

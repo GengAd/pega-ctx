@@ -9,6 +9,7 @@ import * as install from './install.mjs';
 import * as lint from './lint.mjs';
 import * as live from './live.mjs';
 import * as measure from './measure.mjs';
+import * as model from './model.mjs';
 import * as overrides from './overrides.mjs';
 import * as rule from './rule.mjs';
 import * as runCase from './run-case.mjs';
@@ -23,7 +24,7 @@ import { addTypes } from '../mcp/tools.mjs';
 import { pluginSchemas } from '../mcp/schemas.mjs';
 import { pluginExamples } from '../mcp/examples.mjs';
 
-export const COMMANDS = { doctor, init, install, sync, stack, search, rule, around, overrides, live, create, examples, update, send, lint, check, 'run-case': runCase, units, measure };
+export const COMMANDS = { doctor, init, install, sync, stack, search, rule, around, model, overrides, live, create, examples, update, send, lint, check, 'run-case': runCase, units, measure };
 
 // The MCP client is only loaded by the commands that talk to Pega; the tests pass a fake.
 async function connectPega() {

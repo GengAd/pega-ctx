@@ -137,6 +137,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 | `search <words> [--type T] [--class C] [--app A]` | grep on the index, name and description; each line tagged `[App]` |
 | `rule <id> [--cited-by] [--raw]` | the digest of a rule (`Type:Class:Name`, or its name if unique) |
 | `rule <[Type:]Name> --on <Class>` | the rules of that name the class reaches, in the order Pega looks: closest class, then the stack |
+| `model <Class> [--depth 1]` | the data model of a class in one page: own then inherited properties (mode, page class, values, label, origin), those cited but not in the mirror, data pages, views that show them |
 | `overrides` | the rules of the current application that mask a rule of a lower layer |
 | `around <id> [--depth 2] [--types Flow,View] [--stage S]` | the subgraph, digests from the closest to the farthest; 40 rules at most |
 | `stack [--for <Class>]` | applications and rulesets seen; known inheritance of a class and where its new rules are written |

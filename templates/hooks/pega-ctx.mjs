@@ -36,13 +36,13 @@ function preToolUse({ tool_name: tool = '', tool_input: args = {} }) {
   }
 }
 
-const EXPLORER = /^pega-ctx (search|rule|around|stack|check|overrides)( |$)/;
+const EXPLORER = /^pega-ctx (search|rule|around|model|stack|check|overrides)( |$)/;
 
 function explorer({ tool_name: tool = '', tool_input: args = {} }) {
   if (tool !== 'Bash') return;
   const command = String(args.command ?? '').trim();
   if (!EXPLORER.test(command) || /[;&|<>`$\n]/.test(command) || /--raw\b/.test(command)) {
-    refuse('pega-explorer runs pega-ctx search, rule, around, stack, check or overrides, one command at a time, without --raw.');
+    refuse('pega-explorer runs pega-ctx search, rule, around, model, stack, check or overrides, one command at a time, without --raw.');
   }
 }
 

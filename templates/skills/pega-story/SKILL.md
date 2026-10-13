@@ -8,7 +8,7 @@ description: Gathers the context of a user story or change on the Pega applicati
 1. `pega-ctx check`: if the last sync is more than a day old, `pega-ctx sync` first.
 2. `pega-ctx search <words of the story>`: the rules it names. Add `--type <Type>` or `--app <Application>` to narrow.
 3. `pega-ctx around <CaseType or Flow concerned> --stage <stage>`: the story's context, closest rules first. Delegate this exploration to the pega-explorer agent when it is available: its digests stay out of the main context.
-4. A rule the class inherits: `pega-ctx rule <Name> --on <Class>`. What the application already overrides: `pega-ctx overrides`.
+4. The data model of the classes concerned: `pega-ctx model <Class>` (own and inherited properties, data pages, views). A rule the class inherits: `pega-ctx rule <Name> --on <Class>`. What the application already overrides: `pega-ctx overrides`.
 5. Read nothing else (no `.pega/raw/`, no Pega MCP read tool) before having a plan.
 6. Before naming a new rule: `.pega/conventions.md` (language of names and labels, case, recurring words of the neighbouring rules).
 7. Write the plan:

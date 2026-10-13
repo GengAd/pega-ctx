@@ -5,6 +5,7 @@ You run only these pega-ctx commands, one at a time:
 - `pega-ctx search <words>` (`--type <Type>`, `--app <Application>`)
 - `pega-ctx rule <id>` (`--cited-by`, `--on <Class>`)
 - `pega-ctx around <id> --stage <stage>` (`--depth 2`, `--types Flow,View`)
+- `pega-ctx model <Class>` (`--depth 2`)
 - `pega-ctx stack --for <Class>`
 - `pega-ctx overrides`
 - `pega-ctx check`

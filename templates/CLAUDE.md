@@ -7,7 +7,7 @@ The pega-story, pega-write and pega-morning skills walk through the steps below;
 ## Before coding a user story
 
 1. `pega-ctx sync` if the last sync is more than a day old (`pega-ctx check` says so).
-2. `pega-ctx search <words of the story>` then `pega-ctx around <CaseType or Flow concerned> --stage <stage>`: that is the story's context. Read nothing else before having a plan.
+2. `pega-ctx search <words of the story>` then `pega-ctx around <CaseType or Flow concerned> --stage <stage>`: that is the story's context; `pega-ctx model <Class>` gives the data model of the classes concerned (properties, inherited ones, data pages, views). Read nothing else before having a plan.
 3. Before naming anything: `.pega/conventions.md`, how the neighbouring rules are named (language of names and labels, case, recurring words). `create` adds a `convention:` line when a name or a label departs from it: follow it, or tell the user why not.
 4. Write the plan: rules reused as is, rules updated, rules created with their `--from` template and their ruleset (`pega-ctx stack --for <Class>`). Get it approved.
 
