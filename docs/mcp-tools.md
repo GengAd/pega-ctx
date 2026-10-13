@@ -27,6 +27,10 @@ Values that Pega stores as strings arrive quoted (`"false"`, `"01-01-01"`, `"0"`
 | `read(key)` | `get-rule` `detail: full`, returned as cleaned TOON | The full raw rule. `summary` is a server-side projection (flow shapes, connectors) without the references, unusable as raw rule. |
 | `create({type, content, branch, description, ruleset?})` | `create-rule` | The only creation tool. **Requires a branch** (`branchID`) and a `changeDescription`. Not called during discovery (write). |
 | `update({key, patch, branch, description})` | `update-rule`, `listUpdateMode: replace` | The patch replaces whole arrays, as the specification wants for `create --patch`. Requires a branch. Not called during discovery. |
+| `createCase(caseType)` | `create-case`, `caseTypeID` alone | `run-case`. The answer carries the first assignment; `content` is not sent (see below). |
+| `assignment(id)`, `caseAssignment(caseID)` | `get-assignment`, `get-case-assignments` | The first assignment when `create-case` does not return it. |
+| `performAction({assignment, action, content})` | `perform-action` | `run-case --fields`: fills the first assignment and submits it. |
+| `units(branch)` | `run-pegaunits` | `units`. Per branch only. |
 
 ### `list`: what `D_pxListRules` returns
 
@@ -162,7 +166,7 @@ Required parameters in bold. All parameters are strings unless stated.
 - `get-data-view-metadata` — parameters and fields of a data page. **`dataPage`**.
 - `run-data-page` — runs a data page (`page` as GET, `list` as POST), TOON. **`dataPage`**, **`dataPageType`**, `payload` (JSON: `dataViewParameters`, `query`, `paging`, `includeTotalCount`…).
 
-### Cases and assignments (outside pega-ctx)
+### Cases, assignments and tests (`run-case`, `units`)
 
 - `list-casetypes` — the application's case types. No parameter.
 - `list-cases` — **`objClass`**, `pageNumber`, `pageSize`.
@@ -172,7 +176,9 @@ Required parameters in bold. All parameters are strings unless stated.
 - `get-assignment` — **`assignmentID`**. Returns the same shape as `nextAssignment`, `agentView.fields[]` included.
 - `perform-action` — **`assignmentID`**, **`actionID`**, `content`, `pageInstructions`.
 - `trigger-optional-process` — **`caseID`**, **`processID`**.
-- `run-pegaunits` — **`branchID`**.
+- `run-pegaunits` — **`branchID`**. Runs `D_pxExecutePegaUnits` on the branch. Returns `fetchDateTime`, `resultCount`, `summary` (`passed`, `failed`, `other`) and `data[]`, one row per test with the keys the server keeps from Pega's row (read in the jar, `RuleTools.formatPegaUnitSuccessResponse`): `label`, `purpose`, `result` (`Passed`, `Failed` or Pega's other value), `elapsedTimeSeconds`, `ruleUnderTestType`, `isInactive`, `pxInsName`, `pzInsKey`, `createdBy`, `createdDateTime`. No failure reason. Seen on 2026-10-13: a branch without tests gives `resultCount: 0` and an empty `data`; an unknown branch, an error 500 "No matching branch was found for the provided branch ID.". No test row seen yet: the MCP cannot create a PegaUnit test (`Rule-AutoTest-Case` has no schema).
+- **Field values, seen on 2026-10-13 on GetInfo.** The server sends `create-case`'s `content` as the `content` of `POST /api/application/v2/cases` (jar, `DxApiV2Adapter.createCase`). Pega accepts there only the fields of the case type's create view: `{"FirstName":"Ada"}` and `{"Requester":{"FirstName":"Ada"}}` both give `Error_Invalid_Inputs_content`, `{}` passes. The fields of the first assignment go through `perform-action` instead: `content` `{"Requester":{"FirstName":"Ada","Age":36}}` with the flow action's `actionID` moves the case to the next stage and returns the next assignment. A field the assignment does not show gets the same `Error_Invalid_Inputs_content`: nothing is silently dropped. `agentView.fields[].name` is relative to the view's page (`.FirstName` for `.Requester.FirstName`): `run-case` finds the page in the assignment's `content`.
+- **No branch for cases.** `create-case` and `perform-action` take no branch: the case runs on the rules the operator's application resolves, branches included only when they are in the application's branch list.
 
 ### Embedded Pega skills (outside pega-ctx)
 

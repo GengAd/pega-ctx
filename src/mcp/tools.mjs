@@ -209,3 +209,37 @@ export async function update(call, { key, patch, branch, description }) {
   const args = { key, branchID: branch, changeDescription: description, listUpdateMode: 'replace' };
   return decodeToon(await withTypesFixed((p) => call('update-rule', { ...args, updates: JSON.stringify(p) }), patch));
 }
+
+// createCase(caseType) → create-case with caseTypeID alone. The `content` parameter sets fields at
+// creation, but Pega only takes there the fields of the case type's create view: any other answers
+// "Error_Invalid_Inputs_content" (2026-10-13). Field values go to the first assignment (performAction).
+// Returns { caseID, nextAssignmentID?, nextAssignment?, content? }.
+export async function createCase(call, caseType) {
+  return decodeToon(await call('create-case', { caseTypeID: caseType }));
+}
+
+// assignment(id) → get-assignment: { assignmentID, name, actions[], agentView.fields[], content }.
+export async function assignment(call, id) {
+  return decodeToon(await call('get-assignment', { assignmentID: id }));
+}
+
+// caseAssignment(caseID) → get-case-assignments: the first open assignment's key, null if none.
+// The answer is not decoded: only the key is read in it, as scripts/scorecard.mjs does.
+export async function caseAssignment(call, caseID) {
+  const text = String(await call('get-case-assignments', { pzInsKey: caseID }));
+  return text.match(/ASSIGN-(?:WORKLIST|WORKBASKET) [^\s"!,]+ [^\s"!,]+![^\s",]+/)?.[0] ?? null;
+}
+
+// performAction({ assignment, action, content }) → perform-action: sets the fields (content, nested
+// for an embedded page: { Requester: { FirstName } }) and submits. Returns { nextAssignmentID?, nextAssignment? }.
+export async function performAction(call, { assignment: id, action, content }) {
+  const args = { assignmentID: id, actionID: action };
+  if (content && Object.keys(content).length) args.content = JSON.stringify(content);
+  return decodeToon(await call('perform-action', args));
+}
+
+// units(branch) → run-pegaunits: { resultCount, summary: { passed, failed, other }, data: [{ label,
+// result, ruleUnderTestType, elapsedTimeSeconds, isInactive, pzInsKey… }] }. Pega refuses an unknown branch.
+export async function units(call, branch) {
+  return decodeToon(await call('run-pegaunits', { branchID: branch }));
+}

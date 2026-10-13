@@ -135,6 +135,8 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 | `send <draft \| id> [--branch B] [--dry-run] [--force] [--no-lint]` | sends a draft as it is in the file, then deletes it |
 | `lint <draft \| id>` | checks a draft against the server's schema, one line per problem with its line in the file |
 | `check` | missing references, orphan rules, old sync |
+| `run-case <CaseType \| Class> [--fields A=1,Page.B=2] [--action ID]` | creates a case in Pega and shows its first assignment and fields; `--fields` fills that assignment and submits it, then shows the next one |
+| `units [--branch B]` | runs the branch's PegaUnit tests, one line per test, failures first |
 | `measure [--raw <folder>]` | size of the raw rule and of the digest, per type |
 | `install [--claude] [--copilot]` | writes the instructions from `templates/` into the project |
 

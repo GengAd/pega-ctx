@@ -212,6 +212,14 @@ For each type: number of rules, average size of the raw rule, average size of th
 
 The mirror's inconsistencies, one line each with its fix: reference to a rule missing from the index, rule cited by no one in a type that should be (an orphan section or data transform), digest without projection, sync older than seven days. Returns a non-zero code if there is anything.
 
+### `pega-ctx run-case <CaseType | Class> [--fields A=1,Page.B=2] [--action ID]`
+
+Creates a case (`create-case`) and shows the case, its stage, its first assignment, the flow actions and the fields the assignment shows. With `--fields`, sets those values on the first assignment and submits its flow action (`perform-action`, `--action` to choose another), then shows the next assignment. A bare field name the assignment shows inside an embedded page (`.FirstName` in `.Requester`) goes into that page; numbers and booleans are typed from the assignment's fields. Pega's refusal is shown as Pega words it, non-zero code. It closes the loop after a `send` on a case type, a flow, a flow action or a view: the case is created in the operator's application, so a rule still in a branch is only tried once the branch is in the application. Real answers: `docs/mcp-tools.md` § Cases.
+
+### `pega-ctx units [--branch B]`
+
+Runs the branch's PegaUnit tests (`run-pegaunits`): a summary line, then one line per test, failures first, with the type of the rule under test and the time. Non-zero code when a test fails. The server does not return why a test failed: the user opens it in Dev Studio.
+
 ## The user project's instruction file
 
 `templates/copilot-instructions.md` and `templates/CLAUDE.md` have the same content. Here it is, to adapt per project in the brackets:

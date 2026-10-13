@@ -1,6 +1,35 @@
-// Fake Pega client serving the fixture: same interface as src/mcp/client.mjs (stack, list, read,
+// Fake Pega client serving the fixture: same interface as src/mcp/client.mjs (stack, list, read, cases, units,
 // close). The tests change `rows` and `raws` to simulate a change in Pega.
 import { raws as fixtureRaws, rows as fixtureRows, rowOf, read as readFile } from './fixture-helpers.mjs';
+
+const CASE_ID = 'MONORG-TEST-WORK G-71001';
+
+// As src/mcp/client.mjs throws it: the message cut, the full text in `text`.
+function refusal(tool, text) {
+  const e = new Error(`${tool}: ${text.slice(0, 300)}`);
+  e.text = text;
+  return e;
+}
+
+function firstAssignment(caseType) {
+  return {
+    assignmentID: `ASSIGN-WORKLIST ${CASE_ID}!GETINFOSTART`, name: 'CollectRequester', caseID: CASE_ID,
+    actions: [{ id: 'CollectRequester', name: 'Requester', type: 'LocalAction' }, { id: 'CollectRequester', name: 'Requester', type: 'FlowAction' }],
+    agentView: { fields: [{ name: '.FirstName', label: 'First name', type: 'TextInput' }, { name: '.LastName', label: 'Last name', type: 'TextInput' }, { name: '.Age', label: 'Age', type: 'Integer' }] },
+    content: { caseTypeID: caseType, status: 'New', stageLabel: 'Requester', Requester: { classID: 'MONORG-Test-Data-People', FirstName: '', Age: '', LastName: '' } },
+  };
+}
+
+// run-pegaunits per branch; the keys are the ones the server keeps (docs/mcp-tools.md).
+const unitRuns = {
+  TESTS1: {
+    resultCount: 2, summary: { passed: 1, failed: 1, other: 0 },
+    data: [
+      { label: 'Age is required', result: 'Passed', ruleUnderTestType: 'Rule-Obj-Validate', elapsedTimeSeconds: 0.12, isInactive: false, pzInsKey: 'RULE-AUTOTEST-CASE A' },
+      { label: 'Household size', result: 'Failed', ruleUnderTestType: 'Rule-Obj-Flow', elapsedTimeSeconds: 0.4, isInactive: false, pzInsKey: 'RULE-AUTOTEST-CASE B' },
+    ],
+  },
+};
 
 export function fakePega({ failures = [] } = {}) {
   const rows = fixtureRows.map((l) => ({ ...l }));
@@ -58,6 +87,42 @@ export function fakePega({ failures = [] } = {}) {
     async update(request) {
       calls.push(['update', request]);
       return { status: 'updated' };
+    },
+    // Cases and tests, shaped as the real server answers (GetInfo, 2026-10-13). A failure named in
+    // `failures` ('create-case', 'perform-action', 'run-pegaunits') answers as Pega refuses.
+    async createCase(caseType) {
+      calls.push(['createCase', caseType]);
+      if (failures.includes('create-case')) throw refusal('create-case', 'Error creating case: 400 Bad Request: "{\\"errorDetails\\":[{\\"message\\":\\"Error_Invalid_Inputs_caseTypeID\\"}]}"');
+      const assignment = firstAssignment(caseType);
+      if (failures.includes('no-next-assignment')) return { status: 'created', caseID: CASE_ID, caseTypeID: caseType };
+      return { status: 'created', caseID: CASE_ID, caseTypeID: caseType, nextAssignmentID: assignment.assignmentID, nextAssignment: assignment };
+    },
+    async caseAssignment(caseID) {
+      calls.push(['caseAssignment', caseID]);
+      return `${CASE_ID.replace('MONORG-TEST-WORK', 'ASSIGN-WORKLIST MONORG-TEST-WORK')}!GETINFOSTART`;
+    },
+    async assignment(id) {
+      calls.push(['assignment', id]);
+      return { ...firstAssignment('MONORG-Test-Work-GetInfo'), assignmentID: id };
+    },
+    async performAction(request) {
+      calls.push(['performAction', request]);
+      if (failures.includes('perform-action')) throw refusal('perform-action', 'Error performing action: 400 Bad Request: "{\\"errorDetails\\":[{\\"message\\":\\"Error_Invalid_Inputs_content\\"}]}"\n[api: 900 ms | processing: 1 ms]');
+      const id = `ASSIGN-WORKLIST ${CASE_ID}!COLLECTHOUSEHOLD`;
+      return {
+        status: 'action performed',
+        nextAssignmentID: id,
+        nextAssignment: {
+          assignmentID: id, name: 'CollectHouseholdSize', caseID: CASE_ID,
+          actions: [{ id: 'CollectHouseholdSize', name: 'Household', type: 'LocalAction' }, { id: 'CollectHouseholdSize', name: 'Household', type: 'FlowAction' }],
+          agentView: { fields: [{ name: '.HouseholdMemberCount', label: 'Other people in the household', type: 'Integer', required: true }] },
+        },
+      };
+    },
+    async units(branch) {
+      calls.push(['units', branch]);
+      if (failures.includes('run-pegaunits')) throw refusal('run-pegaunits', 'Error running PegaUnit tests: 500 Internal Server Error: "No matching branch was found for the provided branch ID."');
+      return unitRuns[branch] ?? { resultCount: 0, summary: { passed: 0, failed: 0, other: 0 }, data: [] };
     },
     async close() {},
   };

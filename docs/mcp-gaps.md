@@ -31,3 +31,9 @@ Plugin `pega-infinity-authoring` 0.1.7, Infinity 26.1. What made the Pega MCP ha
 ## Data the writes need
 
 21. **Only the operator's access groups are listed.** A job scheduler (`Rule-Async-JobScheduler`) requires `pyAccessGroup`, and Pega checks it (`.pyAccessGroup: <App>:Administrators is not a valid entry`, 2026-10-12). `list-available-applications` gives the operator's access group per application (`<App>:Authors`), not the application's others. pega-ctx cannot know which one a background job should run under: the model asks the user. *Ask*: the access groups of the application in `get-application`.
+
+## Running cases and tests
+
+22. **Field values cannot be set at case creation.** `create-case` passes `content` to DX API v2, which takes only the fields of the case type's create view; a Constellation case type usually collects its data in the first assignment, so any field gives `Error_Invalid_Inputs_content` (2026-10-13). pega-ctx's `run-case --fields` fills the first assignment with `perform-action` instead. The tool's description suggests `processID` and `parentCaseID` in `content`, which DX API v2 expects beside it, not inside. *Ask*: the description saying what `content` accepts, and `processID` as its own parameter.
+23. **A case cannot run a branch.** `create-case` has no branch parameter: a rule written to a branch is only tried once the branch is in the application's branch list, which no MCP tool changes (entry 11). *Ask*: a `branchID` on `create-case`, or a tool that adds a branch to the application.
+24. **A failed PegaUnit test comes without its reason.** `run-pegaunits` keeps label, result, rule type and time from Pega's row, not the failed assertion; it runs a whole branch, never one test. `pega-ctx units` lists the failures and sends the user to Dev Studio. *Ask*: the failed assertion and its expected / actual values, and a run of one test by key.

@@ -89,6 +89,11 @@ export function pegaInterface(call, close = async () => {}) {
     read: (key) => tools.read(call, key),
     create: (request) => tools.create(call, request),
     update: (request) => tools.update(call, request),
+    createCase: (caseType) => tools.createCase(call, caseType),
+    assignment: (id) => tools.assignment(call, id),
+    caseAssignment: (caseID) => tools.caseAssignment(call, caseID),
+    performAction: (request) => tools.performAction(call, request),
+    units: (branch) => tools.units(call, branch),
     close,
   };
 }

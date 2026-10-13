@@ -21,6 +21,7 @@ Stack: see `.pega/stack.md`. The write ruleset depends on the class: `pega-ctx s
 - New case type: its class first (`pega-ctx create Class <Class> <Class> --from <sibling class>`), Pega refuses any rule on a missing class. Then properties, views, flow actions, flows, and the CaseType last.
 - A form view: `--fields Prop1,Prop2` builds its fields from the properties (created before). A name cited everywhere in the template (flow action in a flow, flow in a case type): `--rename Old=New`, not a patch.
 - Report each `Pega warning` line returned by `create` or `update` to the user as is, even when the write succeeded.
+- After a `send` on a case type, a flow, a flow action or a view: `pega-ctx run-case <CaseType>` (`--fields A=1,B=2` to fill and submit the first assignment), and `pega-ctx units --branch <branch>` if the branch has PegaUnit tests. Report Pega's refusal to the user as is; do not work around it.
 - Never the Pega MCP read tools directly: they return the raw rule, `live` returns the same thing ten times smaller.
 - If `create` or `stack --for` answers that the write ruleset is unknown or ambiguous, ask the user which one before writing, then pass `--ruleset R:V`. Never pick one yourself.
 
