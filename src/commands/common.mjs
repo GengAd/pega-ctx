@@ -1,4 +1,9 @@
 // Shared by the commands: find a rule, render text or JSON.
+import { relative, sep } from 'node:path';
+
+// A file as the output shows it: relative to the project root, with / on every system (Windows takes it too),
+// so that the same instructions and tests hold everywhere.
+export const shown = (root, file) => relative(root, file).split(sep).join('/');
 
 // Exact `Type:Class:Name`; otherwise `Name` or `Type:Name` if only one rule has that name.
 // type: the type the caller expects; it settles a name two types share (a Class and its ClassMetadata).

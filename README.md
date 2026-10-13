@@ -64,7 +64,9 @@ setx PEGA_CTX_PLUGIN "C:\path\to\infinity-ai-plugins\plugins\pega\infinity-ai-pl
 
 **Claude Code.** `claude plugin marketplace add https://github.com/pegasystems/infinity-ai-plugins.git`, `claude plugin install pega-infinity-authoring@Pega`, then `/pega-infinity-authoring:pega-setup` in Claude Code. Nothing to set: pega-ctx finds the plugin in `~/.claude/plugins/cache/Pega/pega-infinity-authoring/` by itself.
 
-If the server cannot start, `pega-ctx init` says what to check: `java -version`, `~/.infinity-rules-mcp/config.json`, or `PEGA_CTX_PLUGIN`.
+Then check the machine: `pega-ctx doctor` (once pega-ctx is installed, step 2) checks Node, Java, the plugin's folder, `~/.infinity-rules-mcp/config.json`, the schemas for your Infinity version, then starts the server and connects; each problem comes with what to do. With no Pega session in the folder yet, the server opens the browser to sign in. If `pega-ctx init` cannot reach Pega, it lists the same problems.
+
+**Windows.** The same commands, in PowerShell or cmd. What differs: the server's config is `%USERPROFILE%\.infinity-rules-mcp\config.json`; `setx` (above) sets `PEGA_CTX_PLUGIN` for the terminals opened afterwards (`$env:PEGA_CTX_PLUGIN = "…"` for the current PowerShell); `java` must be on the `PATH` (`java -version` in a new terminal). pega-ctx prints paths with `/`, which Windows accepts in every command; `.pega/` and the drafts are written with LF line endings, which VS Code keeps.
 
 ### 2. Install pega-ctx
 
@@ -120,6 +122,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 
 | Command | What it does |
 |---|---|
+| `doctor [--offline]` | checks Node, Java, the Pega plugin, the server's config and schemas, the mirror, then the connection; each problem says what to do |
 | `init [--all] [--ruleset A,B] [--ignore-raw]` | creates `.pega/config.json` and `stack.md`; `applications`: the stack except what Pega ships |
 | `sync [--full] [--since <date>] [--ruleset R] [--application A] [--type T,U] [--jobs N]` | reads again what changed in Pega, recomputes index, graph and digests; 4 calls at a time by default, an interrupted sync resumes where it stopped |
 | `search <words> [--type T] [--class C] [--app A]` | grep on the index, name and description; each line tagged `[App]` |

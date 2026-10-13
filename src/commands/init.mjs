@@ -7,20 +7,32 @@ import { mirror } from '../mirror/files.mjs';
 import { renderStack } from '../mirror/stack.mjs';
 import { shippedByPega } from '../mcp/tools.mjs';
 import { listOption } from './common.mjs';
+import { offlineChecks, probes } from './doctor.mjs';
 
 export const help = 'pega-ctx init [--all] [--ruleset A,B] [--ignore-raw] [--force]';
 
-export async function run({ options, root, connect }) {
+// What doctor finds without the server, appended to a failed connection: the usual cause is there.
+function withDoctor(text, root, probe) {
+  const problems = offlineChecks(root, { ...probes, ...probe }).filter((f) => f.status === 'problem');
+  return problems.length ? `${text}\n${problems.map((f) => `problem  ${f.text}`).join('\n')}` : `${text}\npega-ctx doctor checks the rest`;
+}
+
+export async function run({ options, root, connect, probe }) {
   const m = mirror(root);
   if (m.exists() && !options.force) {
     return { code: 1, output: 'mirror already in .pega/: pega-ctx sync to update it, or init --force to recreate it' };
   }
-  const pega = await connect();
+  let pega;
+  try {
+    pega = await connect();
+  } catch (e) {
+    return { code: 1, output: withDoctor(e.message, root, probe) };
+  }
   let stack;
   try {
     stack = await pega.stack();
   } catch (e) {
-    if (!options.ruleset) return { code: 1, output: `stack() failed (${e.message}): run again with --ruleset <Name,Name>` };
+    if (!options.ruleset) return { code: 1, output: withDoctor(`stack() failed (${e.message}): run again with --ruleset <Name,Name>`, root, probe) };
   } finally {
     await pega.close();
   }

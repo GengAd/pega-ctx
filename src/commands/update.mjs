@@ -3,7 +3,6 @@
 // --dry-run: the digest after the patch; --json adds the patch sent. --draft: the patch written to
 // .pega/drafts/ with the fingerprint of the rule it was written against, sent later by pega-ctx send.
 // Otherwise update-rule (arrays replaced) then live.
-import { relative } from 'node:path';
 import { decodeToon } from '../mcp/toon.mjs';
 import { TYPES } from '../mcp/tools.mjs';
 import { mirror } from '../mirror/files.mjs';
@@ -14,7 +13,7 @@ import { findingsText } from '../lint/lint.mjs';
 import { merge } from './template.mjs';
 import { readPatch, plannedDigest, draftNote } from './create.mjs';
 import { targetOf, header } from './live.mjs';
-import { render, warnings, warningsText } from './common.mjs';
+import { render, shown, warnings, warningsText } from './common.mjs';
 import { isManual, cannotWrite, manualHeader, manualNote } from './manual.mjs';
 
 export const help = 'pega-ctx update <id> --patch <file.json> [--branch B] [--reason R] [--dry-run | --draft]';
@@ -60,7 +59,7 @@ export async function run({ positionals, options, root, connect, schemas }) {
       const draft = { operation: 'update', id: before.id, type, ruleClass: TYPES[type], key: before.key, basedOn: fingerprint(m.readRaw(before.id)), reason, ...(typeof options.branch === 'string' ? { branch } : {}) };
       if (manual) Object.assign(draft, manualHeader(draft));
       const file = writeDraft(m, schemas, draft, patch, digest);
-      const written = manual ? manualNote(relative(root, file), type) : draftNote(root, file, before.id);
+      const written = manual ? manualNote(shown(root, file), type) : draftNote(root, file, before.id);
       return render(options, { draft: file, header: draft, content: patch, digest, findings }, `${note}${written}\n\n${digest.trimEnd()}\n\n${draftFindingsText(file, findings)}`);
     }
     const refused = refusal(findings, options);

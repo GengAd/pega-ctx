@@ -1,6 +1,6 @@
 // pega-ctx check: the mirror's inconsistencies, one line each with its fix.
 // Non-zero code if there is anything.
-import { relative } from 'node:path';
+import { shown } from './common.mjs';
 import { mirror, splitId } from '../mirror/files.mjs';
 import { incoming } from '../mirror/graph.mjs';
 import { PROJECTIONS } from '../projection/index.mjs';
@@ -37,7 +37,7 @@ export function run({ options, root, now = new Date() }) {
   // A draft waiting to be sent: written by create --draft or update --draft, never sent nor deleted.
   // A draft for Dev Studio (a type the Pega MCP cannot write) waits for a developer, not for send.
   for (const id of m.ids('drafts')) {
-    const file = relative(root, m.draftFile(id));
+    const file = shown(root, m.draftFile(id));
     findings.push(
       isManual(splitId(id).type)
         ? { kind: 'draft', id, text: `draft for Dev Studio waiting: ${file}: a developer applies it as its "steps" say, then pega-ctx live ${id}, and the file is deleted` }

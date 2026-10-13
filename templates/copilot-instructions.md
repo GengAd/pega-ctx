@@ -22,6 +22,7 @@ Stack: see `.pega/stack.md`. The write ruleset depends on the class: `pega-ctx s
 - Report each `Pega warning` line returned by `create` or `update` to the user as is, even when the write succeeded.
 - After a `send` on a case type, a flow, a flow action or a view: `pega-ctx run-case <CaseType>` (`--fields A=1,B=2` to fill and submit the first assignment), and `pega-ctx units --branch <branch>` if the branch has PegaUnit tests. Report Pega's refusal to the user as is; do not work around it.
 - Never the Pega MCP read tools directly: they return the raw rule, `live` returns the same thing ten times smaller.
+- A pega-ctx command that cannot reach Pega: `pega-ctx doctor`, and give the user the `problem` lines as they are.
 - If `create` or `stack --for` answers that the write ruleset is unknown or ambiguous, ask the user which one before writing, then pass `--ruleset R:V`. Never pick one yourself.
 
 ## Project conventions

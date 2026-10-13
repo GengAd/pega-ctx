@@ -5,13 +5,13 @@
 // A draft of a type the Pega MCP cannot write is for Dev Studio: refused (src/commands/manual.mjs).
 // The draft is linted first (pega-ctx lint): an error stops the send, unless --no-lint.
 import { readFileSync, existsSync } from 'node:fs';
-import { relative, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { mirror, splitId } from '../mirror/files.mjs';
 import { refresh } from '../mirror/live.mjs';
 import { readDraft, fingerprint } from '../mirror/draft.mjs';
 import { checkFields, plannedDigest, sendCreate } from './create.mjs';
 import { patchedDigest, sendUpdate } from './update.mjs';
-import { render } from './common.mjs';
+import { render, shown } from './common.mjs';
 import { lintOf, draftFindingsText, refusal, keepOf } from './checked.mjs';
 import { decodeToon } from '../mcp/toon.mjs';
 import { isManual, cannotWrite } from './manual.mjs';
@@ -37,15 +37,15 @@ export async function run({ positionals, options, root, connect, schemas }) {
   const m = mirror(root);
   const config = m.readConfig();
   const file = draftPath(m, root, positionals[0]);
-  const shown = relative(root, file);
-  const { header, content } = readDraft(readFileSync(file, 'utf8'), shown);
+  const where = shown(root, file);
+  const { header, content } = readDraft(readFileSync(file, 'utf8'), where);
   const { id } = header;
-  if (typeof id !== 'string' || id.split(':').length < 3) throw new Error(`${shown}: "pega-ctx".id must be Type:Class:Name`);
+  if (typeof id !== 'string' || id.split(':').length < 3) throw new Error(`${where}: "pega-ctx".id must be Type:Class:Name`);
   const { type, class: cls, name } = splitId(id);
   // A draft for Dev Studio: shown by --dry-run, never sent, so its fields are not checked for sending.
   const manual = isManual(type);
-  if (manual && !options['dry-run']) return { code: 1, output: `${shown}: ${cannotWrite(type)}: a developer applies this draft in Dev Studio as its "steps" say, then pega-ctx live ${id}` };
-  if (!manual) checkFields(content, shown, 'the draft', { strict: false, keep: keepOf(schemas, type) });
+  if (manual && !options['dry-run']) return { code: 1, output: `${where}: ${cannotWrite(type)}: a developer applies this draft in Dev Studio as its "steps" say, then pega-ctx live ${id}` };
+  if (!manual) checkFields(content, where, 'the draft', { strict: false, keep: keepOf(schemas, type) });
   const reason = typeof options.reason === 'string' ? options.reason : header.reason ?? `pega-ctx send ${name}`;
   const branch = typeof options.branch === 'string' ? options.branch : header.branch ?? config.branch;
   const findings = lintOf(schemas, { operation: header.operation, type, content, base: baseOf(m, id) });
@@ -55,7 +55,7 @@ export async function run({ positionals, options, root, connect, schemas }) {
     if (m.readIndex().some((r) => r.id === id)) return { code: 1, output: `${id} already exists: write an update draft (pega-ctx update ${id} --patch … --draft)` };
     if (options['dry-run']) {
       const digest = plannedDigest({ ...content, pyRuleSet: header.ruleset ?? '?', pyRuleSetVersion: '(branch)' }, m.readIndex());
-      return render(options, { draft: file, header, content, digest, findings }, `dry-run: nothing is written to Pega\n${shown}: create ${id}\n\n${digest.trimEnd()}\n\n${findingsShown}`);
+      return render(options, { draft: file, header, content, digest, findings }, `dry-run: nothing is written to Pega\n${where}: create ${id}\n\n${digest.trimEnd()}\n\n${findingsShown}`);
     }
     if (!branch) return { code: 1, output: '--branch <ID> required: create-rule always writes to a branch (or set branch in .pega/config.json)' };
     const refused = refusal(findings, options, findingsShown);
@@ -71,10 +71,10 @@ export async function run({ positionals, options, root, connect, schemas }) {
   }
 
   // update: the patch applies to the rule as it is in Pega, which must be the one the draft was written against.
-  if (!m.readIndex().some((r) => r.id === id) && !header.key) throw new Error(`${shown}: ${id} is not in the mirror and the draft has no key: pega-ctx live ${id}`);
+  if (!m.readIndex().some((r) => r.id === id) && !header.key) throw new Error(`${where}: ${id} is not in the mirror and the draft has no key: pega-ctx live ${id}`);
   if (options['dry-run']) {
     const digest = patchedDigest(m, id, content);
-    return render(options, { draft: file, header, content, digest, findings }, `dry-run: nothing is written to Pega\n${shown}: update ${id}\n\n${digest.trimEnd()}\n\n${findingsShown}`);
+    return render(options, { draft: file, header, content, digest, findings }, `dry-run: nothing is written to Pega\n${where}: update ${id}\n\n${digest.trimEnd()}\n\n${findingsShown}`);
   }
   if (!branch) return { code: 1, output: '--branch <ID> required: update-rule always writes to a branch (or set branch in .pega/config.json)' };
   const refused = refusal(findings, options, findingsShown);

@@ -5,7 +5,6 @@
 // --draft: the content written to .pega/drafts/, sent later as is by pega-ctx send. Otherwise create-rule then live.
 // The write ruleset is resolved by src/mirror/write.mjs; unknown or ambiguous → code 1, the model asks the user.
 import { readFileSync } from 'node:fs';
-import { relative } from 'node:path';
 import { decodeToon } from '../mcp/toon.mjs';
 import { mirror } from '../mirror/files.mjs';
 import { refresh } from '../mirror/live.mjs';
@@ -13,7 +12,7 @@ import { resolver } from '../mirror/graph.mjs';
 import { project } from '../projection/index.mjs';
 import { isParentClass } from '../projection/common.mjs';
 import { prepareCreation, COMPONENTS } from './template.mjs';
-import { findRule, render, warnings, warningsText } from './common.mjs';
+import { findRule, render, shown, warnings, warningsText } from './common.mjs';
 import { header } from './live.mjs';
 import { resolveWrite, unresolvedMessage } from '../mirror/write.mjs';
 import { fitted, lintOf, writeDraft, draftFindingsText, refusal, keepOf } from './checked.mjs';
@@ -53,7 +52,7 @@ export function checkFields(o, file, what, { strict = true, keep } = {}) {
 
 // What a draft says next to its path: where it is, how to send it.
 export function draftNote(root, file, id) {
-  return `draft written: ${relative(root, file)} (to read: ${relative(root, file).replace(/\.json$/, '.md')})\nread the .md, correct the .json if needed, then: pega-ctx send ${id} --branch <ID>`;
+  return `draft written: ${shown(root, file)} (to read: ${shown(root, file).replace(/\.json$/, '.md')})\nread the .md, correct the .json if needed, then: pega-ctx send ${id} --branch <ID>`;
 }
 
 // create-rule, then live on the new rule. Shared by create and send.
@@ -167,7 +166,7 @@ export async function run({ positionals, options, root, connect, schemas, exampl
     const draft = { operation: 'create', id, type, ruleClass: TYPES[type], ruleset, write: `${write.ruleset} (${write.source})`, from, reason, ...(typeof options.branch === 'string' ? { branch } : {}) };
     if (manual) Object.assign(draft, manualHeader({ ...draft, cls, name, changed: changedPaths(withoutPersistence(template, true, keep), content) }));
     const file = writeDraft(m, schemas, draft, content, digest);
-    const note = manual ? manualNote(relative(root, file), type) : draftNote(root, file, id);
+    const note = manual ? manualNote(shown(root, file), type) : draftNote(root, file, id);
     return render(options, { draft: file, header: draft, content, digest, findings }, `${note}\nruleset: ${write.ruleset} (${write.source})\n\n${digest.trimEnd()}\n\n${draftFindingsText(file, findings)}${exampleNotes}`);
   }
   if (!branch) return { code: 1, output: '--branch <ID> required: create-rule always writes to a branch (or set branch in .pega/config.json)' };
