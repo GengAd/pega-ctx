@@ -1,0 +1,29 @@
+# npm test on Node 20 and 22, Linux and Windows, then what the npm package would hold.
+# The tests run on the fixture: no Pega server, no Java.
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Package contents
+        run: |
+          npm pack --dry-run --json > pack.json
+          node scripts/pack-check.mjs pack.json
