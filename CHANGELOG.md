@@ -4,6 +4,7 @@ One line per delivered step. Versions follow [semver](https://semver.org); `0.1.
 
 ## Unreleased
 
+- The agent kit: `install` writes the skills `pega-story`, `pega-write`, `pega-morning`, the read-only `pega-explorer` agent, a rule for drafts and, for Claude Code, hooks that refuse the Pega MCP read tools and `.pega/raw/`. (step 18)
 - `pega-ctx doctor`: what pega-ctx needs, checked point by point, each problem with what to do; `init` lists the same problems when it cannot reach Pega. Paths shown with `/` on every system. (step 30)
 - `sync` at scale: `--jobs` (4 calls at a time by default), resume after an interruption, `--type`, `--application`, progress on stderr. (step 29)
 - `pega-ctx run-case` and `pega-ctx units`: create a case and show its first assignment, fill and submit it; run a branch's PegaUnit tests. (step 27)

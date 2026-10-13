@@ -84,10 +84,19 @@ From the root of the project's repository (the folder VS Code or Claude Code is 
 ```bash
 pega-ctx init                # creates .pega/config.json and .pega/stack.md; follows the stack's applications except those Pega ships (--all: every one, --ruleset A,B: only those rulesets)
 pega-ctx sync                # first mirror: lists, reads and projects every rule (a few minutes)
-pega-ctx install --copilot   # writes the instructions into .github/copilot-instructions.md
+pega-ctx install --copilot   # writes the instructions into .github/copilot-instructions.md, and the agent kit
 ```
 
-`install --claude` writes them into `CLAUDE.md` instead; with no option, both.
+`install --claude` writes them into `CLAUDE.md` instead; with no option, both. Beside the instructions, `install` writes the agent kit, one source rendered per agent:
+
+| | Claude Code | GitHub Copilot |
+|---|---|---|
+| Skills `pega-story` (context, then a plan), `pega-write` (draft, lint, send, run-case), `pega-morning` (sync, check) | `.claude/skills/` | `.github/skills/` (or `.claude/skills/`, which Copilot reads too, when both are installed) |
+| Agent `pega-explorer`: explores the mirror with read commands only, returns a plan | `.claude/agents/pega-explorer.md`, held to those commands by a hook | `.github/agents/pega-explorer.agent.md` |
+| How to correct a draft, loaded for `.pega/drafts/**` | `.claude/rules/pega-drafts.md` | `.github/instructions/pega-drafts.instructions.md` |
+| Hooks: the Pega MCP read tools and `.pega/raw/` refused, `pega-ctx check` at session start | `.claude/hooks/pega-ctx.mjs`, wired in `.claude/settings.json` (merged, with the permission `Bash(pega-ctx *)`) | none |
+
+These files belong to pega-ctx: each `install` rewrites them. Details and sources: `docs/kit.md`.
 
 Then, once:
 
@@ -141,7 +150,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 | `run-case <CaseType \| Class> [--fields A=1,Page.B=2] [--action ID]` | creates a case in Pega and shows its first assignment and fields; `--fields` fills that assignment and submits it, then shows the next one |
 | `units [--branch B]` | runs the branch's PegaUnit tests, one line per test, failures first |
 | `measure [--raw <folder>]` | size of the raw rule and of the digest, per type |
-| `install [--claude] [--copilot]` | writes the instructions from `templates/` into the project |
+| `install [--claude] [--copilot]` | writes the instructions and the agent kit (skills, explorer agent, drafts rule, Claude Code hooks) from `templates/` into the project |
 
 `create` and `update` only write to a branch, as the server requires. `--dry-run` returns the digest of what would be written; `--json` adds the content sent. `--draft` writes that content to `.pega/drafts/<Type>/<Class>/<Name>.json`, with a `<Name>.md` next to it: the digest of what the rule will contain, without the template's fields, to read instead of the JSON (`send` deletes both), readable (two-space indentation, identity fields first, `pxViewMetadata` and other JSON strings unfolded as objects), to be reviewed and corrected by hand; `send` then sends the file without recomputing anything. An update draft remembers the rule it was written against: if the rule changed in Pega meanwhile, `send` refuses (`--force` to apply it anyway). `check` lists the drafts waiting.
 

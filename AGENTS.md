@@ -20,7 +20,7 @@ End goal: a tool reusable in any Pega project, installed by its own setup: `pega
 - `src/commands/` — one command per file
 - `tests/`, `tests/fixture/raw/` — real anonymized rules
 - `docs/mcp-tools.md`, `docs/projection.md`, `docs/decisions/` — what we found and decided; `docs/mcp-gaps.md` — what the Pega MCP lacks, to hand back to Pega
-- `templates/` — instruction files to copy into a Pega project (`pega-ctx install` writes them)
+- `templates/` — instruction files and agent kit (skills, explorer agent, drafts rule, Claude Code hook) to copy into a Pega project (`pega-ctx install` writes them; per agent: `docs/kit.md`)
 - `example/.pega/` — mirror built from the fixture by `scripts/example.mjs`; `tests/example.test.mjs` reports when it is behind
 - `.github/workflows/test.yml` — `npm test` on Linux and Windows, Node 20 and 22, then the npm package's contents (`scripts/pack-check.mjs`: only `bin/`, `src/`, `templates/`)
 - `CHANGELOG.md` — one line per delivered step, under `Unreleased` until a version is tagged

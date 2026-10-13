@@ -228,6 +228,8 @@ Runs the branch's PegaUnit tests (`run-pegaunits`): a summary line, then one lin
 
 ## The user project's instruction file
 
+Beside this block, `install` writes an agent kit from the same `templates/`: three skills (`pega-story`, `pega-write`, `pega-morning`), a read-only `pega-explorer` agent, a rule for `.pega/drafts/**`, and for Claude Code hooks that refuse the Pega MCP read tools and `.pega/raw/`. What goes where per agent: `docs/kit.md`.
+
 `templates/copilot-instructions.md` and `templates/CLAUDE.md` have the same content. Here it is, to adapt per project in the brackets:
 
 ```markdown

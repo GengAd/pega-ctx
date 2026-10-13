@@ -2,6 +2,7 @@
 
 Pega application [version]. The rules live in Pega, not here; this repository holds a readable mirror in `.pega/`.
 Stack: see `.pega/stack.md`. The write ruleset depends on the class: `pega-ctx stack --for <Class>` says it.
+The pega-story, pega-write and pega-morning skills walk through the steps below; the pega-explorer agent explores the mirror and returns a plan, keeping the digests out of this conversation.
 
 ## Before coding a user story
 
