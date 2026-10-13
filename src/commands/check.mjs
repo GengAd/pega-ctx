@@ -5,7 +5,7 @@ import { mirror, splitId } from '../mirror/files.mjs';
 import { incoming } from '../mirror/graph.mjs';
 import { PROJECTIONS } from '../projection/index.mjs';
 import { isManual } from './manual.mjs';
-import { readDraft } from '../mirror/draft.mjs';
+import { readDraft, fingerprint } from '../mirror/draft.mjs';
 import { calls, strings, listedNames } from '../mirror/functions.mjs';
 import { readFileSync } from 'node:fs';
 
@@ -49,10 +49,16 @@ export function run({ options, root, now = new Date() }) {
     );
     // A function no rule of the application calls: a warning, the user decides.
     let content;
+    let header;
     try {
-      content = readDraft(readFileSync(m.draftFile(id), 'utf8'), file).content;
+      ({ content, header } = readDraft(readFileSync(m.draftFile(id), 'utf8'), file));
     } catch {
       continue;
+    }
+    // An update written against a rule that changed in Pega since: send would refuse it.
+    const raw = header.basedOn && m.readRaw(id);
+    if (raw !== undefined && raw && fingerprint(raw) !== header.basedOn) {
+      findings.push({ kind: 'stale-draft', id, text: `${file} was written against an older ${id}, changed in Pega since: send would refuse it; pega-ctx update ${id} --patch … --draft again` });
     }
     const unknown = [...new Set(strings(content).flatMap((s) => calls(s).map((c) => c.name)))].filter((n) => !listed.has(n));
     for (const name of unknown) findings.push({ kind: 'function', level: 'warning', id, text: `warning: ${file} calls @${name}, which no rule of the application calls (.pega/functions.md): ask the user before relying on it` });

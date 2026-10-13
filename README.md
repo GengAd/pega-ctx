@@ -147,6 +147,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 | `update <id> --patch <f.json> [--dry-run \| --draft] [--branch B]` | updates a rule, after an implicit `live` |
 | `send <draft \| id> [--branch B] [--dry-run] [--force] [--no-lint]` | sends a draft as it is in the file, then deletes it |
 | `lint <draft \| id>` | checks a draft against the server's schema, one line per problem with its line in the file |
+| `changes [--since <date>] [--type T] [--class C]` | what the last sync changed, one dated line per rule with its operator, and the digest lines that changed; `--since`: the rules updated in Pega since a date |
 | `check` | missing references, orphan rules, old sync |
 | `run-case <CaseType \| Class> [--fields A=1,Page.B=2] [--action ID]` | creates a case in Pega and shows its first assignment and fields; `--fields` fills that assignment and submits it, then shows the next one |
 | `units [--branch B]` | runs the branch's PegaUnit tests, one line per test, failures first |

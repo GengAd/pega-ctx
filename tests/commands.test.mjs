@@ -87,7 +87,8 @@ test('sync: rule changed in Pega read again, vanished rule removed from the mirr
   pega.rows.splice(pega.rows.findIndex((r) => r.name === 'DataTableEditorReport'), 1);
   const r = await pc('sync');
   assert.match(r.output, /^0 added, 1 changed, 1 removed/);
-  assert.match(r.output, new RegExp(`\n~ Flow:${W}:GetInfoStart\n- ReportDefinition:`));
+  // Each line dated, with the operator: the new date for a change, the last one seen for a removal.
+  assert.match(r.output, new RegExp(`\n~ Flow:${W}:GetInfoStart — 2026-10-11 09:00 by \\S+\n- ReportDefinition:\\S+ — \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2} by `));
   const m = mirror(root);
   assert.match(m.readDigest(`Flow:${W}:GetInfoStart`), /\ndescription: Démarrer GetInfo\n/);
   assert.equal(m.readIndex().find((l) => l.name === 'GetInfoStart').updated, '2026-10-11T09:00:00.000Z');

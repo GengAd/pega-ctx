@@ -218,6 +218,10 @@ What pega-ctx needs, one line per point, `ok`, `problem` or `note`; each problem
 
 The data model of a class in one page. The inheritance chain the mirror sees: parents by name, then the Class rule's `pyDerivesFrom`, followed even outside the mirror. The properties, own first then inherited class by class, a property masking a farther one of the same name; each with mode, page class, type, values, label, rulesets and application. Properties that rules of the mirror cite on these classes but the mirror lacks, with who cites them. `--depth` (1 by default) goes into the classes of Page and PageList properties; beyond 100 properties it stops and says how to narrow. Then the data pages of these classes and the views that show their properties (from the graph).
 
+### `pega-ctx changes [--since <date>] [--type T] [--class C]`
+
+What changed in Pega, as text, instead of a `git diff` of the digests. By default the last sync: one line per rule added (`+`), changed (`~`) or removed (`-`), with its date and operator, then under a changed rule the lines of its digest that changed (without the update line and `## Cited by`, 20 lines at most). `--since`: the rules of the index updated in Pega since that date, added and changed together (removals and case types have no date). `sync` keeps what it replaces in `.pega/prev/` for it, and its own output gives the same dated lines. `check` flags an update draft whose rule changed in Pega since it was written, which `send` would refuse.
+
 ### `pega-ctx check`
 
 The mirror's inconsistencies, one line each with its fix: reference to a rule missing from the index, rule cited by no one in a type that should be (an orphan section or data transform), digest without projection, sync older than seven days. Returns a non-zero code if there is anything.

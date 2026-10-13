@@ -78,6 +78,10 @@ Written by each `sync` from the index alone (`src/mirror/conventions.mjs`): how 
 - Pega's names (`pyDefault`, `pxView`…) and a class rule named after its class say nothing of the project and are left out; a label equal to the name is the technical name, not a label.
 - `create` (`--dry-run` and `--draft`) adds a `convention:` line under `ruleset:` (`conventions` in JSON) for a name in the other language, another case, a label in the other language, and a class created without `--label`. Never a refusal.
 
+## `.pega/prev/`
+
+What the last `sync` replaced, for `pega-ctx changes` (`src/mirror/changes.mjs`), written before the rebuild: `index.jsonl` (the index before), `digest/` (the digests before of the rules changed or removed), `sync.json` (`from`: the sync before, `at`, `added`, `changed`, `removed`). Each sync replaces it; its own `.gitignore` (`*`) keeps it out of git. The `+ ~ -` lines of `sync` and `changes` carry the date and operator from the index (for a removed rule, the last ones seen).
+
 ## `live`, `create`, `update`
 
 - `live` reads the rule again (`list({type, class})` then the name ignoring case, the highest version), rewrites its raw rule, its digest, its index line and its outgoing edges. The `## Cited by` of other digests wait for the next `sync`. A rule outside the mirror is given by its full identifier: `live` adds it.

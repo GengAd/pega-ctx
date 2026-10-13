@@ -11,6 +11,7 @@ import { rebuild } from '../mirror/rebuild.mjs';
 import { indexLine, versionDescending } from '../mirror/lines.mjs';
 import { writeDraft, baseRuleset } from '../mirror/write.mjs';
 import { render, listOption } from './common.mjs';
+import { keepPrevious, recordSync, when } from '../mirror/changes.mjs';
 
 export const help = 'pega-ctx sync [--since <date>] [--full] [--ruleset <name>] [--application A] [--type T,U] [--jobs N]';
 
@@ -238,6 +239,9 @@ export async function run({ options, root, connect, progress = terminalProgress(
     }
   }
 
+  // What this sync replaces, for pega-ctx changes: kept before the rebuild rewrites it.
+  for (const list of Object.values(touched)) list.sort();
+  keepPrevious(m, previous, touched);
   // stack.json first: the index lines take their application from it.
   if (stack) m.writeStackData(stack);
   const { index, withoutProjection, missing } = rebuild(m, [...lines.values()]);
@@ -245,16 +249,20 @@ export async function run({ options, root, connect, progress = terminalProgress(
   // stack.md lists the rulesets seen in the index; the write table draft is recomputed from it.
   if (stack) m.writeStack(renderStack(stack, { index, write: config.write, previous: m.readStack() ?? '', followed: config.applications }));
   m.writeWriteDraft(writeDraft(index));
-  m.writeConfig({ ...config, lastSync: new Date().toISOString() });
+  const at = new Date().toISOString();
+  m.writeConfig({ ...config, lastSync: at });
   m.removePartial();
-  for (const list of Object.values(touched)) list.sort();
+  recordSync(m, { from: config.lastSync ?? null, at, ...touched });
+  const byId = new Map(index.map((l) => [l.id, l]));
+  const previousById = new Map(previous.map((l) => [l.id, l]));
+  const dated = (sign, id, line) => `${sign} ${id}${line && when(line) ? ` — ${when(line)}` : ''}`;
 
   const summary = `${touched.added.length} added, ${touched.changed.length} changed, ${touched.removed.length} removed, ${withoutProjection.length} types without projection`;
   const text = [
     summary,
-    ...touched.added.map((id) => `+ ${id}`),
-    ...touched.changed.map((id) => `~ ${id}`),
-    ...touched.removed.map((id) => `- ${id}`),
+    ...touched.added.map((id) => dated('+', id, byId.get(id))),
+    ...touched.changed.map((id) => dated('~', id, byId.get(id))),
+    ...touched.removed.map((id) => dated('-', id, previousById.get(id))),
     ...(errors.length ? ['', 'errors:', ...errors.map((e) => `- ${e}`)] : []),
   ].join('\n');
   const result = render(options, { ...touched, withoutProjection, rules: index.length, errors }, text);
