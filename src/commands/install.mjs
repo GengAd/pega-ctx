@@ -15,7 +15,7 @@ export const END = '<!-- pega-ctx:end -->';
 const TEMPLATES = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
 const TARGETS = {
   claude: ['CLAUDE.md', 'CLAUDE.md'],
-  copilot: ['copilot-instructions.md', join('.github', 'copilot-instructions.md')],
+  copilot: ['copilot-instructions.md', '.github/copilot-instructions.md'],
 };
 
 // Values known from the mirror, if it exists.
