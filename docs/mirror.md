@@ -52,9 +52,13 @@ The result of `stack()` at the last `init` or `sync` (the applications, their ru
 - One `list()` per type of `TYPES` except rulesets and branches, plus `types` of the config (no ruleset filter on the server side), filtered by `rulesets` on the pega-ctx side. A type in error does not stop the others; its rules stay in the mirror.
 - A rule is read again if: `--full`, absent from the index, raw rule absent from `raw/`, `updated` different from the index, `updated` absent (CaseType: read every time), or `updated >= --since`. Read again but identical: not counted as changed.
 - Several versions of the same rule: the highest is read; `rulesets` lists them all, the digest shows them as `(also: …)`.
-- Removed: absent from `list()` while its type was listed (and, with `--ruleset`, it belongs to that ruleset).
+- Removed: absent from `list()` while its type was listed (and, with `--ruleset` or `--application`, it belongs to those rulesets).
+- `--type T,U`: only those types are listed and read; the others stay as they are. `--application A`: the rulesets of A (from `stack.json`), listed in A's context alone (its alias, unless A is the current application); any application of the stack, followed or not.
+- `--jobs N` (4 by default): listings of a context, then reads, N calls at a time. The alias is the server's state, shared by every call: reads go context by context, never two contexts at once. Lines and errors keep the order of the types; the `+ ~ -` lists are sorted.
+- **Resume**: each rule read is written to `raw/` at once and noted in `.pega/sync.partial.jsonl` (`key`, `id`, `updated` from `list()`). A sync stopped before writing the index (cut connection, Ctrl-C) leaves that note: the next one does not read again a rule noted at the date `list()` gives, whose raw rule is there; it is counted added, or changed if the index had another date. The end of a sync, and `--full`, remove the note.
+- Progress: one line on stderr, rewritten (`list Test: 12/35 types`, `read 20/47 rules`), only when stderr is a terminal: nothing for a model, which reads the summary alone.
 - Index, graph and digests are recomputed entirely each time (`src/mirror/rebuild.mjs`). `## Cited by` is added to the digest then; if the digest then exceeds a hundred lines, it is projected again with room reserved.
-- Measured on the test application (32 rules): 23 s from empty, 16 s without change, almost all of it in `list()`.
+- Measured on the test application, JVM start included (2026-10-13, 47 rules, 35 types): full sync 46 s with `--jobs 1`, 15 s with 4, 9.8 s with 8; without change 10.8 s with 4, almost all of it in the listings (0.5 s per type one at a time). `get-rule` alone, 40 rules: 19.5 s one at a time, 9.3 s at 2, 4.7 s at 4, 2.6 s at 8, 1.4 s at 16, no failure: the server reads in parallel without limit seen. 4 stays the default, a shared production server not being a demo server; `--jobs` goes higher. Thousands of rules: not measured yet (card 10).
 
 ## `live`, `create`, `update`
 

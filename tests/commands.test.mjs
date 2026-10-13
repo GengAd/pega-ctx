@@ -2,7 +2,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parse, launch } from '../src/commands/index.mjs';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { mirror } from '../src/mirror/files.mjs';
 import { LIMIT } from '../src/commands/around.mjs';
@@ -299,4 +300,59 @@ test('install: instructions written with the mirror values, block replaced on th
   const again = readFileSync(join(root, 'CLAUDE.md'), 'utf8');
   assert.equal(again, claude, 'running again replaces the block, without doubling it');
   assert.equal(readFileSync(join(root, '.github', 'copilot-instructions.md'), 'utf8').split('<!-- pega-ctx:start -->').length, 2);
+});
+
+test('sync --jobs: the same mirror one call at a time or eight; a wrong value is refused', async () => {
+  const { root, pc } = await fixtureMirror();
+  const m = mirror(root);
+  const digests = () => m.readIndex().map((l) => [l.id, m.readDigest(l.id)]);
+  const four = { index: m.readIndex(), digests: digests() };
+  for (const jobs of [1, 8]) {
+    assert.equal((await pc(`sync --full --jobs ${jobs}`)).code, 0);
+    assert.deepEqual(m.readIndex(), four.index, `--jobs ${jobs}`);
+    assert.deepEqual(digests(), four.digests, `--jobs ${jobs}`);
+  }
+  assert.match((await pc('sync --jobs 0')).output, /^--jobs 0: give a whole number/);
+});
+
+test('sync: an interrupted sync keeps what it read; the next one does not read it again', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'pega-ctx-'));
+  const pega = fakePega();
+  const context = { root, connect: async () => pega };
+  await launch(parse(['init', '--ruleset', 'Test,Gameboard,Cvent']), context);
+  const total = raws.length;
+  // Stopped while reading the fifth rule: four are in raw/ and noted.
+  const stop = (text) => {
+    if (text === `read 5/${total} rules`) throw new Error('interrupted');
+  };
+  const cut = await launch(parse(['sync', '--jobs', '1']), { ...context, progress: stop });
+  assert.equal(cut.code, 1);
+  const m = mirror(root);
+  assert.equal(m.readPartial().size, 4);
+  assert.equal(m.readIndex().length, 0);
+  pega.calls.length = 0;
+  const seen = [];
+  const r = await launch(parse(['sync']), { ...context, progress: (t) => seen.push(t) });
+  assert.match(r.output, new RegExp(`^${total} added, 0 changed, 0 removed`));
+  assert.equal(pega.calls.filter((c) => c[0] === 'read').length, total - 4);
+  assert.equal(m.readPartial().size, 0);
+  assert.equal(m.readIndex().length, total);
+  // Progress: the listing, then the reads, then the line cleared.
+  assert.ok(seen.includes(`read ${total - 4}/${total - 4} rules`));
+  assert.ok(seen.some((t) => /^list Test: \d+\/\d+ types$/.test(t)));
+  assert.equal(seen.at(-1), '');
+});
+
+test('sync --type: only those types are listed and read, the others stay as they are', async () => {
+  const { root, pega, pc } = await fixtureMirror();
+  const flow = pega.rows.find((r) => r.name === 'GetInfoStart');
+  flow.updated = '2026-10-11T09:00:00.000Z';
+  pega.raws.set(flow.key, pega.raws.get(flow.key).replace(/\n?$/, '\npyNote: changed\n'));
+  pega.rows.splice(pega.rows.findIndex((r) => r.name === 'DataTableEditorReport'), 1);
+  pega.calls.length = 0;
+  const r = await pc('sync --type Flow,View');
+  assert.match(r.output, /^0 added, 1 changed, 0 removed/);
+  assert.deepEqual([...new Set(pega.calls.filter((c) => c[0] === 'list').map((c) => c[1]))].sort(), ['Flow', 'View']);
+  assert.ok(mirror(root).readIndex().some((l) => l.name === 'DataTableEditorReport'));
+  assert.match((await pc('sync --type Nope')).output, /^--type Nope: unknown, choose among /);
 });

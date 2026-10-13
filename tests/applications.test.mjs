@@ -79,3 +79,27 @@ test('sync: an application outside the stack is reported, its rulesets being unk
   const r = await pc('sync');
   assert.match(r.output, /\n- Elsewhere: not in the stack of Test, its rulesets are unknown: /);
 });
+
+test('sync --application: that application alone, in its context; the other application\'s rules stay', async () => {
+  const { pega, pc, m } = setup({ gameboard: true });
+  await pc('init');
+  await pc('sync');
+  const before = m.readIndex();
+  pega.calls.length = 0;
+  const gameboardRule = pega.rows.find((r) => r.name === 'IgnoredRegistrationType');
+  gameboardRule.updated = '2026-10-13T08:00:00.000Z';
+  pega.raws.set(gameboardRule.key, pega.raws.get(gameboardRule.key).replace(/\n?$/, '\npyNote: changed\n'));
+  const testRule = pega.rows.find((r) => r.name === 'GetInfoStart');
+  testRule.updated = '2026-10-13T08:00:00.000Z';
+  const r = await pc('sync --application Gameboard');
+  assert.equal(r.code, 0, r.output);
+  assert.match(r.output, /^0 added, 1 changed, 0 removed/);
+  assert.match(r.output, /\n~ \w+:[^\n]*:IgnoredRegistrationType/);
+  // Listed and read under Gameboard's alias only; Test's changed rule waits for the next full sync.
+  assert.deepEqual(pega.calls.filter((c) => c[0] === 'list').every((c) => c[2] === 'gameboard'), true);
+  assert.equal(m.readIndex().length, before.length);
+  assert.notEqual(m.readIndex().find((l) => l.name === 'GetInfoStart').updated, '2026-10-13T08:00:00.000Z');
+  const unknown = await pc('sync --application Nowhere');
+  assert.equal(unknown.code, 1);
+  assert.match(unknown.output, /^--application Nowhere: not in the stack of Test/);
+});

@@ -155,7 +155,7 @@ All from the root of the user's project, where `.pega/` lives. `--json` everywhe
 
 Creates `.pega/config.json`: MCP command read from `.mcp.json`, applications to follow read from `stack()`, those Pega ships aside (`--all` keeps them, `--ruleset A,B` follows rulesets instead). Writes `stack.md`. Adds `.pega/raw/` to `.gitignore` on request.
 
-### `pega-ctx sync [--since <date>] [--full] [--ruleset <name>]`
+### `pega-ctx sync [--since <date>] [--full] [--ruleset <name>] [--application A] [--type T,U] [--jobs N]`
 
 1. `stack()` and rewrites `stack.md`.
 2. `list()` for each followed ruleset; without `--since`, takes the last sync date from `config.json`; `--full` ignores the dates.
@@ -165,6 +165,8 @@ Creates `.pega/config.json`: MCP command read from `.mcp.json`, applications to 
 6. Returns a summary: `N added, N changed, N removed, N types without projection`, then the list of touched rules as identifiers.
 
 A sync on an empty mirror is a full sync. A `list()` that fails on one ruleset does not stop the others: the error is listed at the end.
+
+At scale: `--jobs N` calls at a time (4 by default), `--type` and `--application` to sync a part, and an interrupted sync does not read again what it had read (`docs/mirror.md` § `sync`). Progress goes to stderr on a terminal only; stdout holds the summary alone.
 
 ### `pega-ctx stack`
 

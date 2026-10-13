@@ -121,7 +121,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 | Command | What it does |
 |---|---|
 | `init [--all] [--ruleset A,B] [--ignore-raw]` | creates `.pega/config.json` and `stack.md`; `applications`: the stack except what Pega ships |
-| `sync [--full] [--since <date>] [--ruleset R]` | reads again what changed in Pega, recomputes index, graph and digests |
+| `sync [--full] [--since <date>] [--ruleset R] [--application A] [--type T,U] [--jobs N]` | reads again what changed in Pega, recomputes index, graph and digests; 4 calls at a time by default, an interrupted sync resumes where it stopped |
 | `search <words> [--type T] [--class C] [--app A]` | grep on the index, name and description; each line tagged `[App]` |
 | `rule <id> [--cited-by] [--raw]` | the digest of a rule (`Type:Class:Name`, or its name if unique) |
 | `rule <[Type:]Name> --on <Class>` | the rules of that name the class reaches, in the order Pega looks: closest class, then the stack |

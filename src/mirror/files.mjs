@@ -1,6 +1,6 @@
-// Reading and writing .pega/: config.json, stack.md, stack.json, index.jsonl, graph.json, write.draft.json, digest/, raw/, drafts/.
+// Reading and writing .pega/: config.json, stack.md, stack.json, index.jsonl, graph.json, write.draft.json, sync.partial.jsonl, digest/, raw/, drafts/.
 // An identifier Type:Class:Name is stored as <Type>/<Class>/<Name>.
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, appendFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 
 export const FOLDER = '.pega';
@@ -15,6 +15,7 @@ export function paths(root = process.cwd()) {
     index: join(base, 'index.jsonl'),
     graph: join(base, 'graph.json'),
     writeDraft: join(base, 'write.draft.json'),
+    partial: join(base, 'sync.partial.jsonl'),
     raw: join(base, 'raw'),
     digest: join(base, 'digest'),
     drafts: join(base, 'drafts'),
@@ -75,6 +76,19 @@ export function mirror(root = process.cwd()) {
     readRaw: (id) => readIfExists(fileOf(p.raw, id, '.toon')),
     writeRaw: (id, toon) => write(fileOf(p.raw, id, '.toon'), toon),
     removeRaw: (id) => rmSync(fileOf(p.raw, id, '.toon'), { force: true }),
+
+    // Rules a sync has read and written to raw/ before writing the index: one JSON line each
+    // ({ key, id, updated }), so that an interrupted sync does not read them again. Removed at the end of a sync.
+    readPartial() {
+      const text = readIfExists(p.partial);
+      const rows = text ? text.split('\n').filter(Boolean).flatMap((l) => { try { return [JSON.parse(l)]; } catch { return []; } }) : [];
+      return new Map(rows.map((r) => [r.key, r]));
+    },
+    appendPartial(row) {
+      mkdirSync(p.base, { recursive: true });
+      appendFileSync(p.partial, `${JSON.stringify(row)}\n`);
+    },
+    removePartial: () => rmSync(p.partial, { force: true }),
 
     readDigest: (id) => readIfExists(fileOf(p.digest, id, '.md')),
     writeDigest: (id, md) => write(fileOf(p.digest, id, '.md'), md),
