@@ -17,3 +17,5 @@ Lists, in order (their names on the board are in French): Backlog → À faire I
 - A blocking point (missing MCP tool, open question, the user's decision) → comment on the card saying what is awaited, move it to **À faire avec humain**, and go on with the next card of À faire IA. Only stop when À faire IA is empty. A possible merge conflict with work that lives elsewhere is not a blocker.
 
 Finding a card: `trelloReadList` `list_by_board` then `get` on the list, never by the short URL.
+
+A card comment saying work is committed (a commit, a branch) is not proof: check with `git log --all --oneline` that it is in this clone before building on it. Work from another session may never have reached it; then redo it and say so in the card's comment.
