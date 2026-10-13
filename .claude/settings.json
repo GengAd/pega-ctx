@@ -3,7 +3,6 @@
     "deny": [
       "Read(./.infinity-rules-mcp/**)",
       "Read(~/.infinity-rules-mcp/oauth-session.json)",
-      "Bash(git push:*)",
       "Bash(git remote add:*)"
     ]
   },
