@@ -1,8 +1,10 @@
-// Recomputes index.jsonl, graph.json and digest/ entirely from raw/ and the index lines
+// Recomputes index.jsonl, graph.json, functions.md and digest/ entirely from raw/ and the index lines
 // (it is fast, and avoids a partial state). `## Cited by` is added here, from the graph.
 import { project, PROJECTIONS, MAX_REFERENCES, MAX_LINES } from '../projection/index.mjs';
 import { resolver, build, incoming } from './graph.mjs';
 import { rulesetOwners, withApplication } from './stack.mjs';
+import { collect, renderFunctions } from './functions.mjs';
+import { decodeToon } from '../mcp/toon.mjs';
 
 // lines: [{ id, type, class, name, rulesets, description, updated, by }], without refs.
 export function rebuild(m, lines) {
@@ -34,6 +36,7 @@ export function rebuild(m, lines) {
   const final = projected.map((p) => ({ ...p.line, refs: p.references.map((r) => r.to) }));
   m.writeIndex(final);
   m.writeGraph(graph);
+  m.writeFunctions(renderFunctions(collect(projected.map((p) => ({ id: p.id, rule: decodeToon(p.toon) })))));
   const kept = new Set(final.map((l) => l.id));
   for (const id of m.ids('digest')) if (!kept.has(id)) m.removeDigest(id);
 

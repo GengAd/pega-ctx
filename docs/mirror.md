@@ -60,6 +60,15 @@ The result of `stack()` at the last `init` or `sync` (the applications, their ru
 - Index, graph and digests are recomputed entirely each time (`src/mirror/rebuild.mjs`). `## Cited by` is added to the digest then; if the digest then exceeds a hundred lines, it is projected again with room reserved.
 - Measured on the test application, JVM start included (2026-10-13, 47 rules, 35 types): full sync 46 s with `--jobs 1`, 15 s with 4, 9.8 s with 8; without change 10.8 s with 4, almost all of it in the listings (0.5 s per type one at a time). `get-rule` alone, 40 rules: 19.5 s one at a time, 9.3 s at 2, 4.7 s at 4, 2.6 s at 8, 1.4 s at 16, no failure: the server reads in parallel without limit seen. 4 stays the default, a shared production server not being a demo server; `--jobs` goes higher. Thousands of rules: not measured yet (card 10).
 
+## `functions.md`
+
+Written by each `sync` (`src/mirror/rebuild.mjs`), from `raw/` alone, nothing asked of the server: the functions the mirror's rules call, most used first (`src/mirror/functions.mjs`).
+
+- A call is `@Func(`, `@Lib.Func(` or `@(RuleSet:Lib).Func(` (listed as `Lib.Func`), found in every string of the decoded rule, nested calls included. `@` after a letter, a digit, `.` or `_` (an email) and `@name` without parentheses (`@baseclass`) are not calls.
+- The call shown runs to its closing parenthesis, strings skipped, spaces folded, 160 characters at most.
+- One `## @Name` section per function: usages (the same call in several fields of a rule counts once), number of rules, up to three distinct real calls each with its rule's identifier.
+- `check`: a draft calling a function `functions.md` does not list gives a `warning:` line; the user decides. What a function does and its parameters are not in the mirror (`D_pxListRules` does not list functions: `docs/mcp-tools.md`, Trello card 23).
+
 ## `live`, `create`, `update`
 
 - `live` reads the rule again (`list({type, class})` then the name ignoring case, the highest version), rewrites its raw rule, its digest, its index line and its outgoing edges. The `## Cited by` of other digests wait for the next `sync`. A rule outside the mirror is given by its full identifier: `live` adds it.

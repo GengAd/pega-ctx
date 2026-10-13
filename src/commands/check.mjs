@@ -5,6 +5,9 @@ import { mirror, splitId } from '../mirror/files.mjs';
 import { incoming } from '../mirror/graph.mjs';
 import { PROJECTIONS } from '../projection/index.mjs';
 import { isManual } from './manual.mjs';
+import { readDraft } from '../mirror/draft.mjs';
+import { calls, strings, listedNames } from '../mirror/functions.mjs';
+import { readFileSync } from 'node:fs';
 
 export const help = 'pega-ctx check';
 // Types that only exist to be cited: orphans are suspect.
@@ -36,6 +39,7 @@ export function run({ options, root, now = new Date() }) {
   }
   // A draft waiting to be sent: written by create --draft or update --draft, never sent nor deleted.
   // A draft for Dev Studio (a type the Pega MCP cannot write) waits for a developer, not for send.
+  const listed = listedNames(m.readFunctions());
   for (const id of m.ids('drafts')) {
     const file = shown(root, m.draftFile(id));
     findings.push(
@@ -43,6 +47,15 @@ export function run({ options, root, now = new Date() }) {
         ? { kind: 'draft', id, text: `draft for Dev Studio waiting: ${file}: a developer applies it as its "steps" say, then pega-ctx live ${id}, and the file is deleted` }
         : { kind: 'draft', id, text: `draft waiting: ${file}: read it, then pega-ctx send ${id} --branch <ID>, or delete the file` },
     );
+    // A function no rule of the application calls: a warning, the user decides.
+    let content;
+    try {
+      content = readDraft(readFileSync(m.draftFile(id), 'utf8'), file).content;
+    } catch {
+      continue;
+    }
+    const unknown = [...new Set(strings(content).flatMap((s) => calls(s).map((c) => c.name)))].filter((n) => !listed.has(n));
+    for (const name of unknown) findings.push({ kind: 'function', level: 'warning', id, text: `warning: ${file} calls @${name}, which no rule of the application calls (.pega/functions.md): ask the user before relying on it` });
   }
   const last = config.lastSync ? new Date(config.lastSync) : undefined;
   const days = last ? (now - last) / 86_400_000 : Infinity;
@@ -51,5 +64,6 @@ export function run({ options, root, now = new Date() }) {
   }
 
   const output = options.json ? JSON.stringify(findings, null, 2) : findings.length ? findings.map((f) => f.text).join('\n') : 'nothing to report';
-  return { code: findings.length ? 1 : 0, output };
+  // A warning alone does not make check fail.
+  return { code: findings.some((f) => f.level !== 'warning') ? 1 : 0, output };
 }
