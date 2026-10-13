@@ -82,6 +82,9 @@ export const COMPONENTS = {
   Integer: { component: 'Integer', pegaClass: 'Pega-UI-Content-Field-Integer' },
   Date: { component: 'Date', pegaClass: 'Pega-UI-Content-Field-Date' },
 };
+// Multi-line text (get-skill rules-rule-ui-view/examples/pyContent/text-area): for a Text property shown
+// as :TextArea in --fields, or whose control is pxTextArea.
+export const PARAGRAPH = { component: 'TextArea', pegaClass: 'Pega-UI-Content-Field-Text-Paragraph' };
 
 // A view holds its fields on three surfaces (server skill rules-rule-ui-view): pyContent (the source,
 // the server recomputes pxViewMetadata from it), pxViewMetadata and pxContextMetadata. The fields
@@ -99,10 +102,12 @@ function viewWithFields(content, { class: cls, name, fields }) {
     pyPromptClass: cls,
     pyValue: `.${f.property}`,
     pyValueWithoutAnnotation: `.${f.property}`,
+    // A required field is set on both surfaces, or it does not hold (rules-rule-ui-view/references/view-field-patterns).
+    ...(f.required ? { pyRequiredOption: 'always' } : {}),
   }));
   const meta = parseJson(content.pxViewMetadata) ?? { type: 'View', config: {}, children: [] };
   const regionMeta = (meta.children ?? []).find((n) => n.type === 'Region' && n.name === region.pyName) ?? (meta.children ?? []).find((n) => n.type === 'Region');
-  const children = fields.map((f) => ({ config: { label: `@FL .${f.property}`, labelOption: 'default', value: `@P .${f.property}` }, type: f.component }));
+  const children = fields.map((f) => ({ config: { label: `@FL .${f.property}`, labelOption: 'default', value: `@P .${f.property}`, ...(f.required ? { required: true } : {}) }, type: f.component }));
   if (regionMeta) regionMeta.children = children;
   else meta.children = [{ name: region.pyName ?? 'Fields', type: 'Region', children }];
   meta.name = name;

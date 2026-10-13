@@ -142,7 +142,7 @@ All from the project root, where `.pega/` lives. `--json` everywhere; a failure 
 | `around <id> [--depth 2] [--types Flow,View] [--stage S]` | the subgraph, digests from the closest to the farthest; 40 rules at most |
 | `stack [--for <Class>]` | applications and rulesets seen; known inheritance of a class and where its new rules are written |
 | `live <id>` | the rule read in Pega right now, and how it differs from the mirror |
-| `create <Type> <Class> <Name> --from <id> [--patch <f.json>] [--rename A=B] [--fields P1,P2] [--dry-run \| --draft] [--branch B]` | creates a rule from a sibling rule, describing only the difference; `--fields` for the fields of a view. Any of the 37 types `create-rule` accepts; the others are refused with the server's reason |
+| `create <Type> <Class> <Name> --from <id> [--patch <f.json>] [--rename A=B] [--fields P1,P2:required,P3:TextArea] [--dry-run \| --draft] [--branch B]` | creates a rule from a sibling rule, describing only the difference; `--fields` for the fields of a view. Any of the 37 types `create-rule` accepts; the others are refused with the server's reason |
 | `examples [Type]` | the server's examples for a type, templates when the application has no rule of that type yet (`create … --from example:stub`) |
 | `update <id> --patch <f.json> [--dry-run \| --draft] [--branch B]` | updates a rule, after an implicit `live` |
 | `send <draft \| id> [--branch B] [--dry-run] [--force] [--no-lint]` | sends a draft as it is in the file, then deletes it |

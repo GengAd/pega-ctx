@@ -40,6 +40,26 @@ test('merge: objects merged, array replaced entirely, null removes', () => {
   assert.deepEqual(merge({ a: { b: 1, c: 2 }, l: [1, 2, 3], x: 1 }, { a: { c: 9 }, l: [7], x: null }), { a: { b: 1, c: 9 }, l: [7] });
 });
 
+test('create View --fields: :TextArea makes a Text property multi-line, :required sets both surfaces; wrong options refused', async () => {
+  const P = 'MONORG-Test-Data-People';
+  const { pc } = await fixtureMirror();
+  const r = await pc(`create View ${P} Card --from View:${W}:CollectHouseholdSize --fields Title:TextArea:required,Age:required --dry-run --json`);
+  assert.equal(r.code, 0, r.output);
+  const { content } = JSON.parse(r.output).payload;
+  assert.deepEqual(content.pyContent[0].pyContent.map((c) => [c.pyFieldReference, c.pyComponentName, c.pxObjClass, c.pyRequiredOption]), [
+    ['Title', 'TextArea', 'Pega-UI-Content-Field-Text-Paragraph', 'always'],
+    ['Age', 'Integer', 'Pega-UI-Content-Field-Integer', 'always'],
+  ]);
+  const meta = JSON.parse(content.pxViewMetadata);
+  assert.deepEqual(meta.children[0].children.map((c) => [c.type, c.config.required]), [['TextArea', true], ['Integer', true]]);
+  assert.match(JSON.parse(r.output).digest, /\.Title: TextArea, required\n {2}- \.Age: Integer, required/);
+  const plain = JSON.parse((await pc(`create View ${P} Card --from View:${W}:CollectHouseholdSize --fields Title --dry-run --json`)).output).payload.content;
+  assert.equal(plain.pyContent[0].pyContent[0].pyRequiredOption, undefined);
+  assert.equal(JSON.parse(plain.pxViewMetadata).children[0].children[0].config.required, undefined);
+  assert.match((await pc(`create View ${P} Card --from View:${W}:CollectHouseholdSize --fields Title:Big --dry-run`)).output, /^--fields: Title:Big: unknown option Big; after a property, :TextArea and :required/);
+  assert.match((await pc(`create View ${P} Card --from View:${W}:CollectHouseholdSize --fields Age:TextArea --dry-run`)).output, /^--fields: Age is of type Integer: only a Text property can be a TextArea/);
+});
+
 test('prepareCreation: key of the type, name fields renamed, not the referenced view', () => {
   const c = prepareCreation(rawOf(FA), { type: 'FlowAction', class: W, name: 'Confirm', patch: {} });
   assert.equal(c.pyActionName, 'Confirm');

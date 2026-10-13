@@ -4,6 +4,7 @@ One line per delivered step. Versions follow [semver](https://semver.org); `0.1.
 
 ## Unreleased
 
+- `create View --fields`: `Prop:required` (both surfaces of the view) and `Prop:TextArea` (multi-line Text; automatic for a `pxTextArea` control).
 - `pega-ctx changes`: what the last sync changed, dated rule by rule with the digest lines that changed, or the rules updated since a date; `check` flags an update draft whose rule changed since. (step 28)
 - `pega-ctx model <Class>`: the data model of a class in one page, inherited properties, embedded classes, data pages and views; the explorer agent may run it. (step 26)
 - `.pega/conventions.md`, written by `sync`: how the application names its rules, per class prefix; `create` adds a `convention:` line when a name or a label departs from it, or a class has no `--label`. (step 25)

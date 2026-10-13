@@ -127,6 +127,6 @@ Notes on the runs:
 - **Hypothesis 3, ruled out**: B does not miss point 6. The case runs on all three B runs; the only failure is A1, for an environment cause.
 - **Nudges**: B counts one more by construction (the templates ask for the plan to be approved before writing); the others come from contamination between runs, not from pega-ctx.
 
-What remains to improve, seen during the measurement: `--fields` knows neither the multi-line text area nor the required field; a class created without `--label` keeps its technical name as label; nothing pushes the model to reuse the language of the template's property names.
+Seen during the measurement, and handled since: `--fields` takes `Prop:TextArea` (multi-line) and `Prop:required`; `create` adds a `convention:` line for a class created without `--label` and for a name or a label that departs from how the neighbouring rules are named (`.pega/conventions.md`, step 25).
 
 Limits: three runs per condition, a single model, a single task; B1 on an earlier version of `creer`; two B runs contaminated by an A branch that was not deleted. The per-run detail (tools, scorecard) is outside the repository, it carries the application's real names.

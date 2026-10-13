@@ -11,7 +11,7 @@ import { refresh } from '../mirror/live.mjs';
 import { resolver } from '../mirror/graph.mjs';
 import { project } from '../projection/index.mjs';
 import { isParentClass } from '../projection/common.mjs';
-import { prepareCreation, COMPONENTS } from './template.mjs';
+import { prepareCreation, COMPONENTS, PARAGRAPH } from './template.mjs';
 import { findRule, render, shown, warnings, warningsText } from './common.mjs';
 import { departures } from '../mirror/conventions.mjs';
 import { header } from './live.mjs';
@@ -79,13 +79,18 @@ export function readRenames(value) {
   });
 }
 
-// --fields LastName,FirstName (View): each property must be in the mirror, on the class or a parent;
-// its type (pyStringType) picks the component. A missing property is created first.
+// --fields LastName,Notes:TextArea,Age:required (View): each property must be in the mirror, on the class
+// or a parent; its type (pyStringType) picks the component, :TextArea (or a pxTextArea control) makes a
+// Text property multi-line, :required makes the field required. A missing property is created first.
+const FIELD_OPTIONS = ['TextArea', 'required'];
 export function readFields(value, { class: cls, index, m }) {
   if (value === undefined) return undefined;
-  if (typeof value !== 'string') throw new Error('--fields expects Property1,Property2');
+  if (typeof value !== 'string') throw new Error('--fields expects Property1,Property2:required,Notes:TextArea');
   return value.split(',').map((raw) => {
-    const property = raw.trim().replace(/^\./, '');
+    const [name, ...opts] = raw.trim().split(':');
+    const wrong = opts.filter((o) => !FIELD_OPTIONS.includes(o));
+    if (wrong.length) throw new Error(`--fields: ${raw.trim()}: unknown option ${wrong.join(', ')}; after a property, :TextArea and :required`);
+    const property = name.replace(/^\./, '');
     const line = index
       .filter((r) => r.type === 'Property' && r.name === property && isParentClass(r.class, cls))
       .sort((a, b) => b.class.length - a.class.length)[0];
@@ -94,7 +99,9 @@ export function readFields(value, { class: cls, index, m }) {
     const kind = o.pyPropertyMode === 'String' ? o.pyStringType || 'Text' : o.pyPropertyMode;
     const component = COMPONENTS[kind];
     if (!component) throw new Error(`--fields: ${property} is of type ${kind}, which --fields cannot display (${Object.keys(COMPONENTS).join(', ')}): describe pyContent, pxViewMetadata and pxContextMetadata in the patch`);
-    return { property, ...component };
+    const paragraph = opts.includes('TextArea') || o.pyStreamName === 'pxTextArea';
+    if (paragraph && kind !== 'Text') throw new Error(`--fields: ${property} is of type ${kind}: only a Text property can be a TextArea`);
+    return { property, ...(paragraph ? PARAGRAPH : component), required: opts.includes('required') };
   });
 }
 
