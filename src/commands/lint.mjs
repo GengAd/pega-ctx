@@ -1,5 +1,5 @@
-// pega-ctx lint <draft file | id>: checks a draft against the server's schema and pega-ctx's rules,
-// without Pega. One line per finding with its line in the file; code 1 if there is an error.
+// pega-ctx lint <draft file | id>: checks a draft against the server's schema, pega-ctx's rules and the
+// mirror (what it cites exists), without Pega. One line per finding with its line in the file; code 1 if there is an error.
 // send runs it before sending. The schema comes from the Pega plugin's files (src/mcp/schemas.mjs).
 import { readFileSync } from 'node:fs';
 import { shown } from './common.mjs';
@@ -16,7 +16,7 @@ export function run({ positionals, options, root, schemas }) {
   const file = draftPath(m, root, positionals[0]);
   const { header, content } = readDraft(readFileSync(file, 'utf8'), shown(root, file));
   const { type } = splitId(header.id ?? '');
-  const findings = lintOf(schemas, { operation: header.operation, type, content, base: baseOf(m, header.id) });
+  const findings = lintOf(schemas, { operation: header.operation, type, content, base: baseOf(m, header.id), m, id: header.id });
   const code = hasErrors(findings) ? 1 : 0;
   return { code, output: options.json ? JSON.stringify(findings, null, 2) : `${shown(root, file)}\n${draftFindingsText(file, findings)}` };
 }

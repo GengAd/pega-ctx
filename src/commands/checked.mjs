@@ -8,6 +8,7 @@ import { fitTypes } from '../lint/jsonschema.mjs';
 import { lineOf } from '../lint/positions.mjs';
 import { editorSchema } from '../lint/editor.mjs';
 import { declaredPz } from '../projection/persistence.mjs';
+import { referenceFindings } from '../lint/references.mjs';
 
 const loaded = (schemas, type) => schemas?.(type) ?? { missing: 'no schema loader' };
 
@@ -23,9 +24,13 @@ export function keepOf(schemas, type) {
   return schema ? declaredPz(schema) : undefined;
 }
 
-export function lintOf(schemas, { operation, type, content, base }) {
+// m, id: with the mirror, the references the content cites are checked too (src/lint/references.mjs);
+// id is the rule written, left out of the drafts waiting.
+export function lintOf(schemas, { operation, type, content, base, m, id }) {
   const { schema, missing } = loaded(schemas, type);
-  return lint({ operation, ruleClass: TYPES[type], content, base, schema, missing });
+  const findings = lint({ operation, ruleClass: TYPES[type], content, base, schema, missing });
+  if (m) findings.push(...referenceFindings({ operation, type, content, base, index: m.readIndex(), drafts: m.ids('drafts').filter((d) => d !== id), readRaw: m.readRaw }));
+  return findings;
 }
 
 // Writes the draft, with the editor's schema next to it when there is one, and its digest as a

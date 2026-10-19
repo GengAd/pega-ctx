@@ -15,7 +15,7 @@ End goal: a tool reusable in any Pega project, installed by its own setup: `pega
 - `bin/pega-ctx.mjs` — arguments → `src/commands/*`
 - `src/mcp/` — the only layer that talks to Pega (stdio client, tool table); `types.mjs` is generated from the server's schemas by `scripts/types.mjs`, never edited by hand
 - `src/projection/` — raw → digest, one projection per type
-- `src/lint/` — what create / update / send will write, checked against the server's JSON Schemas without Pega
+- `src/lint/` — what create / update / send will write, checked against the server's JSON Schemas and against the mirror (what it cites exists), without Pega
 - `src/mirror/` — `.pega/`: raw, digest, index.jsonl, graph.json, stack.md
 - `src/commands/` — one command per file
 - `tests/`, `tests/fixture/raw/` — real anonymized rules

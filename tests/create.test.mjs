@@ -233,11 +233,11 @@ test('live: same as the mirror without header; changed in Pega → first line, r
 
 test('update --dry-run: implicit live, digest after the patch, nothing sent; without --dry-run: update-rule with the key', async () => {
   const { root, pc, pega } = await fixtureMirror();
-  const f = patch(root, 'm.json', { pyViewReference: 'OtherView' });
+  const f = patch(root, 'm.json', { pyViewReference: 'EnterHouseholdMembers' });
   pega.calls.length = 0;
   const d = await pc(`update ${FA} --patch ${f} --dry-run`);
   assert.match(d.output, /^dry-run: nothing is written to Pega\n\n# FlowAction CollectHouseholdSize\n/);
-  assert.match(d.output, /\nview: OtherView\n/);
+  assert.match(d.output, /\nview: EnterHouseholdMembers\n/);
   assert.ok(pega.calls.some((c) => c[0] === 'read'), 'implicit live');
   assert.ok(!pega.calls.some((c) => c[0] === 'update'));
   assert.match(mirror(root).readDigest(FA), /\nview: CollectHouseholdSize\n/, 'the mirror stays the one from Pega');
@@ -245,6 +245,6 @@ test('update --dry-run: implicit live, digest after the patch, nothing sent; wit
   await pc(`update ${FA} --patch ${f} --branch US42`);
   const [, request] = pega.calls.find((c) => c[0] === 'update');
   assert.equal(request.key, pega.rows.find((x) => x.type === 'FlowAction').key);
-  assert.deepEqual(request.patch, { pyViewReference: 'OtherView' });
+  assert.deepEqual(request.patch, { pyViewReference: 'EnterHouseholdMembers' });
   assert.equal(request.branch, 'US42');
 });

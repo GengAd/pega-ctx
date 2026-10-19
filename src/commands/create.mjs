@@ -156,7 +156,7 @@ export async function run({ positionals, options, root, connect, schemas, exampl
   });
   // The raw rule keeps numbers and booleans as strings; the server's schema wants them typed.
   const content = fitted(schemas, type, prepared);
-  const findings = lintOf(schemas, { operation: 'create', type, content });
+  const findings = lintOf(schemas, { operation: 'create', type, content, m, id });
   // Write ruleset: --ruleset, the "write" table by class prefix, the sibling rules of the class. Never a guess.
   const write = resolveWrite({ class: cls, option: options.ruleset, table: config.write, index });
   if (!write.ruleset) return { code: 1, output: unresolvedMessage(cls, write) };

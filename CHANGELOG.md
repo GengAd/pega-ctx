@@ -4,6 +4,7 @@ One line per delivered step. Versions follow [semver](https://semver.org); `0.1.
 
 ## Unreleased
 
+- Semantic lint: `create`, `update`, `send` and `lint` project the content and check what it cites against the mirror; `ref:` lines, an error for a rule or a property missing everywhere, a warning for a draft still waiting, a target on another class, a Pega name not overridden, a rule not available, or a data page called with parameters it does not declare.
 - `create View --fields`: `Prop:required` (both surfaces of the view) and `Prop:TextArea` (multi-line Text; automatic for a `pxTextArea` control).
 - `pega-ctx changes`: what the last sync changed, dated rule by rule with the digest lines that changed, or the rules updated since a date; `check` flags an update draft whose rule changed since. (step 28)
 - `pega-ctx model <Class>`: the data model of a class in one page, inherited properties, embedded classes, data pages and views; the explorer agent may run it. (step 26)

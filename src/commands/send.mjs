@@ -48,7 +48,7 @@ export async function run({ positionals, options, root, connect, schemas }) {
   if (!manual) checkFields(content, where, 'the draft', { strict: false, keep: keepOf(schemas, type) });
   const reason = typeof options.reason === 'string' ? options.reason : header.reason ?? `pega-ctx send ${name}`;
   const branch = typeof options.branch === 'string' ? options.branch : header.branch ?? config.branch;
-  const findings = lintOf(schemas, { operation: header.operation, type, content, base: baseOf(m, id) });
+  const findings = lintOf(schemas, { operation: header.operation, type, content, base: baseOf(m, id), m, id });
   const findingsShown = draftFindingsText(file, findings);
 
   if (header.operation === 'create') {

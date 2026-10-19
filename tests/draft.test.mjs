@@ -52,14 +52,17 @@ test('create --draft: the file in .pega/drafts/, nothing sent; check lists it; s
   assert.equal(draft['pega-ctx'].from, VIEW);
   assert.equal(draft['pega-ctx'].ruleset, 'Test');
   assert.equal(draft.content.pxViewMetadata.name, 'Confirmation', 'the view metadata is readable as an object');
+  // The template's field is not in the mirror: the draft says so, with the line to fix.
+  assert.match(r.output, /\nlint: 1 error, 1 warning\nerror line \d+ {2}\/content\/[^:]+: ref: Property HouseholdMemberCount \(field\) is missing from the mirror on MONORG-Test-Work-GetInfo and its parents: create it first, fix the name, or pega-ctx live Property:MONORG-Test-Work-GetInfo:HouseholdMemberCount if it lives in an application the mirror does not follow\n/);
 
   const check = await pc('check');
   assert.equal(check.code, 1);
   assert.match(check.output, new RegExp(`draft waiting: \\.pega/drafts/View/${W}/Confirmation\\.json: read it, then pega-ctx send ${id} --branch <ID>, or delete the file`));
 
-  // Corrected by hand: the label changes, the metadata stays an object in the file.
+  // Corrected by hand: the label changes, the field becomes one of the mirror, the metadata stays an object in the file.
   draft.content.pyLabel = 'Confirm the request';
-  writeFileSync(file, JSON.stringify(draft, null, 2));
+  writeFileSync(file, JSON.stringify(draft, null, 2).replaceAll('HouseholdMemberCount', 'HouseholdMembers'));
+  assert.match((await pc(`lint ${id}`)).output, /\nlint: 1 warning\nwarning line \d+ {2}\/content: not checked against a schema/);
   const dry = await pc(`send ${id} --dry-run`);
   assert.match(dry.output, /^dry-run: nothing is written to Pega\n\.pega\/drafts\/View\/[^:]+: create View:[^\n]+\n\n# View Confirmation\n[^]*\ndescription: Confirm the request\n/);
   assert.deepEqual(pega.calls, []);
@@ -83,13 +86,13 @@ test('update --draft: the patch and the fingerprint of the rule; send refuses if
   const { root, pc, pega } = await fixtureMirror();
   const m = mirror(root);
   const p = join(root, 'p.json');
-  writeFileSync(p, JSON.stringify({ pyViewReference: 'OtherView' }));
+  writeFileSync(p, JSON.stringify({ pyViewReference: 'EnterHouseholdMembers' }));
   const r = await pc(`update ${FA} --patch ${p} --draft --branch US42`);
   assert.equal(r.code, 0, r.output);
-  assert.match(r.output, /\nview: OtherView\n/);
+  assert.match(r.output, /\nview: EnterHouseholdMembers\n/);
   assert.ok(!pega.calls.some((c) => c[0] === 'update'));
   const draft = JSON.parse(readFileSync(m.draftFile(FA), 'utf8'));
-  assert.deepEqual(draft.content, { pyViewReference: 'OtherView' });
+  assert.deepEqual(draft.content, { pyViewReference: 'EnterHouseholdMembers' });
   assert.equal(draft['pega-ctx'].branch, 'US42');
   assert.match(draft['pega-ctx'].basedOn, /^[0-9a-f]{16}$/);
 
@@ -104,7 +107,7 @@ test('update --draft: the patch and the fingerprint of the rule; send refuses if
   const forced = await pc(`send ${FA} --force`);
   assert.equal(forced.code, 0, forced.output);
   const [request] = sent(pega, 'update');
-  assert.deepEqual(request.patch, { pyViewReference: 'OtherView' });
+  assert.deepEqual(request.patch, { pyViewReference: 'EnterHouseholdMembers' });
   assert.equal(request.branch, 'US42', 'the branch written in the draft');
   assert.ok(!existsSync(m.draftFile(FA)));
 });

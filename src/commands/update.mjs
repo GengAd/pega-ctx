@@ -52,7 +52,7 @@ export async function run({ positionals, options, root, connect, schemas }) {
     const note = before.state === 'different' ? header('different', config) : '';
     const reason = typeof options.reason === 'string' ? options.reason : `pega-ctx update ${before.id.split(':').at(-1)}`;
     const type = before.id.split(':')[0];
-    const findings = lintOf(schemas, { operation: 'update', type, content: patch, base: decodeToon(m.readRaw(before.id)) });
+    const findings = lintOf(schemas, { operation: 'update', type, content: patch, base: decodeToon(m.readRaw(before.id)), m, id: before.id });
     if (options['dry-run'] || options.draft) {
       const digest = patchedDigest(m, before.id, patch);
       if (options['dry-run']) return render(options, { id: before.id, patch, digest, findings }, `${note}dry-run: nothing is written to Pega\n\n${digest.trimEnd()}\n\n${findingsText(findings)}`);
