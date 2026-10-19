@@ -2,6 +2,8 @@
   "name": "pega-ctx",
   "version": "0.0.0",
   "description": "Local, readable mirror of Pega rules, client of the Pega MCP",
+  "license": "AGPL-3.0-only",
+  "author": "GengAd",
   "type": "module",
   "bin": { "pega-ctx": "bin/pega-ctx.mjs" },
   "files": ["bin/", "src/", "templates/", "CHANGELOG.md"],
