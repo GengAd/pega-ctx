@@ -2,7 +2,7 @@
 
 ## Guardrails hook
 
-`.claude/hooks/guardrails.mjs` reads the raw text of every Bash command: `npm install` / `npm i` followed by anything but `@modelcontextprotocol/sdk` is refused, even inside a heredoc, a Python script or a commit message. Write such text with Edit/Write, and phrase commit messages without it. A `git push` passes only as `git push realOrigin main`, and only if the commits to publish carry no real name of `tests/fixture/anonymization.json` and no email address: a refusal names the pseudonym; fix it, rewrite the unpushed commits, push again.
+`.claude/hooks/guardrails.mjs` reads the raw text of every Bash command: `npm install` / `npm i` followed by anything but `@modelcontextprotocol/sdk` is refused, even inside a heredoc, a Python script or a commit message. Write such text with Edit/Write, and phrase commit messages without it. A `git push` passes only as `git push realOrigin main` (or `git push origin main` when the clone has no `realOrigin` remote and `origin` is `GengAd/pega-ctx`), and only if the commits to publish carry no real name of `tests/fixture/anonymization.json` and no email address: a refusal names the pseudonym; fix it, rewrite the unpushed commits, push again.
 
 ## Pega environment
 

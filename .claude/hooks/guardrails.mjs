@@ -18,16 +18,21 @@ function refuse(message) {
   process.exit(2);
 }
 
-// Only `git push realOrigin main`, and only when nothing it publishes (added lines, file names,
+// Only `git push realOrigin main` (or `git push origin main` in a clone without a realOrigin remote,
+// when origin is the public repository), and only when nothing it publishes (added lines, file names,
 // commit messages) carries a real name of the anonymization table or an email address.
 // A name found is reported by its pseudonym, never printed.
 function checkPush(args) {
-  if (args.join(' ') !== `${PUBLIC_REMOTE} main`) {
-    refuse(`Push: only \`git push ${PUBLIC_REMOTE} main\` (the public repository GengAd/pega-ctx), no other remote, branch or option.`);
-  }
   const dir = process.env.CLAUDE_PROJECT_DIR ?? process.cwd();
   const git = (...a) => execFileSync('git', ['-C', dir, ...a], { encoding: 'utf8', maxBuffer: 1 << 28 });
-  const published = git('log', '-p', '--format=%B', `${PUBLIC_REMOTE}/main..HEAD`)
+  const remotes = git('remote').split('\n').filter(Boolean);
+  const originIsPublic = () => /github\.com[/:]GengAd\/pega-ctx(\.git)?$/i.test(git('remote', 'get-url', 'origin').trim());
+  const fallback = !remotes.includes(PUBLIC_REMOTE) && remotes.includes('origin') && originIsPublic();
+  const remote = args.join(' ') === `${PUBLIC_REMOTE} main` ? PUBLIC_REMOTE : fallback && args.join(' ') === 'origin main' ? 'origin' : undefined;
+  if (!remote) {
+    refuse(`Push: only \`git push ${PUBLIC_REMOTE} main\` (the public repository GengAd/pega-ctx; \`git push origin main\` when this clone has no ${PUBLIC_REMOTE} remote and origin is that repository), no other remote, branch or option.`);
+  }
+  const published = git('log', '-p', '--format=%B', `${remote}/main..HEAD`)
     .split('\n').filter((l) => !l.startsWith('-') && !l.startsWith(' ')).join('\n');
   const tablePath = join(dir, 'tests/fixture/anonymization.json');
   const table = existsSync(tablePath) ? JSON.parse(readFileSync(tablePath, 'utf8')) : {};
