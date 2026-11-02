@@ -143,8 +143,8 @@ totalCount: 2`,
     'clear-application-alias': 'status: alias_cleared',
   });
   assert.deepEqual(await pega.applications(), [
-    { application: 'Claims', version: '01.01.01', alias: 'claims' },
-    { application: 'PegaRULES', version: '8', alias: null },
+    { application: 'Claims', version: '01.01.01', accessGroup: 'Claims:Authors', alias: 'claims' },
+    { application: 'PegaRULES', version: '8', accessGroup: 'PRPC:Administrators', alias: null },
   ]);
   await pega.alias('claims');
   await pega.alias(null);

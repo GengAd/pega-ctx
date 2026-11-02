@@ -93,6 +93,7 @@ export async function applications(call) {
   return (r.availableApplications ?? []).map((a) => ({
     application: a.applicationName,
     version: String(a.applicationVersion),
+    accessGroup: a.accessGroup,
     alias: a.switchable === true || a.switchable === 'true' ? a.applicationAlias : null,
   }));
 }

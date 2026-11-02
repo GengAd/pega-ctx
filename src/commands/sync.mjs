@@ -101,11 +101,14 @@ export async function run({ options, root, connect, progress = terminalProgress(
     if (others.length) {
       const known = await pega.applications();
       for (const a of others) {
-        const found = known.find((k) => k.application === a);
+        // One line per access group of the operator: the same application may come several times, with an alias
+        // on some lines only. The stack and the listing may not write the name with the same case.
+        const lines = known.filter((k) => String(k.application).toLowerCase() === a.toLowerCase());
+        const found = lines.find((k) => k.alias);
         // The server opens another application at /prweb/app/<alias>/, with the alias Pega gives per access group.
-        if (found?.alias) contexts.push({ application: a, alias: found.alias });
-        else if (found) errors.push(`${a}: not mirrored, its URL alias is blank in Pega (/app//): give the application a URL alias, or remove it from "applications" in .pega/config.json`);
-        else errors.push(`${a}: not mirrored, the operator has no access group for it (not in list-available-applications): add one to the operator, or remove it from "applications" in .pega/config.json`);
+        if (found) contexts.push({ application: a, alias: found.alias });
+        else if (lines.length) errors.push(`${a}: not mirrored, its URL alias is blank in Pega (/app//) for each of the operator's access groups (${lines.map((k) => k.accessGroup ?? k.version).join(', ')}): give the application a URL alias, or remove it from "applications" in .pega/config.json`);
+        else errors.push(`${a}: not mirrored, the operator has no access group for it (list-available-applications gives ${known.map((k) => k.application).join(', ') || 'nothing'}): add one to the operator, or remove it from "applications" in .pega/config.json`);
       }
     }
 
