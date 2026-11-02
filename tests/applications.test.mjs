@@ -69,7 +69,7 @@ test('sync: a followed application the operator cannot open is reported, the oth
   const r = await pc('sync');
   assert.equal(r.code, 0);
   assert.match(r.output, /\n- Constellation: not mirrored, the operator has no access group for it \(list-available-applications gives Test, PegaRULES, Gameboard\): add one to the operator/);
-  assert.match(r.output, /\n- PegaRULES: not mirrored, its URL alias is blank in Pega \(\/app\/\/\) for each of the operator's access groups \(8\): give the application a URL alias/);
+  assert.match(r.output, /\n- PegaRULES: not mirrored, Pega gives it no URL alias \(\/app\/\/\) in the operator's access groups \(8\): if \/prweb\/app\/<alias>\/ opens it, write "aliases": \{ "PegaRULES": "<alias>" \} in \.pega\/config\.json/);
   assert.ok(m.readIndex().length > 0);
 });
 
@@ -81,6 +81,17 @@ test('sync: an application listed several times opens with the line that has an 
     { application: 'Gameboard', version: '01.01.01', accessGroup: 'Gameboard:Authors', alias: 'gameboard' },
   ];
   await pc('init');
+  const r = await pc('sync');
+  assert.ok(!/Gameboard: not mirrored/.test(r.output), r.output);
+  assert.ok(pega.calls.some((c) => c[0] === 'alias' && c[1] === 'gameboard'));
+  assert.ok(m.readIndex().some((l) => l.application === 'Gameboard'));
+});
+
+test('sync: an alias of "aliases" in the config opens an application Pega gives none for', async () => {
+  const { pega, pc, m } = setup({ gameboard: true });
+  pega.applications = async () => [{ application: 'Gameboard', version: '01.01.01', accessGroup: 'Gameboard:Authors', alias: null }];
+  await pc('init');
+  m.writeConfig({ ...m.readConfig(), aliases: { Gameboard: 'gameboard' } });
   const r = await pc('sync');
   assert.ok(!/Gameboard: not mirrored/.test(r.output), r.output);
   assert.ok(pega.calls.some((c) => c[0] === 'alias' && c[1] === 'gameboard'));

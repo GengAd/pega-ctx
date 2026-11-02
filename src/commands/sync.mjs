@@ -104,10 +104,12 @@ export async function run({ options, root, connect, progress = terminalProgress(
         // One line per access group of the operator: the same application may come several times, with an alias
         // on some lines only. The stack and the listing may not write the name with the same case.
         const lines = known.filter((k) => String(k.application).toLowerCase() === a.toLowerCase());
-        const found = lines.find((k) => k.alias);
+        // "aliases" in the config first: Pega's session details may give a blank alias to an application whose
+        // /prweb/app/<alias>/ URL works, and the server sends any alias it is given without checking it.
+        const alias = config.aliases?.[a] ?? lines.find((k) => k.alias)?.alias;
         // The server opens another application at /prweb/app/<alias>/, with the alias Pega gives per access group.
-        if (found) contexts.push({ application: a, alias: found.alias });
-        else if (lines.length) errors.push(`${a}: not mirrored, its URL alias is blank in Pega (/app//) for each of the operator's access groups (${lines.map((k) => k.accessGroup ?? k.version).join(', ')}): give the application a URL alias, or remove it from "applications" in .pega/config.json`);
+        if (alias) contexts.push({ application: a, alias });
+        else if (lines.length) errors.push(`${a}: not mirrored, Pega gives it no URL alias (/app//) in the operator's access groups (${lines.map((k) => k.accessGroup ?? k.version).join(', ')}): if /prweb/app/<alias>/ opens it, write "aliases": { "${a}": "<alias>" } in .pega/config.json; otherwise remove it from "applications"`);
         else errors.push(`${a}: not mirrored, the operator has no access group for it (list-available-applications gives ${known.map((k) => k.application).join(', ') || 'nothing'}): add one to the operator, or remove it from "applications" in .pega/config.json`);
       }
     }
