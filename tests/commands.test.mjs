@@ -1,7 +1,7 @@
 // Commands, on the fixture. None launches Java.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parse, launch } from '../src/commands/index.mjs';
+import { parse, launch, failure } from '../src/commands/index.mjs';
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -25,6 +25,18 @@ test('unknown command: non-zero code, one line that says what to do', async () =
   assert.equal(r.output.split('\n').length, 1);
   assert.match(r.output, /choose among .*measure/);
 });
+
+test('a pega-ctx bug: one line that names the file and line of pega-ctx, a refusal stays its message', () => {
+  let bug;
+  try {
+    readX(undefined);
+  } catch (e) {
+    bug = e;
+  }
+  assert.match(failure(bug), /^pega-ctx bug at tests\/commands\.test\.mjs:\d+: Cannot read properties of undefined \(reading 'x'\)\. Report it with this line$/);
+  assert.equal(failure(new Error('--jobs 0: give a whole number')), '--jobs 0: give a whole number');
+});
+const readX = (o) => o.x;
 
 test('measure: one line per type and a total, raw / digest ratio', async () => {
   const r = await launch(parse(['measure', '--raw', RAW]));

@@ -36,8 +36,10 @@ export function propertyName(value) {
 
 // Inheritance by name pattern: MyOrg-App-Work is a parent of MyOrg-App-Work-Case.
 // The Pega engine decides (directed inheritance, circumstancing); here, only what the name says.
+// A rule with no class (EditValidate) has only @baseclass above it, and is above nothing.
 export function isParentClass(parent, cls) {
   if (parent === '@baseclass' || parent === cls) return true;
+  if (!parent || !cls) return false;
   return parent.endsWith('-') ? cls.startsWith(parent) : cls.startsWith(`${parent}-`);
 }
 

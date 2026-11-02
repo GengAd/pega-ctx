@@ -66,6 +66,16 @@ export async function launch({ command, positionals, options }, context = {}) {
     if (m.exists()) addTypes(m.readConfig().types);
     return await mod.run({ ...context, positionals, options, root, connect, schemas, examples: exampleFiles });
   } catch (e) {
-    return { code: 1, output: e.message };
+    return { code: 1, output: failure(e) };
   }
+}
+
+// A refusal is its message. A bug of pega-ctx (TypeError…) says nothing alone: the line also names
+// where, in pega-ctx's own files, it happened, still without a stack trace.
+const PACKAGE = new URL('../../', import.meta.url).href;
+export function failure(e) {
+  if (!(e instanceof TypeError || e instanceof ReferenceError || e instanceof RangeError)) return e?.message ?? String(e);
+  const frame = String(e.stack ?? '').split('\n').find((l) => l.includes(PACKAGE));
+  const at = frame && /^(.*?):(\d+):\d+\)?$/.exec(frame.slice(frame.indexOf(PACKAGE) + PACKAGE.length));
+  return `pega-ctx bug${at ? ` at ${at[1]}:${at[2]}` : ''}: ${e.message}. Report it with this line`;
 }

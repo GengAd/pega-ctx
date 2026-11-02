@@ -118,6 +118,17 @@ test('generic detection: parent class only, neither itself nor an edge already s
   assert.deepEqual(r.map((x) => x.to), ['When:A-B:Parent']);
 });
 
+test('generic detection: a rule with no class cites only @baseclass, and is cited by no class', () => {
+  const idx = [
+    { id: 'When:@baseclass:Base', type: 'When', class: '@baseclass', name: 'Base' },
+    { id: 'When:A-B:Parent', type: 'When', class: 'A-B', name: 'Parent' },
+    { id: 'EditValidate::Check', type: 'EditValidate', class: '', name: 'Check' },
+  ];
+  const fromClassless = probableReferences({ pyRuleName: 'Other', pyJavaSource: 'Base Parent' }, 'EditValidate', idx);
+  assert.deepEqual(fromClassless.map((x) => x.to), ['When:@baseclass:Base']);
+  assert.deepEqual(probableReferences({ pyClassName: 'A-B', pyRuleName: 'Me', note: 'Check' }, 'Flow', idx), []);
+});
+
 test('each projection is for a known type and has at least one fixture rule', () => {
   for (const type of Object.keys(PROJECTIONS)) {
     assert.ok(TYPES[type], `${type}: projection of an unknown type`);
