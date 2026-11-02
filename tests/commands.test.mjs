@@ -122,6 +122,17 @@ test('sync: a rule with no class (list() gives none) is kept by the next sync, n
   assert.ok(!again.output.includes('errors:'));
 });
 
+test('sync: a rule pega-ctx cannot decode does not stop the others, it keeps its mirror line, the error is listed', async () => {
+  const { root, pega, pc } = await fixtureMirror();
+  const flow = pega.rows.find((r) => r.name === 'GetInfoStart');
+  flow.updated = '2026-10-11T09:00:00.000Z';
+  pega.raws.set(flow.key, 't[2]{a,b}:\n  1,2\n');
+  const r = await pc('sync');
+  assert.equal(r.code, 0);
+  assert.match(r.output, new RegExp(`\nerrors:\n- read Flow:${W}:GetInfoStart: TOON: array t announces 2 rows, has 1 \\(pega-ctx bug`));
+  assert.ok(mirror(root).readRaw(`Flow:${W}:GetInfoStart`));
+});
+
 test('sync: a failing list() does not stop the others, its rules stay, the error is listed', async () => {
   const { root } = await fixtureMirror();
   const r = await launch(parse(['sync']), { root, connect: async () => fakePega({ failures: ['Validate'] }) });

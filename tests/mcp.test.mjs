@@ -77,6 +77,15 @@ test('TOON: primitive list item, number, boolean, array too short', () => {
   assert.throws(() => decodeToon('t[2]{a,b}:\n  1,2'), /announces 2 rows/);
 });
 
+test('TOON: a list of empty objects comes as a table with no field and blank rows', () => {
+  const toon = 'a:\n  pySectionBody[2]{}:\n    \n    \n  next: x';
+  assert.deepEqual(decodeToon(toon), { a: { pySectionBody: [{}, {}], next: 'x' } });
+});
+
+test('TOON: a list first in a list item comes without its items (the server drops them)', () => {
+  assert.deepEqual(decodeToon('b[1]:\n  - c[2]:\n    d: 1'), { b: [{ c: [], d: 1 }] });
+});
+
 function fakeServer(responses) {
   const calls = [];
   const call = async (name, args) => {

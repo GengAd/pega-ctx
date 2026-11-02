@@ -78,6 +78,9 @@ function value(state, h, indent) {
 
 function array(state, h, indent) {
   if (h.n === 0) return [];
+  // A list of empty objects: the server writes `key[N]{}:` and N rows with nothing on them, blank
+  // lines that the reading above already dropped (ToonFormatter.appendArray in the jar).
+  if (h.fields?.length === 1 && h.fields[0] === '') return Array.from({ length: h.n }, () => ({}));
   if (h.fields) {
     const rows = [];
     for (let k = 0; k < h.n; k++) {

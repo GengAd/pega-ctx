@@ -207,7 +207,15 @@ export async function run({ options, root, connect, progress = terminalProgress(
           } finally {
             progress(`read ${++readCount}/${toRead.length} rules`);
           }
-          const o = decodeToon(toon);
+          // A rule pega-ctx cannot decode is reported, the others go on.
+          let o;
+          try {
+            o = decodeToon(toon);
+          } catch (e) {
+            errors.push(`read ${top.id}: ${e.message} (pega-ctx bug: report it with this line)`);
+            if (old) lines.set(k, old);
+            return;
+          }
           if (!top.ruleset && !followed(o.pyRuleSet)) return;
           const line = indexLine(type, versions, o);
           if (old && old.id !== line.id) m.removeRaw(old.id);
