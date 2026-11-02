@@ -68,7 +68,8 @@ test('sync: a followed application the operator cannot open is reported, the oth
   await pc('init --all');
   const r = await pc('sync');
   assert.equal(r.code, 0);
-  assert.match(r.output, /\n- Constellation: not mirrored, the operator cannot open it \(no alias in list-available-applications\)\n- PegaRULES: not mirrored/);
+  assert.match(r.output, /\n- Constellation: not mirrored, the operator has no access group for it \(not in list-available-applications\): add one to the operator/);
+  assert.match(r.output, /\n- PegaRULES: not mirrored, its URL alias is blank in Pega \(\/app\/\/\): give the application a URL alias/);
   assert.ok(m.readIndex().length > 0);
 });
 

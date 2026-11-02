@@ -102,8 +102,10 @@ export async function run({ options, root, connect, progress = terminalProgress(
       const known = await pega.applications();
       for (const a of others) {
         const found = known.find((k) => k.application === a);
+        // The server opens another application at /prweb/app/<alias>/, with the alias Pega gives per access group.
         if (found?.alias) contexts.push({ application: a, alias: found.alias });
-        else errors.push(`${a}: not mirrored, the operator cannot open it (no alias in list-available-applications)`);
+        else if (found) errors.push(`${a}: not mirrored, its URL alias is blank in Pega (/app//): give the application a URL alias, or remove it from "applications" in .pega/config.json`);
+        else errors.push(`${a}: not mirrored, the operator has no access group for it (not in list-available-applications): add one to the operator, or remove it from "applications" in .pega/config.json`);
       }
     }
 
