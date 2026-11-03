@@ -95,6 +95,19 @@ test('Activity: applied data transform and saved data page, in the class of the 
   assert.ok(r.includes(`DataPage:${P}:D_People`));
 });
 
+test('Activity: a child step of a loop for each page sets the iterated page; no placeholder nor platform field as a parameter', () => {
+  const id = `Activity:${W}:PegaCtxFxLoop`;
+  assert.ok(to(id).includes(`Property:${P}:Title`));
+  assert.ok(!to(id).includes(`Property:${W}:Title`));
+  assert.match(digests[id].markdown, /\n {2}1\.2\. Property-Set — Set a note\n {4}PropertiesName local\.count, PropertiesValue 0\n/);
+  // A step saved from Dev Studio carries platform fields among its parameters.
+  const o = decodeToon(read(raws.find((r) => r.id === id)));
+  o.pySteps[0].pyStepsCallParams = { pxCreateDateTime: '20261103T081403.277 GMT', pzStatus: 'valid', StepPage: 'Primary' };
+  const md = project(o, { line: rowOf(raws.find((r) => r.id === id)), index }).markdown;
+  assert.match(md, /\n {2}StepPage Primary, PropertiesName local\.count/);
+  assert.doesNotMatch(md, /pxCreateDateTime|pzStatus/);
+});
+
 test('DecisionTable: one row per condition value, the default result even when it is false', () => {
   const md = digests['DecisionTable:OrgEv-Int-CventAtt-Data:IgnoredRegistrationType'].markdown;
   assert.match(md, /\| = Vendor \| true \|\n\| = Client Speaker \| true \|\n\notherwise: false\n/);

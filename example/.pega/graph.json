@@ -1,6 +1,18 @@
 {
  "edges": [
   {
+   "from": "Activity:MONORG-Test-Work-GetInfo:PegaCtxFxLoop",
+   "to": "Property:MONORG-Test-Data-People:Title",
+   "via": "step",
+   "confidence": "sure"
+  },
+  {
+   "from": "Activity:MONORG-Test-Work-GetInfo:PegaCtxFxLoop",
+   "to": "Property:MONORG-Test-Work-GetInfo:HouseholdMembers",
+   "via": "name match",
+   "confidence": "probable"
+  },
+  {
    "from": "Activity:MONORG-Test-Work-GetInfo:SaveHouseholdPeople",
    "to": "DataPage:MONORG-Test-Data-People:D_People",
    "via": "data page",

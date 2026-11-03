@@ -4,6 +4,7 @@ One line per delivered step. Versions follow [semver](https://semver.org); `0.1.
 
 ## Unreleased
 
+- Activity digest: no `pyTempPlaceHolder` nor platform field (`px*`, `pz*`) among a step's parameters; the child steps of a loop for each page cite the properties of the iterated page's class. New fixture rule `PegaCtxFxLoop`.
 - `sync` no longer stops on a rule it cannot decode (it is listed under errors), opens an application through any of the operator's access groups that has an alias, says why it cannot open one, takes an alias from `aliases` in `.pega/config.json` when Pega gives it blank, reads a list of empty objects (`key[N]{}:`), and no longer stops on a rule with no class (EditValidate) that cites another rule's name; a pega-ctx bug now names the file and line where it happened.
 - License: AGPL-3.0-only, copyright GengAd (`LICENSE`, `package.json`, README § License).
 - `create View --fields`: `Prop:required` (both surfaces of the view) and `Prop:TextArea` (multi-line Text; automatic for a `pxTextArea` control).

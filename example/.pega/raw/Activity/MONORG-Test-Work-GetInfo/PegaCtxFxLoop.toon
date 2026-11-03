@@ -1,0 +1,127 @@
+pxObjClass: Rule-Obj-Activity
+pxUpdateOperator: dev.un
+pyActivityName: PegaCtxFxLoop
+pyActivityType: ACTIVITY
+pyAuthenticatedOnly: "true"
+pyBaseRule: "false"
+pyCircumstanceDateProp: ""
+pyCircumstanceProp: ""
+pyClassName: MONORG-Test-Work-GetInfo
+pyDescription: "Loop over household members with sub-steps, then a step left empty"
+pyJavaClassName: Rule_Obj_Activity_MONORG_Test_Work_GetInfo_PegaCtxFxLoop_Action_20261103T081403_277_GMT
+pyJavaGenerateAPIVersion: "03-02"
+pyJavaGenerateTime: "2026-11-03T08:14:03.332Z"
+pyJavaGenerateVersion: "03-01-01"
+pyJavaStream: ""
+pyLabel: PegaCtx loop fixture
+pyOldActivityType: ACTIVITY
+pyRuleAvailable: Yes
+pyRuleName: PegaCtxFxLoop
+pyRuleSet: Test
+pyRuleSetVersion: "01-01-01"
+pyTaskStatusXml: <pagedata></pagedata>
+pyValueChanged: "false"
+pyXMLSignature: "<?xml version=\"1.0\"?><methodSignature><pyStepsCallParams></pyStepsCallParams><pyStepsPageAliases></pyStepsPageAliases></methodSignature>"
+pzChecksum: "1432417275"
+pzIndexCount: "9"
+pzInsKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO PEGACTXFXLOOP #20261103T081403.277 GMT
+pzReindex: "false"
+pzRuleSetVersionMajor: "01"
+pzRuleSetVersionMinor: "01"
+pzRuleSetVersionPatch: "01"
+pxAPIMethodReferences[0]:
+pxNamedPageReferences[0]:
+pxWarnings[2]:
+  - pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2026-11-03T08:14:03.379Z"
+    pxWarningCreateOperator: dev.un
+    pxWarningDetails: (Rule-Obj-Activity)pxActivityUse
+    pxWarningMessage: (Rule-Obj-Activity)pxActivityUse
+    pxWarningName: Activity use
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "2"
+    pxWarningType: Maintainability
+    pzIndexOwnerKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO PEGACTXFXLOOP #20261103T081403.277 GMT
+    pzIndexes:
+      Warnings: "7"
+  - pxObjClass: Embed-Warning
+    pxWarningCreatedTime: "2026-11-03T08:14:03.430Z"
+    pxWarningCreateOperator: dev.un
+    pxWarningDetails: (Rule-)pxPegaUnit
+    pxWarningMessage: (Rule-)pxPegaUnit
+    pxWarningName: Pega Unit Warning
+    pxWarningRuleSetType: PEGA
+    pxWarningSeverity: "3"
+    pxWarningType: Maintainability
+    pzIndexOwnerKey: RULE-OBJ-ACTIVITY MONORG-TEST-WORK-GETINFO PEGACTXFXLOOP #20261103T081403.277 GMT
+    pzIndexes:
+      Warnings: "8"
+pyActivityPrivilegeList[0]:
+pyActivityRolesList[0]:
+pyLocalParameters[1]{pxObjClass,pyParametersParamDesc,pyParametersParamName,pyParametersParamType}:
+  Embed-MethodParams,"0",count,int
+pyPagesAndClasses[1]{pxObjClass,pyPagesAndClassesClass,pyPagesAndClassesPage}:
+  Embed-PagesAndClasses,MONORG-Test-Data-People,Primary.HouseholdMembers
+pyParameters[0]:
+pySteps[2]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Property-Set
+    pyStepsDescription: Count each member
+    pyStepsObjectName: Primary.HouseholdMembers
+    pyParamArray[1]{PropertiesName,PropertiesValue,pxObjClass}:
+      local.count,local.count + 1,Embed-MethodParams
+    pySteps[2]:
+      - pxObjClass: Embed-ActivitySteps
+        pyStepsActivityName: Property-Set
+        pyStepsDescription: Default title
+        pyStepsObjectName: ""
+        pyParamArray[1]{PropertiesName,PropertiesValue,pxObjClass}:
+          .Title,"\"Member\"",Embed-MethodParams
+        pyStepsCallParams:
+        pyStepsPageAliases:
+        pyStepsPreCondParams[0]:
+        pyStepsRepeatDef:
+          pxObjClass: Embed-ActivityRepeat
+        pyStepsTransParams[0]:
+      - pxObjClass: Embed-ActivitySteps
+        pyStepsActivityName: Property-Set
+        pyStepsDescription: Set a note
+        pyStepsObjectName: ""
+        pyParamArray[1]:
+          - PropertiesName: local.count
+            PropertiesValue: "0"
+            pxObjClass: Embed-MethodParams
+            pyTempPlaceHolder: TempPlaceHolder
+            pyStepsCallParams:
+              pxObjClass: ""
+        pyStepsCallParams:
+        pyStepsPageAliases:
+        pyStepsPreCondParams[0]:
+        pyStepsRepeatDef:
+          pxObjClass: Embed-ActivityRepeat
+        pyStepsTransParams[0]:
+    pyStepsCallParams:
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+      pyForEachProperty: ""
+      pyStepsRepeatDefHasRepeat: EMBEDDED
+      pyStepsRepeatDefIteration: ""
+      pyStepsRepeatDefLimit: ""
+      pyStepsRepeatDefStart: ""
+      pyStepsRepeatDefStop: ""
+      pyForEachValidClasses[1]{pxObjClass,pyForEachClass}:
+        Embed-ActivityForEachClasses,MONORG-Test-Data-People
+    pyStepsTransParams[0]:
+  - pxObjClass: Embed-ActivitySteps
+    pyStepsActivityName: Page-Clear-Messages
+    pyStepsDescription: Empty step
+    pyStepsObjectName: ""
+    pyParamArray[0]:
+    pyStepsCallParams:
+    pyStepsPageAliases:
+    pyStepsPreCondParams[0]:
+    pyStepsRepeatDef:
+      pxObjClass: Embed-ActivityRepeat
+    pyStepsTransParams[0]:

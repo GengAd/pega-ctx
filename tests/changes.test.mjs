@@ -44,7 +44,7 @@ test('changes: the last sync, one dated line per rule, the digest lines that cha
 test('changes --since: the rules of the index updated since that date; a wrong date refused', async () => {
   const { pc } = await changedInPega();
   const r = await pc('changes --since 2026-10-13');
-  assert.equal(r.output, `1 rules updated in Pega since 2026-10-13 (added and changed; removals and case types are not dated)\n~ Flow:${W}:GetInfoStart — 2026-10-13 09:00 by dev.deux`);
+  assert.equal(r.output, `2 rules updated in Pega since 2026-10-13 (added and changed; removals and case types are not dated)\n~ Activity:${W}:PegaCtxFxLoop — 2026-11-03 08:14 by dev.un\n~ Flow:${W}:GetInfoStart — 2026-10-13 09:00 by dev.deux`);
   assert.match((await pc('changes --since soon')).output, /^--since soon: give a date/);
 });
 
